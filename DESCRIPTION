@@ -20,7 +20,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
     bslib,
+    dplyr,
+    ggplot2,
+    htmltools,
     magrittr,
+    rlang,
     shiny (>= 1.6.0)
 Suggests: 
     testthat (>= 3.0.0)

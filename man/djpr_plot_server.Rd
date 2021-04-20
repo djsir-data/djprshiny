@@ -11,6 +11,9 @@ djpr_plot_server(id, plot_function, date_slider = TRUE)
 
 \item{plot_function}{A function (without \verb{()}) that creates a ggplot2
 object. Function must contain a \code{data} argument that takes a data.frame.}
+
+\item{date_slider}{Logical; \code{TRUE} if you want a date slider to be shown.
+If \code{TRUE}, your data must contain a \code{date} column.}
 }
 \description{
 Server-side companion to \code{djpr_plot_ui()}.

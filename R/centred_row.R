@@ -9,6 +9,7 @@
 #' (inclusive). See `Details`.
 #' @param right_space Numeric. Default is equal to `left_space`.
 #' Must be between 1 and 10 (inclusive). See `Details`.
+#' @param max_width_px Maximum width of content, in pixels.
 #' @details This function creates a `shiny::fluidRow()` then divides that
 #' row into three columns. The left and right columns are whitespace. The
 #' content goes in the centre column. Any space not allocated to the left or
@@ -25,7 +26,7 @@
 #' @return a `shiny.tag` object that creates a three-column fluidRow.
 #' @examples
 #'
-#' centred_row(plotOutput("plot1"))
+#' centred_row(shiny::plotOutput("plot1"))
 #' @export
 
 centred_row <- function(content,

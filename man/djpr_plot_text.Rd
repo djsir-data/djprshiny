@@ -19,8 +19,9 @@ djpr_plot_caption(..., rel_font_size = 73)
 
 \item{rel_font_size}{Numeric. Relative font size. In percent, so \code{100} would
 set the font size equal to the base font size.}
-
-\item{A}{\code{shiny.tag} object.}
+}
+\value{
+A \code{shiny.tag} object.
 }
 \description{
 Functions to create title, subtitle, and caption of plots

@@ -73,7 +73,10 @@ djpr_plot_ui <- function(id) {
 #' @param id a Shiny `outputId` specific to the individual plot.
 #' @param plot_function A function (without `()`) that creates a ggplot2
 #' object. Function must contain a `data` argument that takes a data.frame.
-#'
+#' @param date_slider Logical; `TRUE` if you want a date slider to be shown.
+#' If `TRUE`, your data must contain a `date` column.
+#' @import shiny
+#' @importFrom rlang .data .env
 #' @examples
 #' \dontrun{
 #'
@@ -175,7 +178,7 @@ djpr_plot_server <- function(id, plot_function, date_slider = TRUE) {
         content = function(file) {
           obj <- plot()
 
-          ggsave(
+          ggplot2::ggsave(
               filename = file,
               plot = obj
             )

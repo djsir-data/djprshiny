@@ -23,6 +23,8 @@ centred_row(
 
 \item{right_space}{Numeric. Default is equal to \code{left_space}.
 Must be between 1 and 10 (inclusive). See \code{Details}.}
+
+\item{max_width_px}{Maximum width of content, in pixels.}
 }
 \value{
 a \code{shiny.tag} object that creates a three-column fluidRow.
@@ -49,5 +51,5 @@ greater than 10 width.
 }
 \examples{
 
-centred_row(plotOutput("plot1"))
+centred_row(shiny::plotOutput("plot1"))
 }
