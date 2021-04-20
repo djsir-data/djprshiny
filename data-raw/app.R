@@ -93,19 +93,10 @@ server <- function(input, output, session) {
                         plot_function = list(econ_plot,
                                              econ_plot),
                         date_slider = list(FALSE,
-                                           TRUE)),
+                                           TRUE)
+                        ),
               .f = djpr_plot_server)
 
-  # output$photo <- renderImage({
-  #   temp_kitten <- tempfile(fileext = ".jpeg")
-  #
-  #   download.file(url = bs4cards::sample_kitten(),
-  #                 destfile = temp_kitten)
-  #
-  #   list(src = temp_kitten,
-  #        contentType = "image/jpeg")
-  # },
-  # deleteFile = FALSE)
 }
 
 shinyApp(ui, server)

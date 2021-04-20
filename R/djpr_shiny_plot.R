@@ -61,7 +61,7 @@ djpr_plot_ui <- function(id) {
                             icon = shiny::icon("arrow-circle-down")),
              align = 'right')
     ),
-    uiOutput(NS(id, "user_input")),
+    uiOutput(NS(id, "date_slider")),
     br()
   )
   )
@@ -113,7 +113,9 @@ djpr_plot_ui <- function(id) {
 #' }
 #'
 
-djpr_plot_server <- function(id, plot_function, date_slider = TRUE) {
+djpr_plot_server <- function(id,
+                             plot_function,
+                             date_slider = TRUE) {
   moduleServer(
     id,
     function(input, output, session) {
@@ -141,7 +143,7 @@ djpr_plot_server <- function(id, plot_function, date_slider = TRUE) {
         })
 
 
-      output$user_input <- renderUI({
+      output$date_slider <- renderUI({
         if (date_slider == TRUE) {
           req(base_plot_data)
           sliderInput(NS(id, "dates"),
