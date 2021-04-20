@@ -26,11 +26,12 @@
 #' @examples
 #'
 #' centred_row(plotOutput("plot1"))
-#'
+#' @export
 
 centred_row <- function(content,
                         left_space = 2,
-                        right_space = left_space) {
+                        right_space = left_space,
+                        max_width_px = 1140) {
 
   if (left_space < 1 || right_space < 1) {
     stop("`left_space` and `right_space` must be 1 or greater.")
@@ -47,7 +48,8 @@ centred_row <- function(content,
   shiny::fluidRow(
     shiny::column(left_space),
     shiny::column(12 - left_space - right_space,
-           content),
+           content,
+           style = paste0("max-width: ", max_width_px, "px;")),
     shiny::column(right_space)
   )
 

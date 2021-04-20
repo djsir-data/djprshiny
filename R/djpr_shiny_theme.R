@@ -13,19 +13,14 @@
 
 djpr_shiny_theme <- function(...) {
   bslib::bs_theme(
-    ...,
+    "plot-title-size" = "163%",
     bootswatch = "lumen",
     version = "4",
     primary = "#1F1547",
     success = "#62BB46",
     info = "#1D9EC3",
     base_font = list(
-      bslib::font_google("Lato"),
-      bslib::font_google("Source Sans Pro"),
-      "-apple-system",
-      "BlinkMacSystemFont",
-      "Segoe UI",
-      bslib::font_google("Roboto"),
+      bslib::font_google("Roboto Slab"),
       "Helvetica Neue",
       "Arial",
       "sans-serif",
@@ -33,7 +28,8 @@ djpr_shiny_theme <- function(...) {
       "Segoe UI Emoji",
       "Segoe UI Symbol"
     ),
-    heading_font = list(bslib::font_google("Lato"), "sans"),
+    heading_font = list(bslib::font_google("Roboto"),
+                        "sans"),
     `enable-shadows` = TRUE,
   )
 }
