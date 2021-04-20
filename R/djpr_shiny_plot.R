@@ -9,6 +9,7 @@
 #' @details To be used in conjunction with `djpr_plot_server()` Shiny module,
 #' which provides the server-side outputs that `djpr_plot_ui()` expects. See
 #' example.
+#' @export
 #' @examples
 #' \dontrun{
 #'
@@ -77,6 +78,7 @@ djpr_plot_ui <- function(id) {
 #' If `TRUE`, your data must contain a `date` column.
 #' @import shiny
 #' @importFrom rlang .data .env
+#' @export
 #' @examples
 #' \dontrun{
 #'
