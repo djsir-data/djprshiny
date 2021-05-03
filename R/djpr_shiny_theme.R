@@ -13,7 +13,6 @@
 
 djpr_shiny_theme <- function(...) {
   bslib::bs_theme(
-    "plot-title-size" = "163%",
     bootswatch = "lumen",
     version = "4",
     primary = "#1F1547",
@@ -31,5 +30,6 @@ djpr_shiny_theme <- function(...) {
     heading_font = list(bslib::font_google("Roboto"),
                         "sans"),
     `enable-shadows` = TRUE,
-  )
+  ) %>%
+    bslib::bs_add_variables("navbar-padding-y" = "spacer / 2")
 }

@@ -20,12 +20,18 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
     bslib,
+    djprtheme (>= 0.0.0.9000),
     dplyr,
     ggplot2,
+    ggrepel,
+    glue,
     htmltools,
     magrittr,
     rlang,
-    shiny (>= 1.6.0)
+    shiny (>= 1.6.0),
+    stringr
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Remotes: 
+    djpr-data/djprtheme
