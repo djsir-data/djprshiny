@@ -33,7 +33,8 @@ library(shiny)
 library(ggplot2)
 
 ui <- fluidPage(
-  djpr_plot_ui("plot"))
+  djpr_plot_ui("plot")
+)
 
 plot_function <- function(data = economics,
                           title = "This is a title",
@@ -42,17 +43,18 @@ plot_function <- function(data = economics,
   data \%>\%
     ggplot(aes(x = date, y = unemploy)) +
     geom_line() +
-    labs(title  = title,
-         subtitle = subtitle,
-         caption = caption) +
+    labs(
+      title = title,
+      subtitle = subtitle,
+      caption = caption
+    ) +
     theme_minimal(base_size = 16)
 }
 
 server <- function(input, output, session) {
-
   djpr_plot_server("plot",
-                   plot_function,
-                   date_slider = TRUE
+    plot_function,
+    date_slider = TRUE
   )
 }
 

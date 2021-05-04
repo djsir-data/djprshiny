@@ -46,8 +46,10 @@ df <- djprdashdata::download_abs_ts("6202.0") \%>\%
   dplyr::filter(table_no == "6202005")
 
 df <- df \%>\%
-  dplyr::filter(grepl("Employment to population ratio", series),
-                    series_type == "Seasonally Adjusted")
+  dplyr::filter(
+    grepl("Employment to population ratio", series),
+    series_type == "Seasonally Adjusted"
+  )
 
 djpr_ts_linechart(df = df)
 }

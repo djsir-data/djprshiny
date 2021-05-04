@@ -34,6 +34,8 @@ string <- "The unemployment  rate went up by XX percentage points to XX per cent
 numbers <- c(0.2, 6.1)
 text_active(string, numbers)
 text_active(string, numbers, colour = "#007b4b", alpha = 0.5)
-text_active(string, numbers, colour = "#007b4b", alpha = 0.5,
-            extra_style = "font-weight: bold;")
+text_active(string, numbers,
+  colour = "#007b4b", alpha = 0.5,
+  extra_style = "font-weight: bold;"
+)
 }

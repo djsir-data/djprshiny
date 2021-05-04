@@ -35,7 +35,6 @@ djpr_plot_title("A title goes here")
 djpr_plot_subtitle("A subtitle goes here", rel_font_size = 100)
 
 # Use as container in shiny::textOutput()
-
 \dontrun{
 textOutput("title", container = djpr_plot_title)
 }

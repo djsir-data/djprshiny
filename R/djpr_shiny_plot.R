@@ -93,6 +93,11 @@ djpr_plot_ui <- function(id) {
 #' object. Function must contain a `data` argument that takes a data.frame.
 #' @param date_slider Logical; `TRUE` if you want a date slider to be shown.
 #' If `TRUE`, your data must contain a `date` column.
+#' @param check_box_options A character vector containing values to include
+#' in a check box. `NULL` by default, which suppresses the check box.
+#' @param check_box_var name of column in `data` that contains the levels
+#' included in `check_box_options`. `series` by default.
+#' @param data data frame containing data to visualise
 #' @import shiny
 #' @importFrom rlang .data .env
 #' @export
@@ -135,7 +140,9 @@ djpr_plot_server <- function(id,
                              plot_function,
                              date_slider = TRUE,
                              check_box_options = NULL,
+                             check_box_var = series,
                              data) {
+
   moduleServer(
     id,
     function(input, output, session) {
@@ -161,10 +168,12 @@ djpr_plot_server <- function(id,
           )
 
           df <- df %>%
-            dplyr::filter(grepl(checked_opts,
-              .data$series,
-              ignore.case = TRUE
-            ))
+            dplyr::filter(
+              stringr::str_detect(
+                {{check_box_var}},
+                checked_opts
+              )
+            )
         }
 
         df

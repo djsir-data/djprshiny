@@ -4,7 +4,14 @@
 \alias{djpr_plot_server}
 \title{Shiny module to create DJPR plot environment.}
 \usage{
-djpr_plot_server(id, plot_function, date_slider = TRUE)
+djpr_plot_server(
+  id,
+  plot_function,
+  date_slider = TRUE,
+  check_box_options = NULL,
+  check_box_var = series,
+  data
+)
 }
 \arguments{
 \item{id}{a Shiny \code{outputId} specific to the individual plot.}
@@ -14,6 +21,14 @@ object. Function must contain a \code{data} argument that takes a data.frame.}
 
 \item{date_slider}{Logical; \code{TRUE} if you want a date slider to be shown.
 If \code{TRUE}, your data must contain a \code{date} column.}
+
+\item{check_box_options}{A character vector containing values to include
+in a check box. \code{NULL} by default, which suppresses the check box.}
+
+\item{check_box_var}{name of column in \code{data} that contains the levels
+included in \code{check_box_options}. \code{series} by default.}
+
+\item{data}{data frame containing data to visualise}
 }
 \description{
 Server-side companion to \code{djpr_plot_ui()}.
@@ -25,7 +40,8 @@ library(shiny)
 library(ggplot2)
 
 ui <- fluidPage(
-  djpr_plot_ui("plot"))
+  djpr_plot_ui("plot")
+)
 
 plot_function <- function(data = economics,
                           title = "This is a title",
@@ -34,17 +50,18 @@ plot_function <- function(data = economics,
   data \%>\%
     ggplot(aes(x = date, y = unemploy)) +
     geom_line() +
-    labs(title  = title,
-         subtitle = subtitle,
-         caption = caption) +
+    labs(
+      title = title,
+      subtitle = subtitle,
+      caption = caption
+    ) +
     theme_minimal(base_size = 16)
 }
 
 server <- function(input, output, session) {
-
   djpr_plot_server("plot",
-                   plot_function,
-                   date_slider = TRUE
+    plot_function,
+    date_slider = TRUE
   )
 }
 

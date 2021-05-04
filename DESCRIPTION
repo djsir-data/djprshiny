@@ -29,6 +29,7 @@ Imports:
     magrittr,
     rlang,
     shiny (>= 1.6.0),
+    shinyWidgets,
     stringr
 Suggests: 
     testthat (>= 3.0.0)

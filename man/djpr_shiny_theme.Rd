@@ -13,8 +13,8 @@ djpr_shiny_theme(...)
 This function uses the \code{bslib} package to create a Shiny theme.
 }
 \examples{
-ui <- shiny::navbarPage(title = "Example app!",
-                theme = djpr_shiny_theme()
+ui <- shiny::navbarPage(
+  title = "Example app!",
+  theme = djpr_shiny_theme()
 )
-
 }
