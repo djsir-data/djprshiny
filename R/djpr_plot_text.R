@@ -12,7 +12,6 @@
 #' djpr_plot_subtitle("A subtitle goes here", rel_font_size = 100)
 #'
 #' # Use as container in shiny::textOutput()
-#'
 #' \dontrun{
 #' textOutput("title", container = djpr_plot_title)
 #' }
@@ -22,9 +21,12 @@
 djpr_plot_title <- function(...,
                             rel_font_size = 163) {
   htmltools::h3(...,
-     style = paste0("font-size: ",
-                    rel_font_size,
-                    "%; font-weight: bold; line-height: 1.2; margin-top: 0px; margin-bottom: 1px;"))
+    style = paste0(
+      "font-size: ",
+      rel_font_size,
+      "%; font-weight: bold; line-height: 1.2; margin-top: 0px; margin-bottom: 1px;"
+    )
+  )
 }
 
 #' @rdname djpr_plot_text
@@ -32,9 +34,11 @@ djpr_plot_title <- function(...,
 djpr_plot_subtitle <- function(...,
                                rel_font_size = 145) {
   htmltools::h4(...,
-     style = paste0("font-size: ",
-                    rel_font_size,
-                    "%; font-weight: normal; line-height: 1.1; margin-top: 0px; margin-bottom: 1px;")
+    style = paste0(
+      "font-size: ",
+      rel_font_size,
+      "%; font-weight: normal; line-height: 1.1; margin-top: 0px; margin-bottom: 1px;"
+    )
   )
 }
 
@@ -42,8 +46,9 @@ djpr_plot_subtitle <- function(...,
 #' @export
 djpr_plot_caption <- function(...,
                               rel_font_size = 73) {
-  htmltools::div(..., style = paste0("font-size: ",
-                          rel_font_size,
-                          "%; font-weight: normal; line-height: 0.9")
-  )
+  htmltools::div(..., style = paste0(
+    "font-size: ",
+    rel_font_size,
+    "%; font-weight: normal; line-height: 0.9"
+  ))
 }

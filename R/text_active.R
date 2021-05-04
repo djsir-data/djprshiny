@@ -21,16 +21,15 @@
 #' numbers <- c(0.2, 6.1)
 #' text_active(string, numbers)
 #' text_active(string, numbers, colour = "#007b4b", alpha = 0.5)
-#' text_active(string, numbers, colour = "#007b4b", alpha = 0.5,
-#'             extra_style = "font-weight: bold;")
-
-
+#' text_active(string, numbers,
+#'   colour = "#007b4b", alpha = 0.5,
+#'   extra_style = "font-weight: bold;"
+#' )
 text_active <- function(string,
                         numbers,
                         colour = "#71c5e8",
                         alpha = 25,
                         extra_style = "") {
-
   stopifnot(length(string) == 1)
 
   split_string <- strsplit(string, split = " ", fixed = TRUE)[[1]]
@@ -39,13 +38,16 @@ text_active <- function(string,
 
   stopifnot(length(numbers) == num_insert_points)
 
-  num_style <- paste0("background-color: ", colour, alpha, "; ",
-                      extra_style)
+  num_style <- paste0(
+    "background-color: ", colour, alpha, "; ",
+    extra_style
+  )
 
   styled_string <- gsub("XX",
-                        htmltools::span("%s", style = num_style),
-                        string,
-                        fixed = TRUE)
+    htmltools::span("%s", style = num_style),
+    string,
+    fixed = TRUE
+  )
 
   result <- do.call("sprintf", args = c(styled_string, as.list(numbers)))
 

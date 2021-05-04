@@ -5,10 +5,10 @@
 #' @param ... arguments passed to `bslib::bs_theme()`
 #'
 #' @examples
-#' ui <- shiny::navbarPage(title = "Example app!",
-#'                 theme = djpr_shiny_theme()
+#' ui <- shiny::navbarPage(
+#'   title = "Example app!",
+#'   theme = djpr_shiny_theme()
 #' )
-#'
 #' @export
 
 djpr_shiny_theme <- function(...) {
@@ -19,7 +19,7 @@ djpr_shiny_theme <- function(...) {
     success = "#62BB46",
     info = "#1D9EC3",
     base_font = list(
-      bslib::font_google("Roboto Slab"),
+      bslib::font_google("Roboto"),
       "Helvetica Neue",
       "Arial",
       "sans-serif",
@@ -27,8 +27,10 @@ djpr_shiny_theme <- function(...) {
       "Segoe UI Emoji",
       "Segoe UI Symbol"
     ),
-    heading_font = list(bslib::font_google("Roboto"),
-                        "sans"),
+    heading_font = list(
+      bslib::font_google("Roboto"),
+      "sans"
+    ),
     `enable-shadows` = TRUE,
   ) %>%
     bslib::bs_add_variables("navbar-padding-y" = "spacer / 2")

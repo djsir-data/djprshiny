@@ -17,7 +17,8 @@
 #' library(ggplot2)
 #'
 #' ui <- fluidPage(
-#'   djpr_plot_ui("plot"))
+#'   djpr_plot_ui("plot")
+#' )
 #'
 #' plot_function <- function(data = economics,
 #'                           title = "This is a title",
@@ -26,44 +27,60 @@
 #'   data %>%
 #'     ggplot(aes(x = date, y = unemploy)) +
 #'     geom_line() +
-#'     labs(title  = title,
-#'          subtitle = subtitle,
-#'          caption = caption) +
+#'     labs(
+#'       title = title,
+#'       subtitle = subtitle,
+#'       caption = caption
+#'     ) +
 #'     theme_minimal(base_size = 16)
 #' }
 #'
 #' server <- function(input, output, session) {
-#'
 #'   djpr_plot_server("plot",
-#'                    plot_function,
-#'                    date_slider = TRUE
+#'     plot_function,
+#'     date_slider = TRUE
 #'   )
 #' }
 #'
 #' shinyApp(ui, server)
 #' }
 #'
-
 djpr_plot_ui <- function(id) {
   centred_row(
     tagList(
-    br(),
-    textOutput(NS(id, "title"), container = djpr_plot_title),
-    textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
-    plotOutput(NS(id, "plot")),
-    fluidRow(
-      column(8,
-             textOutput(NS(id, "caption"), container = djpr_plot_caption)),
-      column(4,
-             downloadButton(NS(id, "download"),
-                            "Download",
-                            style = "font-weight: normal;",
-                            icon = shiny::icon("arrow-circle-down")),
-             align = 'right')
-    ),
-    uiOutput(NS(id, "date_slider")),
-    br()
-  )
+      shinyWidgets::chooseSliderSkin("Flat",
+        color = "#2A6FA2"
+      ),
+      br(),
+      textOutput(NS(id, "title"), container = djpr_plot_title),
+      textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
+      plotOutput(NS(id, "plot")),
+      fluidRow(
+        column(
+          8,
+          textOutput(NS(id, "caption"), container = djpr_plot_caption)
+        ),
+        column(4,
+          downloadButton(NS(id, "download"),
+            "Download",
+            style = "font-weight: normal;",
+            icon = shiny::icon("arrow-circle-down")
+          ),
+          align = "right"
+        )
+      ),
+      fluidRow(
+        column(
+          6,
+          uiOutput(NS(id, "date_slider"))
+        ),
+        column(
+          6,
+          uiOutput(NS(id, "check_box"))
+        )
+      ),
+      br()
+    )
   )
 }
 
@@ -86,7 +103,8 @@ djpr_plot_ui <- function(id) {
 #' library(ggplot2)
 #'
 #' ui <- fluidPage(
-#'   djpr_plot_ui("plot"))
+#'   djpr_plot_ui("plot")
+#' )
 #'
 #' plot_function <- function(data = economics,
 #'                           title = "This is a title",
@@ -95,32 +113,33 @@ djpr_plot_ui <- function(id) {
 #'   data %>%
 #'     ggplot(aes(x = date, y = unemploy)) +
 #'     geom_line() +
-#'     labs(title  = title,
-#'          subtitle = subtitle,
-#'          caption = caption) +
+#'     labs(
+#'       title = title,
+#'       subtitle = subtitle,
+#'       caption = caption
+#'     ) +
 #'     theme_minimal(base_size = 16)
 #' }
 #'
 #' server <- function(input, output, session) {
-#'
 #'   djpr_plot_server("plot",
-#'                    plot_function,
-#'                    date_slider = TRUE
+#'     plot_function,
+#'     date_slider = TRUE
 #'   )
 #' }
 #'
 #' shinyApp(ui, server)
 #' }
 #'
-
 djpr_plot_server <- function(id,
                              plot_function,
-                             date_slider = TRUE) {
+                             date_slider = TRUE,
+                             check_box_options = NULL,
+                             data) {
   moduleServer(
     id,
     function(input, output, session) {
-
-      base_plot <- plot_function()
+      base_plot <- plot_function(data = data)
 
       base_plot_data <- base_plot$data
 
@@ -130,34 +149,67 @@ djpr_plot_server <- function(id,
         if (date_slider == TRUE) {
           req(input$dates)
           df <- df %>%
-            dplyr::filter(.data$date >= input$dates[1])
+            dplyr::filter(.data$date >= input$dates[1] &
+              .data$date <= input$dates[2])
+        }
+
+        if (!is.null(check_box_options)) {
+          req(input$checkboxes)
+
+          checked_opts <- paste0(input$checkboxes,
+            collapse = "|"
+          )
+
+          df <- df %>%
+            dplyr::filter(grepl(checked_opts,
+              .data$series,
+              ignore.case = TRUE
+            ))
         }
 
         df
-
-        })
+      })
 
       plot <- reactive({
         req(plot_data())
         plot_function(data = plot_data())
-        })
+      })
 
 
       output$date_slider <- renderUI({
         if (date_slider == TRUE) {
           req(base_plot_data)
           sliderInput(NS(id, "dates"),
-                      label = "",
-                      min = min(base_plot_data$date),
-                      max = max(base_plot_data$date),
-                      value = min(base_plot_data$date))
+            label = "",
+            min = min(base_plot_data$date),
+            max = max(base_plot_data$date),
+            value = c(
+              min(base_plot_data$date),
+              max(base_plot_data$date)
+            ),
+            timeFormat = "%b %Y",
+            ticks = FALSE
+          )
         }
+      })
 
+      output$check_box <- renderUI({
+        if (!is.null(check_box_options)) {
+          req(base_plot_data)
+          shinyWidgets::awesomeCheckboxGroup(
+            NS(id, "checkboxes"),
+            label = "",
+            choices = check_box_options,
+            selected = check_box_options,
+            # status = "blue",
+            inline = TRUE
+          )
+        }
       })
 
       output$title <- renderText({
-          plot()$labels$title
-        })
+        plot()$labels$title
+      })
 
       output$subtitle <- renderText({
         plot()$labels$subtitle
@@ -183,16 +235,11 @@ djpr_plot_server <- function(id,
           obj <- plot()
 
           ggplot2::ggsave(
-              filename = file,
-              plot = obj
-            )
-          }
+            filename = file,
+            plot = obj
+          )
+        }
       )
-
-
     }
   )
 }
-
-
-
