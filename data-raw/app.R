@@ -4,6 +4,7 @@
 library(shiny)
 library(ggplot2)
 library(dplyr)
+library(djprtheme)
 
 econ_plot <- function(data,
                       title = "A title",
@@ -17,7 +18,8 @@ econ_plot <- function(data,
       subtitle = subtitle,
       caption = caption
     ) +
-    theme_minimal(base_size = 16) +
+    djpr_colour_manual(5) +
+    theme_djpr() +
     facet_wrap(~series, scales = "free")
 }
 
@@ -55,17 +57,6 @@ server <- function(input, output, session) {
     data = mydata %>%
       filter(date >= as.Date("1990-01-01"))
   )
-
-  static_plot <- reactive({
-    mydata %>%
-      filter(date >= as.Date("1990-01-01")) %>%
-      econ_plot() +
-      ggiraph::geom_line_interactive(aes(tooltip = value))
-  })
-
-  output$plot2 <- ggiraph::renderGirafe({
-    ggiraph::girafe(ggobj = static_plot())
-  })
 
 }
 

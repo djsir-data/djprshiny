@@ -48,13 +48,14 @@ plot_function <- function(data = economics,
       subtitle = subtitle,
       caption = caption
     ) +
-    theme_minimal(base_size = 16)
+    theme_minimal(base_size = 14)
 }
 
 server <- function(input, output, session) {
   djpr_plot_server("plot",
     plot_function,
-    date_slider = TRUE
+    date_slider = TRUE,
+    data = ggplot2::economics
   )
 }
 

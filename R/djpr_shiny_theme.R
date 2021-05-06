@@ -13,25 +13,28 @@
 
 djpr_shiny_theme <- function(...) {
   bslib::bs_theme(
-    bootswatch = "lumen",
+    bootswatch = "litera",
     version = "4",
-    primary = "#1F1547",
+    primary = "#2A6FA2",
+    secondary = "#d9d9d6",
     success = "#62BB46",
+    warning = "#f3e500",
     info = "#1D9EC3",
+    # Browser default is typically 16pt font
+    # We want 14 = 0.875 x 16
+    "font-size-base" = "0.875rem",
     base_font = list(
       bslib::font_google("Roboto"),
       "Helvetica Neue",
       "Arial",
       "sans-serif",
-      "Apple Color Emoji",
-      "Segoe UI Emoji",
-      "Segoe UI Symbol"
+      "sans"
     ),
     heading_font = list(
       bslib::font_google("Roboto"),
       "sans"
     ),
     `enable-shadows` = TRUE,
-  ) %>%
+  )  %>%
     bslib::bs_add_variables("navbar-padding-y" = "spacer / 2")
 }

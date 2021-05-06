@@ -22,6 +22,7 @@ Imports:
     bslib,
     djprtheme (>= 0.0.0.9000),
     dplyr,
+    ggiraph,
     ggplot2,
     ggrepel,
     glue,

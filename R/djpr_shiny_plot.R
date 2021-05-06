@@ -55,7 +55,6 @@ djpr_plot_ui <- function(id) {
       br(),
       textOutput(NS(id, "title"), container = djpr_plot_title),
       textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
-      # plotOutput(NS(id, "plot")),
       ggiraph::girafeOutput(NS(id, "plot")),
       fluidRow(
         column(
@@ -65,7 +64,8 @@ djpr_plot_ui <- function(id) {
         column(4,
           downloadButton(NS(id, "download"),
             "Download",
-            style = "font-weight: normal;",
+            style = "font-weight: normal",
+            class = "bg-white",
             icon = shiny::icon("arrow-circle-down")
           ),
           align = "right"
@@ -235,7 +235,13 @@ djpr_plot_server <- function(id,
 
         ggiraph::girafe(ggobj = static_plot,
                         options = list(
-                          ggiraph::opts_toolbar(saveaspng = FALSE)
+                          ggiraph::opts_toolbar(saveaspng = FALSE),
+                          ggiraph::opts_sizing(width = 1),
+                          ggiraph::opts_zoom(min = 1, max = 1),
+                          ggiraph::opts_tooltip(delay_mouseover = 100,
+                                                opacity = 0.9,
+                                                css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif;"
+                          )
                         ))
       })
 
@@ -244,7 +250,7 @@ djpr_plot_server <- function(id,
           paste0(id, ".png")
         },
         content = function(file) {
-          obj <- static_plot()
+          obj <- plot()
 
           ggplot2::ggsave(
             filename = file,
