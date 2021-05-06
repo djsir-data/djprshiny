@@ -32,13 +32,14 @@
 #'       subtitle = subtitle,
 #'       caption = caption
 #'     ) +
-#'     theme_minimal(base_size = 16)
+#'     theme_minimal(base_size = 14)
 #' }
 #'
 #' server <- function(input, output, session) {
 #'   djpr_plot_server("plot",
 #'     plot_function,
-#'     date_slider = TRUE
+#'     date_slider = TRUE,
+#'     data = ggplot2::economics
 #'   )
 #' }
 #'
@@ -54,7 +55,8 @@ djpr_plot_ui <- function(id) {
       br(),
       textOutput(NS(id, "title"), container = djpr_plot_title),
       textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
-      plotOutput(NS(id, "plot")),
+      # plotOutput(NS(id, "plot")),
+      ggiraph::girafeOutput(NS(id, "plot")),
       fluidRow(
         column(
           8,
@@ -111,17 +113,14 @@ djpr_plot_ui <- function(id) {
 #'   djpr_plot_ui("plot")
 #' )
 #'
-#' plot_function <- function(data = economics,
-#'                           title = "This is a title",
-#'                           subtitle = "This is a subtitle",
-#'                           caption = "This data comes from the ggplot2 package") {
+#' plot_function <- function(data = economics) {
 #'   data %>%
 #'     ggplot(aes(x = date, y = unemploy)) +
 #'     geom_line() +
 #'     labs(
-#'       title = title,
-#'       subtitle = subtitle,
-#'       caption = caption
+#'       title = "This is a title",
+#'       subtitle = "This is a subtitle",
+#'       caption = "This data comes from the ggplot2 package"
 #'     ) +
 #'     theme_minimal(base_size = 16)
 #' }
@@ -129,7 +128,8 @@ djpr_plot_ui <- function(id) {
 #' server <- function(input, output, session) {
 #'   djpr_plot_server("plot",
 #'     plot_function,
-#'     date_slider = TRUE
+#'     date_slider = TRUE,
+#'     data = economics
 #'   )
 #' }
 #'
@@ -146,12 +146,11 @@ djpr_plot_server <- function(id,
   moduleServer(
     id,
     function(input, output, session) {
-      base_plot <- plot_function(data = data)
 
-      base_plot_data <- base_plot$data
+      base_plot_data <- data
 
       plot_data <- reactive({
-        df <- base_plot$data
+        df <- base_plot_data
 
         if (date_slider == TRUE) {
           req(input$dates)
@@ -228,12 +227,16 @@ djpr_plot_server <- function(id,
         plot()$labels$caption
       })
 
-      output$plot <- renderPlot({
-        x <- plot()
-        x$labels$title <- NULL
-        x$labels$subtitle <- NULL
-        x$labels$caption <- NULL
-        x
+      output$plot <- ggiraph::renderGirafe({
+        static_plot <- plot()
+        static_plot$labels$title <- NULL
+        static_plot$labels$subtitle <- NULL
+        static_plot$labels$caption <- NULL
+
+        ggiraph::girafe(ggobj = static_plot,
+                        options = list(
+                          ggiraph::opts_toolbar(saveaspng = FALSE)
+                        ))
       })
 
       output$download <- downloadHandler(
@@ -241,7 +244,7 @@ djpr_plot_server <- function(id,
           paste0(id, ".png")
         },
         content = function(file) {
-          obj <- plot()
+          obj <- static_plot()
 
           ggplot2::ggsave(
             filename = file,
