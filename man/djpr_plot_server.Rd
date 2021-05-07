@@ -42,7 +42,7 @@ Server-side companion to \code{djpr_plot_ui()}.
 library(shiny)
 library(ggplot2)
 
-ui <- fluidPage(
+ui <- djpr_page(
   djpr_plot_ui("plot")
 )
 
