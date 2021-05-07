@@ -267,7 +267,8 @@ djpr_plot_server <- function(id,
               opacity = 0.9,
               css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif;"
             )
-          )
+          ),
+          fonts = list(sans = "Roboto")
         )
       })
 
