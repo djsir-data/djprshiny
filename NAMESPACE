@@ -3,7 +3,6 @@
 export("%>%")
 export(centred_row)
 export(djpr_girafe)
-export(djpr_page)
 export(djpr_plot_caption)
 export(djpr_plot_server)
 export(djpr_plot_subtitle)
