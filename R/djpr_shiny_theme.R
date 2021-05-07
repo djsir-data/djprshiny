@@ -35,6 +35,6 @@ djpr_shiny_theme <- function(...) {
       "sans"
     ),
     `enable-shadows` = TRUE,
-  )  %>%
+  ) %>%
     bslib::bs_add_variables("navbar-padding-y" = "spacer / 2")
 }

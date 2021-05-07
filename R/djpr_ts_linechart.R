@@ -52,9 +52,10 @@ djpr_ts_linechart <- function(df,
     )) +
     geom_line() +
     ggiraph::geom_point_interactive(aes(tooltip = .data$value),
-                                    size = 3,
-                                    colour = "white",
-                                    alpha = 0.01) +
+      size = 3,
+      colour = "white",
+      alpha = 0.01
+    ) +
     scale_colour_discrete(palette = djprtheme::djpr_pal) +
     djprtheme::theme_djpr() +
     theme(axis.title.x = element_blank())

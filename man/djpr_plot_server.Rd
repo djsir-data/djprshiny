@@ -10,7 +10,8 @@ djpr_plot_server(
   date_slider = TRUE,
   check_box_options = NULL,
   check_box_var = series,
-  data
+  data,
+  pltChange
 )
 }
 \arguments{

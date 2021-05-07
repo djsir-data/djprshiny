@@ -55,7 +55,11 @@ djpr_plot_ui <- function(id) {
       br(),
       textOutput(NS(id, "title"), container = djpr_plot_title),
       textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
-      ggiraph::girafeOutput(NS(id, "plot")),
+      div(id = "girafe_container",
+        ggiraph::girafeOutput(NS(id, "plot"),
+            width = "100%",
+            height = "400px")
+      ),
       fluidRow(
         column(
           8,
@@ -100,6 +104,7 @@ djpr_plot_ui <- function(id) {
 #' @param check_box_var name of column in `data` that contains the levels
 #' included in `check_box_options`. `series` by default.
 #' @param data data frame containing data to visualise
+#' @param plt_change
 #' @import shiny
 #' @importFrom rlang .data .env
 #' @export
@@ -129,7 +134,8 @@ djpr_plot_ui <- function(id) {
 #'   djpr_plot_server("plot",
 #'     plot_function,
 #'     date_slider = TRUE,
-#'     data = economics
+#'     data = economics,
+#'     plt_change = reactive(input$plt_change)
 #'   )
 #' }
 #'
@@ -141,12 +147,12 @@ djpr_plot_server <- function(id,
                              date_slider = TRUE,
                              check_box_options = NULL,
                              check_box_var = series,
-                             data) {
+                             data,
+                             plt_change) {
 
   moduleServer(
     id,
     function(input, output, session) {
-
       base_plot_data <- data
 
       plot_data <- reactive({
@@ -169,7 +175,7 @@ djpr_plot_server <- function(id,
           df <- df %>%
             dplyr::filter(
               stringr::str_detect(
-                {{check_box_var}},
+                {{ check_box_var }},
                 checked_opts
               )
             )
@@ -228,21 +234,36 @@ djpr_plot_server <- function(id,
       })
 
       output$plot <- ggiraph::renderGirafe({
+        req(plt_change())
         static_plot <- plot()
         static_plot$labels$title <- NULL
         static_plot$labels$subtitle <- NULL
         static_plot$labels$caption <- NULL
 
-        ggiraph::girafe(ggobj = static_plot,
-                        options = list(
-                          ggiraph::opts_toolbar(saveaspng = FALSE),
-                          ggiraph::opts_sizing(width = 1),
-                          ggiraph::opts_zoom(min = 1, max = 1),
-                          ggiraph::opts_tooltip(delay_mouseover = 100,
-                                                opacity = 0.9,
-                                                css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif;"
-                          )
-                        ))
+        browser_params <- plt_change()
+        girafe_width <- min(c(1140,
+                              browser_params$width))
+        girafe_height <- max(c(browser_params$height / browser_params$dpi * 0.4,
+                               200 / browser_params$dpi))
+
+
+        ggiraph::girafe(
+
+          ggobj = static_plot,
+          width_svg = (1 * girafe_width / browser_params$dpi),
+          height_svg = girafe_height,
+          # height_svg = (0.6 * browser_params$height / browser_params$dpi),
+          options = list(
+            ggiraph::opts_toolbar(saveaspng = FALSE),
+            ggiraph::opts_sizing(rescale = FALSE),
+            ggiraph::opts_zoom(min = 1, max = 1),
+            ggiraph::opts_tooltip(
+              delay_mouseover = 100,
+              opacity = 0.9,
+              css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif;"
+            )
+          )
+        )
       })
 
       output$download <- downloadHandler(
