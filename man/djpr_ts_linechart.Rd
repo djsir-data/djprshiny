@@ -5,7 +5,7 @@
 \title{Create a standard time series linechart}
 \usage{
 djpr_ts_linechart(
-  df,
+  data,
   col_var = .data$series,
   dot = TRUE,
   label = TRUE,
@@ -13,7 +13,7 @@ djpr_ts_linechart(
 )
 }
 \arguments{
-\item{df}{A dataframe containing time series data.
+\item{data}{A dataframe containing time series data.
 Your dataframe is presumed to include, at a minimum:
 \itemize{
 \item{"date"}{"A date column, of class \code{"Date"}}
@@ -21,7 +21,7 @@ Your dataframe is presumed to include, at a minimum:
 \item{col_var}{"A variable to map to colour, which can be specified with the \code{col_var} argument."}
 }}
 
-\item{col_var}{Variable in \code{df} to map to the colour aesthetic;
+\item{col_var}{Variable in \code{data} to map to the colour aesthetic;
 default is \code{series}}
 
 \item{dot}{Logical; \code{TRUE} by default. When \code{TRUE}, a filled dot will be shown on the
@@ -42,16 +42,16 @@ Create a standard time series linechart
 \examples{
 \dontrun{
 library(tidyverse)
-df <- djprdashdata::download_abs_ts("6202.0") \%>\%
+data <- djprdashdata::download_abs_ts("6202.0") \%>\%
   dplyr::filter(table_no == "6202005")
 
-df <- df \%>\%
+data <- data \%>\%
   dplyr::filter(
     grepl("Employment to population ratio", series),
     series_type == "Seasonally Adjusted"
   )
 
-djpr_ts_linechart(df = df)
+djpr_ts_linechart(data = data)
 }
 
 }

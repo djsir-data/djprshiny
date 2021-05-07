@@ -34,7 +34,8 @@ ui <- fluidPage(
     centred_row("Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur."),
     djpr_plot_ui("plot1"),
     centred_row("Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur."),
-    br()
+    br(),
+    djpr_plot_ui("plot2")
   )
 )
 
@@ -52,10 +53,18 @@ server <- function(input, output, session) {
     ),
     check_box_var = variable,
     data = ggplot2::economics_long %>%
-      mutate(series = variable) %>%
-      filter(date >= as.Date("1990-01-01")),
+        mutate(series = variable) %>%
+        filter(date >= as.Date("1990-01-01")),
     plt_change = reactive(input$plt_change)
   )
+
+  djpr_plot_server("plot2",
+                   plot_function = djpr_ts_linechart,
+                   data = ggplot2::economics %>%
+                     rename(value = unemploy) %>%
+                     mutate(series = "Unemployment"),
+                   plt_change = reactive(input$plt_change)
+                   )
 
 
 }

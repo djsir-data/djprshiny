@@ -1,14 +1,14 @@
 
 #' Create a standard time series linechart
 #'
-#' @param df A dataframe containing time series data.
+#' @param data A dataframe containing time series data.
 #' Your dataframe is presumed to include, at a minimum:
 #' \itemize{
 #'    \item{"date"}{"A date column, of class `"Date"`}
 #'    \item{"value"}{"A value column, of class `numeric`, containing data to be shown on the y-axis}
 #'    \item{col_var}{"A variable to map to colour, which can be specified with the `col_var` argument."}
 #' }
-#' @param col_var Variable in `df` to map to the colour aesthetic;
+#' @param col_var Variable in `data` to map to the colour aesthetic;
 #' default is `series`
 #' @param dot Logical; `TRUE` by default. When `TRUE`, a filled dot will be shown on the
 #' most recent data point.
@@ -21,37 +21,45 @@
 #' @examples
 #' \dontrun{
 #' library(tidyverse)
-#' df <- djprdashdata::download_abs_ts("6202.0") %>%
+#' data <- djprdashdata::download_abs_ts("6202.0") %>%
 #'   dplyr::filter(table_no == "6202005")
 #'
-#' df <- df %>%
+#' data <- data %>%
 #'   dplyr::filter(
 #'     grepl("Employment to population ratio", series),
 #'     series_type == "Seasonally Adjusted"
 #'   )
 #'
-#' djpr_ts_linechart(df = df)
+#' djpr_ts_linechart(data = data)
 #' }
 #'
 #' @import ggplot2
 #' @export
 
-djpr_ts_linechart <- function(df,
+djpr_ts_linechart <- function(data,
                               col_var = .data$series,
                               dot = TRUE,
                               label = TRUE,
                               label_var = round(.data$value, 1)) {
-  max_date <- df %>%
+  max_date <- data %>%
     dplyr::filter(date == max(.data$date))
 
-  p <- df %>%
+  if (is.null(data[["tooltip"]])) {
+    data <- data %>%
+      dplyr::mutate(tooltip = paste0(format(.data$date,
+                                            "%b %Y"),
+                                     "\n",
+                                     round(.data$value, 1)))
+  }
+
+  p <- data %>%
     ggplot(aes(
       x = .data$date,
       y = .data$value,
       col = {{ col_var }}
     )) +
     geom_line() +
-    ggiraph::geom_point_interactive(aes(tooltip = .data$value),
+    ggiraph::geom_point_interactive(aes(tooltip = .data$tooltip),
       size = 3,
       colour = "white",
       alpha = 0.01

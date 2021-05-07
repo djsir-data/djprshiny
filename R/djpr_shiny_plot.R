@@ -245,6 +245,7 @@ djpr_plot_server <- function(id,
         static_plot$labels$caption <- NULL
 
         browser_params <- plt_change()
+
         girafe_width <- min(c(1140,
                               browser_params$width))
         girafe_height <- max(c(browser_params$height / browser_params$dpi * 0.4,
