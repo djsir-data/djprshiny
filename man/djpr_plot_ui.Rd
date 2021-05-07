@@ -33,6 +33,7 @@ library(shiny)
 library(ggplot2)
 
 ui <- fluidPage(
+  ggiraph_js(),
   djpr_plot_ui("plot")
 )
 
@@ -55,8 +56,11 @@ server <- function(input, output, session) {
   djpr_plot_server("plot",
     plot_function,
     date_slider = TRUE,
-    data = ggplot2::economics
+    data = ggplot2::economics,
+    plt_change = reactive(input$plt_change)
   )
+
+
 }
 
 shinyApp(ui, server)

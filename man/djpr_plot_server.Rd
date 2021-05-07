@@ -11,7 +11,7 @@ djpr_plot_server(
   check_box_options = NULL,
   check_box_var = series,
   data,
-  pltChange
+  plt_change
 )
 }
 \arguments{
@@ -30,6 +30,8 @@ in a check box. \code{NULL} by default, which suppresses the check box.}
 included in \code{check_box_options}. \code{series} by default.}
 
 \item{data}{data frame containing data to visualise}
+
+\item{plt_change}{reactive(input$plt_change)}
 }
 \description{
 Server-side companion to \code{djpr_plot_ui()}.
@@ -60,7 +62,8 @@ server <- function(input, output, session) {
   djpr_plot_server("plot",
     plot_function,
     date_slider = TRUE,
-    data = economics
+    data = economics,
+    plt_change = reactive(input$plt_change)
   )
 }
 

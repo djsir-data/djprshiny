@@ -33,15 +33,12 @@ ui <- fluidPage(
     br(),
     centred_row("Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur."),
     djpr_plot_ui("plot1"),
-    djpr_plot_ui("plot2"),
     centred_row("Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur."),
     br()
   )
 )
 
 server <- function(input, output, session) {
-  mydata <- ggplot2::economics_long %>%
-    mutate(series = variable)
 
   djpr_plot_server("plot1",
     plot_function = econ_plot,
@@ -54,18 +51,12 @@ server <- function(input, output, session) {
       "unemploy"
     ),
     check_box_var = variable,
-    data = mydata %>%
+    data = ggplot2::economics_long %>%
+      mutate(series = variable) %>%
       filter(date >= as.Date("1990-01-01")),
     plt_change = reactive(input$plt_change)
   )
 
-  djpr_plot_server("plot2",
-                   plot_function = function(data) {
-                     ggplot(data, aes(x = wt, y = mpg)) + geom_point()
-                   },
-                   data = mtcars,
-                   date_slider = FALSE,
-                   plt_change = reactive(input$plt_change))
 
 }
 

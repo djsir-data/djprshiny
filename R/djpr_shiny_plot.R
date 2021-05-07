@@ -17,6 +17,7 @@
 #' library(ggplot2)
 #'
 #' ui <- fluidPage(
+#'   ggiraph_js(),
 #'   djpr_plot_ui("plot")
 #' )
 #'
@@ -39,8 +40,11 @@
 #'   djpr_plot_server("plot",
 #'     plot_function,
 #'     date_slider = TRUE,
-#'     data = ggplot2::economics
+#'     data = ggplot2::economics,
+#'     plt_change = reactive(input$plt_change)
 #'   )
+#'
+#'
 #' }
 #'
 #' shinyApp(ui, server)
@@ -104,7 +108,7 @@ djpr_plot_ui <- function(id) {
 #' @param check_box_var name of column in `data` that contains the levels
 #' included in `check_box_options`. `series` by default.
 #' @param data data frame containing data to visualise
-#' @param plt_change
+#' @param plt_change reactive(input$plt_change)
 #' @import shiny
 #' @importFrom rlang .data .env
 #' @export
@@ -114,7 +118,7 @@ djpr_plot_ui <- function(id) {
 #' library(shiny)
 #' library(ggplot2)
 #'
-#' ui <- fluidPage(
+#' ui <- djpr_page(
 #'   djpr_plot_ui("plot")
 #' )
 #'
