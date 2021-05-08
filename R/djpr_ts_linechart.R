@@ -92,16 +92,19 @@ djpr_ts_linechart <- function(data,
 
     # If there's only one series (ie. the max_date DF has one row), then
     # we don't want to show the series name (col_var) in the label
-    lab_df <- max_date %>%
-      dplyr::mutate(label =
-               ifelse(dplyr::n() > 1,
-                       paste0(
-                         stringr::str_wrap({{ col_var }}, 10),
-                         "\n",
-                         stringr::str_wrap({{ label_num }}, 10)
-                       ),
-                       stringr::str_wrap({{ label_num }}, 10))
-             )
+
+    if (nrow(max_date) > 1) {
+      lab_df <- max_date %>%
+        dplyr::mutate(label = paste0(
+          stringr::str_wrap({{ col_var }}, 10),
+          "\n",
+          stringr::str_wrap({{ label_num }}, 10)
+        ))
+
+    } else {
+      lab_df <- max_date %>%
+        dplyr::mutate(label = stringr::str_wrap({{ label_num }}, 10))
+    }
 
     p <- p +
       ggrepel::geom_label_repel(
