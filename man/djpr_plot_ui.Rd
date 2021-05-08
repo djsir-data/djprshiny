@@ -59,8 +59,6 @@ server <- function(input, output, session) {
     data = ggplot2::economics,
     plt_change = reactive(input$plt_change)
   )
-
-
 }
 
 shinyApp(ui, server)

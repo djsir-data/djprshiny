@@ -44,7 +44,7 @@
 #'       geom_point_interactive(aes(tooltip = cyl))
 #'
 #'
-#'   djpr_girafe(p, input = input)
+#'     djpr_girafe(p, input = input)
 #'   })
 #' }
 #'
@@ -70,7 +70,6 @@ djpr_girafe <- function(ggobj,
                         input,
                         height_cf_width = 0.6,
                         ...) {
-
   ggiraph::girafe(
     ggobj = ggobj,
     options = list(
@@ -83,8 +82,8 @@ djpr_girafe <- function(ggobj,
         css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif;"
       )
     ),
-       width_svg = (1 * input$plt_change$width / input$plt_change$dpi),
-       height_svg = (0.6 * input$plt_change$height / input$plt_change$dpi)
+    width_svg = (1 * input$plt_change$width / input$plt_change$dpi),
+    height_svg = (0.6 * input$plt_change$height / input$plt_change$dpi)
   )
 }
 

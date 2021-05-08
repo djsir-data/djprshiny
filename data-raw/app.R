@@ -40,7 +40,6 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-
   djpr_plot_server("plot1",
     plot_function = econ_plot,
     date_slider = TRUE,
@@ -53,20 +52,18 @@ server <- function(input, output, session) {
     ),
     check_box_var = variable,
     data = ggplot2::economics_long %>%
-        mutate(series = variable) %>%
-        filter(date >= as.Date("1990-01-01")),
+      mutate(series = variable) %>%
+      filter(date >= as.Date("1990-01-01")),
     plt_change = reactive(input$plt_change)
   )
 
   djpr_plot_server("plot2",
-                   plot_function = djpr_ts_linechart,
-                   data = ggplot2::economics %>%
-                     rename(value = unemploy) %>%
-                     mutate(series = "Unemployment"),
-                   plt_change = reactive(input$plt_change)
-                   )
-
-
+    plot_function = djpr_ts_linechart,
+    data = ggplot2::economics %>%
+      rename(value = unemploy) %>%
+      mutate(series = "Unemployment"),
+    plt_change = reactive(input$plt_change)
+  )
 }
 
 shinyApp(ui, server)

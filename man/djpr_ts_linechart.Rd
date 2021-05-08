@@ -9,7 +9,7 @@ djpr_ts_linechart(
   col_var = .data$series,
   dot = TRUE,
   label = TRUE,
-  label_var = round(.data$value, 1)
+  label_num = round(.data$value, 1)
 )
 }
 \arguments{
@@ -30,7 +30,7 @@ most recent data point.}
 \item{label}{Logical; \code{TRUE} by default. When \code{TRUE}, a text label will be
 added to the right of the most recent data point.}
 
-\item{label_var}{Variable name (or expression) defining the label to be placed
+\item{label_num}{Variable name (or expression) defining the label to be placed
 on the chart. Default is \code{round(value, 1)}. Ignored if \code{label} is \code{FALSE}.}
 }
 \value{
@@ -38,6 +38,10 @@ A ggplot2 object
 }
 \description{
 Create a standard time series linechart
+}
+\details{
+If a column called 'tooltip' is present, it will be used as the
+ggiraph tooltip; if not, one will be created.
 }
 \examples{
 \dontrun{

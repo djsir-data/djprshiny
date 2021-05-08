@@ -43,8 +43,6 @@
 #'     data = ggplot2::economics,
 #'     plt_change = reactive(input$plt_change)
 #'   )
-#'
-#'
 #' }
 #'
 #' shinyApp(ui, server)
@@ -59,10 +57,12 @@ djpr_plot_ui <- function(id) {
       br(),
       textOutput(NS(id, "title"), container = djpr_plot_title),
       textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
-      div(id = "girafe_container",
+      div(
+        id = "girafe_container",
         ggiraph::girafeOutput(NS(id, "plot"),
-            width = "100%",
-            height = "400px")
+          width = "100%",
+          height = "400px"
+        )
       ),
       fluidRow(
         column(
@@ -153,7 +153,6 @@ djpr_plot_server <- function(id,
                              check_box_var = series,
                              data,
                              plt_change) {
-
   moduleServer(
     id,
     function(input, output, session) {
@@ -246,14 +245,17 @@ djpr_plot_server <- function(id,
 
         browser_params <- plt_change()
 
-        girafe_width <- min(c(1140,
-                              browser_params$width))
-        girafe_height <- max(c(browser_params$height / browser_params$dpi * 0.4,
-                               200 / browser_params$dpi))
+        girafe_width <- min(c(
+          1140,
+          browser_params$width
+        ))
+        girafe_height <- max(c(
+          browser_params$height / browser_params$dpi * 0.4,
+          200 / browser_params$dpi
+        ))
 
 
         ggiraph::girafe(
-
           ggobj = static_plot,
           width_svg = (1 * girafe_width / browser_params$dpi),
           height_svg = girafe_height,
@@ -265,7 +267,7 @@ djpr_plot_server <- function(id,
             ggiraph::opts_tooltip(
               delay_mouseover = 100,
               opacity = 0.9,
-              css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif;"
+              css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif; line-height: 100%;"
             )
           ),
           fonts = list(sans = "Roboto")

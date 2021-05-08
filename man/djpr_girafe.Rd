@@ -72,7 +72,7 @@ server <- function(input, output, session) {
       geom_point_interactive(aes(tooltip = cyl))
 
 
-  djpr_girafe(p, input = input)
+    djpr_girafe(p, input = input)
   })
 }
 

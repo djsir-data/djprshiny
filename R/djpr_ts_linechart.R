@@ -14,9 +14,11 @@
 #' most recent data point.
 #' @param label Logical; `TRUE` by default. When `TRUE`, a text label will be
 #' added to the right of the most recent data point.
-#' @param label_var Variable name (or expression) defining the label to be placed
+#' @param label_num Variable name (or expression) defining the label to be placed
 #' on the chart. Default is `round(value, 1)`. Ignored if `label` is `FALSE`.
 #' @return A ggplot2 object
+#' @details If a column called 'tooltip' is present, it will be used as the
+#' ggiraph tooltip; if not, one will be created.
 #'
 #' @examples
 #' \dontrun{
@@ -40,16 +42,22 @@ djpr_ts_linechart <- function(data,
                               col_var = .data$series,
                               dot = TRUE,
                               label = TRUE,
-                              label_var = round(.data$value, 1)) {
+                              label_num = round(.data$value, 1)) {
   max_date <- data %>%
     dplyr::filter(date == max(.data$date))
 
   if (is.null(data[["tooltip"]])) {
     data <- data %>%
-      dplyr::mutate(tooltip = paste0(format(.data$date,
-                                            "%b %Y"),
-                                     "\n",
-                                     round(.data$value, 1)))
+      dplyr::mutate(tooltip = paste0(
+        {{ col_var }},
+        "\n",
+        format(
+          .data$date,
+          "%b %Y"
+        ),
+        "\n",
+        round(.data$value, 1)
+      ))
   }
 
   p <- data %>%
@@ -80,22 +88,43 @@ djpr_ts_linechart <- function(data,
   }
 
   if (isTRUE(label)) {
+    days_in_data <- as.numeric(max(data$date) - min(data$date))
+
+    # If there's only one series (ie. the max_date DF has one row), then
+    # we don't want to show the series name (col_var) in the label
+    lab_df <- max_date %>%
+      dplyr::mutate(label =
+               ifelse(dplyr::n() > 1,
+                       paste0(
+                         stringr::str_wrap({{ col_var }}, 10),
+                         "\n",
+                         stringr::str_wrap({{ label_num }}, 10)
+                       ),
+                       stringr::str_wrap({{ label_num }}, 10))
+             )
+
     p <- p +
-      ggrepel::geom_text_repel(
-        data = max_date,
-        aes(label = stringr::str_wrap({{ label_var }}, 10)),
+      ggrepel::geom_label_repel(
+        data = lab_df,
+        aes(label = label),
         hjust = 0,
-        nudge_x = 300,
+        nudge_x = days_in_data * 0.0375,
+        label.padding = 0.05,
+        label.size = 0.001,
+        point.padding = unit(1, "lines"),
         direction = "y",
         min.segment.length = unit(5, "lines"),
-        size = 14 / .pt
+        size = 12 / .pt
       ) +
       scale_x_date(
-        expand = expansion(mult = c(0, 0.08)),
+        expand = expansion( # mult = c(0, 0.08)
+          add = c(0, days_in_data * 0.1)
+        ),
         date_labels = "%b\n%Y"
       ) +
       scale_y_continuous(expand = expansion(mult = 0.1)) +
-      coord_cartesian(clip = "off")
+      # theme(plot.margin = unit(c(0.5, 0.1, 0.1, 0.01), "lines")) +
+      NULL
   }
 
   p

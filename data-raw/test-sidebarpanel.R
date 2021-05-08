@@ -23,10 +23,11 @@ ui <- shinyUI(fluidPage(
                                 });
                             ')),
       sliderInput("bins",
-                  "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
+        "Number of bins:",
+        min = 1,
+        max = 50,
+        value = 30
+      )
     ),
 
     # Show a plot of the generated distribution
@@ -40,16 +41,16 @@ ui <- shinyUI(fluidPage(
 # Define server logic required to draw a histogram
 server <- shinyServer(function(input, output) {
   output$dimension_display <- renderText({
-    paste(input$dimension[1], input$dimension[2], input$dimension[2]/input$dimension[1])
+    paste(input$dimension[1], input$dimension[2], input$dimension[2] / input$dimension[1])
   })
 
   output$distPlot <- renderPlot({
     # generate bins based on input$bins from ui.R
-    x    <- faithful[, 2]
+    x <- faithful[, 2]
     bins <- seq(min(x), max(x), length.out = input$bins + 1)
 
     # draw the histogram with the specified number of bins
-    hist(x, breaks = bins, col = 'darkgray', border = 'white')
+    hist(x, breaks = bins, col = "darkgray", border = "white")
   })
 })
 
