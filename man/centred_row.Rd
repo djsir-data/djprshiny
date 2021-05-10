@@ -9,14 +9,24 @@ want content centred, surrounded to left and white by whitespace, using
 \usage{
 centred_row(
   content,
+  left_content = NULL,
+  right_content = NULL,
   left_space = 2,
   right_space = left_space,
-  max_width_px = 1140
+  max_width_px = 1140,
+  ...
 )
 }
 \arguments{
-\item{content}{The content you wish to place in the row, such as
-\code{plotOutput("plot")}.}
+\item{content}{The content you wish to place in the main (middle) column
+of the row, such as \code{plotOutput("plot")}. Use \code{shiny::tagList()} to supply
+multiple items.}
+
+\item{left_content}{The content to be placed in the left hand column. \code{NULL}
+by default, which means the column will be whitespace.}
+
+\item{right_content}{The content to be placed in the right hand column. \code{NULL}
+by default, which means the column will be whitespace.}
 
 \item{left_space}{Numeric. Default is \code{2}. Must be between 1 and 10
 (inclusive). See \code{Details}.}
@@ -25,6 +35,9 @@ centred_row(
 Must be between 1 and 10 (inclusive). See \code{Details}.}
 
 \item{max_width_px}{Maximum width of content, in pixels.}
+
+\item{...}{Additional elements passed to main column. Can be used for
+attributes such as \code{id}.}
 }
 \value{
 a \code{shiny.tag} object that creates a three-column fluidRow.
