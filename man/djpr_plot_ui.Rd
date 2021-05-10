@@ -34,7 +34,10 @@ library(ggplot2)
 
 ui <- fluidPage(
   ggiraph_js(),
-  djpr_plot_ui("plot")
+  centred_row(
+    djpr_plot_ui("plot")
+ )
+
 )
 
 plot_function <- function(data = economics,
