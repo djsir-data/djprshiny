@@ -8,6 +8,7 @@ djpr_plot_server(
   id,
   plot_function,
   date_slider = TRUE,
+  date_slider_value_min = NULL,
   check_box_options = NULL,
   check_box_var = series,
   data,
@@ -22,6 +23,13 @@ object. Function must contain a \code{data} argument that takes a data.frame.}
 
 \item{date_slider}{Logical; \code{TRUE} if you want a date slider to be shown.
 If \code{TRUE}, your data must contain a \code{date} column.}
+
+\item{date_slider_value_min}{\code{NULL} by default. Specify a date to modify the
+first (minimum) selected date in the date slider. A date slider (if present)
+will have two selected values, corresponding to the start and end of the date
+range to be visualised. By default, these values are the minimum and
+maximum of the \code{date} columns of \code{data}. Supplying a non-\code{NULL} value to this
+argument overrides the minimum value.}
 
 \item{check_box_options}{A character vector containing values to include
 in a check box. \code{NULL} by default, which suppresses the check box.}
