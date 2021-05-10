@@ -18,7 +18,10 @@
 #'
 #' ui <- fluidPage(
 #'   ggiraph_js(),
-#'   djpr_plot_ui("plot")
+#'   centred_row(
+#'     djpr_plot_ui("plot")
+#'  )
+#'
 #' )
 #'
 #' plot_function <- function(data = economics,
@@ -49,7 +52,6 @@
 #' }
 #'
 djpr_plot_ui <- function(id) {
-  centred_row(
     tagList(
       shinyWidgets::chooseSliderSkin("Flat",
         color = "#2A6FA2"
@@ -91,7 +93,6 @@ djpr_plot_ui <- function(id) {
       ),
       br()
     )
-  )
 }
 
 #' Shiny module to create DJPR plot environment.
