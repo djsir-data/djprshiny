@@ -104,6 +104,12 @@ djpr_plot_ui <- function(id) {
 #' object. Function must contain a `data` argument that takes a data.frame.
 #' @param date_slider Logical; `TRUE` if you want a date slider to be shown.
 #' If `TRUE`, your data must contain a `date` column.
+#' @param date_slider_value_min `NULL` by default. Specify a date to modify the
+#' first (minimum) selected date in the date slider. A date slider (if present)
+#' will have two selected values, corresponding to the start and end of the date
+#' range to be visualised. By default, these values are the minimum and
+#' maximum of the `date` columns of `data`. Supplying a non-`NULL` value to this
+#' argument overrides the minimum value.
 #' @param check_box_options A character vector containing values to include
 #' in a check box. `NULL` by default, which suppresses the check box.
 #' @param check_box_var name of column in `data` that contains the levels
@@ -150,6 +156,7 @@ djpr_plot_ui <- function(id) {
 djpr_plot_server <- function(id,
                              plot_function,
                              date_slider = TRUE,
+                             date_slider_value_min = NULL,
                              check_box_options = NULL,
                              check_box_var = series,
                              data,
@@ -197,14 +204,24 @@ djpr_plot_server <- function(id,
       output$date_slider <- renderUI({
         if (date_slider == TRUE) {
           req(base_plot_data)
+
+          if (is.null(date_slider_value_min)) {
+            date_values <- c(
+              min(base_plot_data$date),
+              max(base_plot_data$date)
+            )
+          } else {
+            date_values <- c(
+              date_slider_value_min,
+              max(base_plot_data$date)
+            )
+          }
+
           sliderInput(NS(id, "dates"),
             label = "",
             min = min(base_plot_data$date),
             max = max(base_plot_data$date),
-            value = c(
-              min(base_plot_data$date),
-              max(base_plot_data$date)
-            ),
+            value = date_values,
             timeFormat = "%b %Y",
             ticks = FALSE
           )

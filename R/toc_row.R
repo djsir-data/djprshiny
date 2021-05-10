@@ -51,7 +51,7 @@ toc_row <- function(...,
                         var $myNav = $(navSelector);
                         Toc.init({
                         $nav: $("', toc_id, '"),
-                        $scope: $(document.getElementById("', page_id, '"))
+                        $scope: $(document.getElementById("', page_id, '").querySelectorAll("h1, h2, h3, h4"))
                         });
                         $("body").scrollspy({
                           target: navSelector

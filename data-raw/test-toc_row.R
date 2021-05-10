@@ -56,6 +56,7 @@ server <- function(input, output, session) {
                        geom_line()
                    },
                    data = ggplot2::economics,
+                   date_slider_value_min = as.Date("2000-01-01"),
                    plt_change = reactive(input$plt_change))
 }
 
