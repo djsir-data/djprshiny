@@ -71,11 +71,6 @@ djpr_ts_linechart <- function(data,
       col = {{ col_var }}
     )) +
     geom_line() +
-    ggiraph::geom_point_interactive(aes(tooltip = .data$tooltip),
-      size = 3,
-      colour = "white",
-      alpha = 0.01
-    ) +
     scale_colour_discrete(palette = djprtheme::djpr_pal) +
     djprtheme::theme_djpr() +
     theme(axis.title.x = element_blank()) +
@@ -148,6 +143,13 @@ djpr_ts_linechart <- function(data,
       # theme(plot.margin = unit(c(0.5, 0.1, 0.1, 0.01), "lines")) +
       NULL
   }
+
+  p <- p +
+    ggiraph::geom_point_interactive(aes(tooltip = .data$tooltip),
+                                    size = 3,
+                                    colour = "white",
+                                    alpha = 0.01
+    )
 
   p
 }
