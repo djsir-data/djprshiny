@@ -89,12 +89,23 @@ djpr_girafe <- function(ggobj,
 
 #' Javascript to capture browser resizing
 #' @export
+#' @param col_widths numeric vector of length 3; elements correspond to
+#' Bootstrap widths of 3 columns. Must sum to 12.
 #' @name ggiraph_js
 #' @rdname djpr_girafe
 #' @keywords internal
-ggiraph_js <- function() {
+ggiraph_js <- function(col_widths = c(3, 6, 3)) {
   tagList(
-    tags$body(shiny::div(id = "ppitest", style = "width:0.75in;visible:hidden;padding:0px")),
+    tags$body(shiny::div(id = "ppitest", style = "width:0.75in;visible:hidden;padding:0px"),
+              # This is not ideal - the column widths are hard-coded into each
+              # sub-page, so that we can have 1 container to use to measure
+              # the width of the content column in pixels for resizing ggiraphs
+              shiny::fluidRow(style = "visible: hidden",
+                              column(col_widths[1]),
+                              column(col_widths[2],
+                                     id = "girafe_container"),
+                              column(col_widths[3]))
+              ),
     tags$script('$(document).on("shiny:connected", function(e) {
                                     var w = document.getElementById("girafe_container").offsetWidth;
                                     var h = window.innerHeight;

@@ -16,6 +16,8 @@
 #' added to the right of the most recent data point.
 #' @param label_num Variable name (or expression) defining the label to be placed
 #' on the chart. Default is `round(value, 1)`. Ignored if `label` is `FALSE`.
+#' @param y_labels Supplied to the `labels` argument of
+#' `ggplot2::scale_y_continuous()`
 #' @return A ggplot2 object
 #' @details If a column called 'tooltip' is present, it will be used as the
 #' ggiraph tooltip; if not, one will be created.
@@ -42,7 +44,9 @@ djpr_ts_linechart <- function(data,
                               col_var = .data$series,
                               dot = TRUE,
                               label = TRUE,
-                              label_num = round(.data$value, 1)) {
+                              label_num = round(.data$value, 1),
+                              y_labels = ggplot2::waiver()
+                              ) {
   max_date <- data %>%
     dplyr::filter(date == max(.data$date))
 
@@ -107,16 +111,27 @@ djpr_ts_linechart <- function(data,
     }
 
     p <- p +
-      ggrepel::geom_label_repel(
+      # ggrepel::geom_label_repel(
+      #   data = lab_df,
+      #   aes(label = label),
+      #   hjust = 0,
+      #   nudge_x = days_in_data * 0.0375,
+      #   label.padding = 0.05,
+      #   label.size = 0.001,
+      #   point.padding = unit(1, "lines"),
+      #   direction = "y",
+      #   show.legend = FALSE,
+      #   min.segment.length = unit(5, "lines"),
+      #   size = 12 / .pt
+      # ) +
+      ggplot2::geom_label(
         data = lab_df,
         aes(label = label),
         hjust = 0,
         nudge_x = days_in_data * 0.0375,
-        label.padding = 0.05,
+        label.padding = unit(0.05, "lines"),
         label.size = 0.001,
-        point.padding = unit(1, "lines"),
-        direction = "y",
-        min.segment.length = unit(5, "lines"),
+        show.legend = FALSE,
         size = 12 / .pt
       ) +
       scale_x_date(
@@ -125,7 +140,8 @@ djpr_ts_linechart <- function(data,
         ),
         date_labels = "%b\n%Y"
       ) +
-      scale_y_continuous(expand = expansion(mult = 0.1)) +
+      scale_y_continuous(expand = expansion(mult = 0.1),
+                         labels = y_labels) +
       # theme(plot.margin = unit(c(0.5, 0.1, 0.1, 0.01), "lines")) +
       NULL
   }

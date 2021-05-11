@@ -16,7 +16,9 @@
 #' width of the page that should be given to the whitespace at the right hand
 #' side, where the total width of the page = 12. By default, same as `toc_space`.
 #' @param max_width_px Maximum width, in pixels, of the main content column.
-#'
+#' @details Note that widths of columns are currently hard-coded at page level;
+#' changes to row widths in `toc_row` will not affect objects created with
+#' `djpr_plot_server()`.
 
 toc_row <- function(...,
                     page_id,
@@ -64,6 +66,7 @@ toc_row <- function(...,
     shiny::column(width = main_space,
            ...,
            style = paste0("max-width: ", max_width_px, "px;"),
+           class = "main-content",
            id = page_id),
     # Right column, blank space
     shiny::column(width = right_space)

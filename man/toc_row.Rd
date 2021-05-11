@@ -34,3 +34,8 @@ side, where the total width of the page = 12. By default, same as \code{toc_spac
 Use in place of \code{shiny::fluidRow()}. Each page should have a maximum of one
 \code{toc_row()} - to create rows within this overall row, use \code{shiny::fluidRow()}.
 }
+\details{
+Note that widths of columns are currently hard-coded at page level;
+changes to row widths in \code{toc_row} will not affect objects created with
+\code{djpr_plot_server()}.
+}

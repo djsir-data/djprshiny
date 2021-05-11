@@ -60,7 +60,7 @@ djpr_plot_ui <- function(id) {
       textOutput(NS(id, "title"), container = djpr_plot_title),
       textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
       div(
-        id = "girafe_container",
+        # id = "girafe_container",
         ggiraph::girafeOutput(NS(id, "plot"),
           width = "100%",
           height = "400px"
@@ -195,10 +195,11 @@ djpr_plot_server <- function(id,
         df
       })
 
-      plot <- reactive({
+      static_plot <- reactive({
         req(plot_data())
         plot_function(data = plot_data())
-      })
+      }) %>%
+        shiny::bindCache(plot_data())
 
 
       output$date_slider <- renderUI({
@@ -243,41 +244,57 @@ djpr_plot_server <- function(id,
       })
 
       output$title <- renderText({
-        plot()$labels$title
+        static_plot()$labels$title
       })
 
       output$subtitle <- renderText({
-        plot()$labels$subtitle
+        static_plot()$labels$subtitle
       })
 
       output$caption <- renderText({
-        plot()$labels$caption
+        static_plot()$labels$caption
       })
 
+      window_size <- reactiveValues(width = 1140,
+                                    dpi = 72,
+                                    height = 400)
+
+      observeEvent(plt_change()$width, {
+        window_size$width <- plt_change()$width
+        })
+
+      observeEvent(plt_change()$height, {
+        window_size$height <- plt_change()$height
+      })
+
+      observeEvent(plt_change()$dpi, {
+        window_size$dpi <- plt_change()$dpi
+      })
+
+
       output$plot <- ggiraph::renderGirafe({
-        req(plt_change())
-        static_plot <- plot()
+        req(static_plot())
+
+        static_plot <- static_plot()
         static_plot$labels$title <- NULL
         static_plot$labels$subtitle <- NULL
         static_plot$labels$caption <- NULL
 
-        browser_params <- plt_change()
-
         girafe_width <- min(c(
           1140,
-          browser_params$width
+          window_size$width
         ))
         girafe_height <- max(c(
-          browser_params$height / browser_params$dpi * 0.4,
-          200 / browser_params$dpi
-        ))
 
+          window_size$height / window_size$dpi * 0.4,
+          200 / window_size$dpi
+        ))
 
         ggiraph::girafe(
           ggobj = static_plot,
-          width_svg = (1 * girafe_width / browser_params$dpi),
+          width_svg = (1 * girafe_width / window_size$dpi),
+
           height_svg = girafe_height,
-          # height_svg = (0.6 * browser_params$height / browser_params$dpi),
           options = list(
             ggiraph::opts_toolbar(saveaspng = FALSE),
             ggiraph::opts_sizing(rescale = FALSE),
@@ -290,14 +307,17 @@ djpr_plot_server <- function(id,
           ),
           fonts = list(sans = "Roboto")
         )
-      })
+      }) %>%
+        shiny::bindCache(plot_data(),
+                         plt_change()
+                         )
 
       output$download <- downloadHandler(
         filename = function() {
           paste0(id, ".png")
         },
         content = function(file) {
-          obj <- plot()
+          obj <- static_plot()
 
           ggplot2::ggsave(
             filename = file,

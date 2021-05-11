@@ -9,7 +9,8 @@ djpr_ts_linechart(
   col_var = .data$series,
   dot = TRUE,
   label = TRUE,
-  label_num = round(.data$value, 1)
+  label_num = round(.data$value, 1),
+  y_labels = ggplot2::waiver()
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ added to the right of the most recent data point.}
 
 \item{label_num}{Variable name (or expression) defining the label to be placed
 on the chart. Default is \code{round(value, 1)}. Ignored if \code{label} is \code{FALSE}.}
+
+\item{y_labels}{Supplied to the \code{labels} argument of
+\code{ggplot2::scale_y_continuous()}}
 }
 \value{
 A ggplot2 object

@@ -17,7 +17,7 @@ ui <- djpr_page(
         paste0(rep("Text goes here", 100), collapse = ""),
         h2("Some other subtitle"),
         h1("Title"),
-      djpr_plot_ui("plot"),
+        djpr_plot_ui("plot"),
         paste0(rep("Text goes here", 100), collapse = ""),
 
         h1("Another title"),
@@ -38,6 +38,7 @@ ui <- djpr_page(
     toc_row(
       page_id = "page-2-content",
       h1("Unemployment"),
+      djpr_plot_ui("plot2"),
       paste0(rep("Text goes here", 1e3), collapse = ""),
       h1("Underemploykent"),
       paste0(rep("Text goes here", 1e3), collapse = ""),
@@ -51,6 +52,15 @@ ui <- djpr_page(
 
 server <- function(input, output, session) {
   djpr_plot_server("plot",
+                   function(data) {
+                     ggplot(data, aes(x = date, y = unemploy)) +
+                       geom_line()
+                   },
+                   data = ggplot2::economics,
+                   date_slider_value_min = as.Date("2000-01-01"),
+                   plt_change = reactive(input$plt_change))
+
+  djpr_plot_server("plot2",
                    function(data) {
                      ggplot(data, aes(x = date, y = unemploy)) +
                        geom_line()

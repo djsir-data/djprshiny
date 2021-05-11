@@ -42,11 +42,12 @@ djpr_tab_panel <- function(title,
                            toc_space = 3,
                            right_space = toc_space) {
 
-  page_id <- tolower(title) %>%
-    gsub(" ", "-", .)
+  page_id <- tolower(title)
+  page_id <- gsub(" ", "-", page_id)
 
   tabPanel(
     title = title,
+    ggiraph_js(),
     br(),
     br(),
     br(),

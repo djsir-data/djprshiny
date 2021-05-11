@@ -12,7 +12,7 @@ https://stackoverflow.com/questions/36995142/get-the-size-of-the-window-in-shiny
 \usage{
 djpr_girafe(ggobj, input, height_cf_width = 0.6, ...)
 
-ggiraph_js()
+ggiraph_js(col_widths = c(3, 6, 3))
 }
 \arguments{
 \item{ggobj}{A ggplot2 object}
@@ -23,6 +23,9 @@ example.}
 \item{height_cf_width}{Numeric. How high should the container for your plot be,
 relative to its width? A value of \code{0.5} means the plot will be half as tall
 as it is wide. A value of \code{1} means your plot will be square.}
+
+\item{col_widths}{numeric vector of length 3; elements correspond to
+Bootstrap widths of 3 columns. Must sum to 12.}
 }
 \description{
 As a Shiny window  (html container) is resized,
