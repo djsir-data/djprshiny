@@ -69,6 +69,7 @@ djpr_plot_ui <- function(id) {
       fluidRow(
         column(
           8,
+          br(),
           textOutput(NS(id, "caption"), container = djpr_plot_caption)
         ),
         column(4,

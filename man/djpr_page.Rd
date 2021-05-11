@@ -4,13 +4,16 @@
 \alias{djpr_page}
 \title{Create a \code{shiny::fluidPage()} with the DJPR theme}
 \usage{
-djpr_page(title, ...)
+djpr_page(title, ..., col_widths = c(2, 8, 2))
 }
 \arguments{
 \item{title}{Dashboard title, such as "DJPR Labour Dashboard"}
 
 \item{...}{content to include within the \code{navbarPage()}. The content
 should typically be one or more \code{tabPanel}s.}
+
+\item{col_widths}{Numeric vector of length 3; must sum to 12. Second
+element of vector defines width of main content.}
 }
 \description{
 Structured as a \code{navbarPage()}. Provides option to include a table of

@@ -8,7 +8,7 @@ content, and right space}
 toc_row(
   ...,
   page_id,
-  toc_space = 3,
+  toc_space = 2,
   right_space = toc_space,
   max_width_px = 1140
 )

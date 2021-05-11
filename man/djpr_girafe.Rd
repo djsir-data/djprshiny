@@ -12,7 +12,7 @@ https://stackoverflow.com/questions/36995142/get-the-size-of-the-window-in-shiny
 \usage{
 djpr_girafe(ggobj, input, height_cf_width = 0.6, ...)
 
-ggiraph_js(col_widths = c(3, 6, 3))
+ggiraph_js(col_widths = c(2, 8, 2))
 }
 \arguments{
 \item{ggobj}{A ggplot2 object}
