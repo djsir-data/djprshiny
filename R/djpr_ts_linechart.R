@@ -78,7 +78,8 @@ djpr_ts_linechart <- function(data,
     ) +
     scale_colour_discrete(palette = djprtheme::djpr_pal) +
     djprtheme::theme_djpr() +
-    theme(axis.title.x = element_blank())
+    theme(axis.title.x = element_blank()) +
+    coord_cartesian(clip = "off")
 
   if (isTRUE(dot)) {
     p <- p +
@@ -111,32 +112,34 @@ djpr_ts_linechart <- function(data,
     }
 
     p <- p +
-      # ggrepel::geom_label_repel(
+      ggrepel::geom_label_repel(
+        data = lab_df,
+        aes(label = label),
+        hjust = 0,
+        nudge_x = days_in_data * 0.033,
+        label.padding = 0.01,
+        label.size = 0.001,
+        lineheight = 0.9,
+        point.padding = unit(0, "lines"),
+        direction = "y",
+        seed = 123,
+        show.legend = FALSE,
+        min.segment.length = unit(5, "lines"),
+        size = 12 / .pt
+      ) +
+      # ggplot2::geom_label(
       #   data = lab_df,
       #   aes(label = label),
       #   hjust = 0,
       #   nudge_x = days_in_data * 0.0375,
-      #   label.padding = 0.05,
+      #   label.padding = unit(0.05, "lines"),
       #   label.size = 0.001,
-      #   point.padding = unit(1, "lines"),
-      #   direction = "y",
       #   show.legend = FALSE,
-      #   min.segment.length = unit(5, "lines"),
       #   size = 12 / .pt
       # ) +
-      ggplot2::geom_label(
-        data = lab_df,
-        aes(label = label),
-        hjust = 0,
-        nudge_x = days_in_data * 0.0375,
-        label.padding = unit(0.05, "lines"),
-        label.size = 0.001,
-        show.legend = FALSE,
-        size = 12 / .pt
-      ) +
       scale_x_date(
         expand = expansion( # mult = c(0, 0.08)
-          add = c(0, days_in_data * 0.1)
+          add = c(0, days_in_data * 0.18)
         ),
         date_labels = "%b\n%Y"
       ) +

@@ -23,20 +23,20 @@ econ_plot <- function(data,
     facet_wrap(~series, scales = "free")
 }
 
-ui <- fluidPage(
-  ggiraph_js(),
-  theme = djpr_shiny_theme(),
+ui <- djpr_page(
   title = "Some title",
-  navbarPage(
+  djpr_tab_panel(
+    h1("This is an h1"),
     title = "Overview",
-    position = "fixed-top",
     br(),
-    centred_row("Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur."),
+    "Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur.",
     djpr_plot_ui("plot1"),
-    centred_row("Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur."),
+    "Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur.",
     br(),
     djpr_plot_ui("plot2")
-  )
+  ),
+  djpr_tab_panel(title = "Nothing to see here",
+                 "Blank tab")
 )
 
 server <- function(input, output, session) {
