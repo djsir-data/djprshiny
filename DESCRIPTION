@@ -22,7 +22,7 @@ Imports:
     bslib,
     djprtheme (>= 0.0.0.9000),
     dplyr,
-    ggiraph,
+    ggiraph (>= 0.7.9),
     ggplot2,
     ggrepel,
     glue,
@@ -36,4 +36,5 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Remotes: 
-    djpr-data/djprtheme
+    djpr-data/djprtheme,
+    davidgohel/ggiraph

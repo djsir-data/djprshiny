@@ -94,7 +94,7 @@ djpr_girafe <- function(ggobj,
 #' @name ggiraph_js
 #' @rdname djpr_girafe
 #' @keywords internal
-ggiraph_js <- function(col_widths = c(3, 6, 3)) {
+ggiraph_js <- function(col_widths = c(2, 8, 2)) {
   tagList(
     tags$body(shiny::div(id = "ppitest", style = "width:0.75in;visible:hidden;padding:0px"),
               # This is not ideal - the column widths are hard-coded into each

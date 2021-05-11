@@ -16,7 +16,7 @@ djpr_page <- function(title,
   shiny::fluidPage(
 
     theme = djpr_shiny_theme(),
-    ggiraph_js(col_widths = c(3, 6, 3)),
+    ggiraph_js(col_widths = c(2, 8, 2)),
     toc_header(),
 
     navbarPage(
