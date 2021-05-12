@@ -17,8 +17,8 @@
 #' @return Length-one character vector, with inline CSS.
 #' @export
 #' @examples
-#' string <- "The unemployment  rate went up by XX percentage points to XX per cent."
-#' numbers <- c(0.2, 6.1)
+#' string <- "The unemployment  rate went up by XX percentage points to XX per cent. This is XX per cent bad."
+#' numbers <- c(0.2, 6.1, 100.0)
 #' text_active(string, numbers)
 #' text_active(string, numbers, colour = "#007b4b", alpha = 0.5)
 #' text_active(string, numbers,
@@ -37,6 +37,8 @@ text_active <- function(string,
   num_insert_points <- sum(grepl("XX", split_string))
 
   stopifnot(length(numbers) == num_insert_points)
+
+  numbers <- as.character(numbers)
 
   num_style <- paste0(
     "background-color: ", colour, alpha, "; ",

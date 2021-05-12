@@ -4,24 +4,35 @@
 \alias{ts_summarise}
 \title{Summarise a data frame containing ABS time series}
 \usage{
-ts_summarise(df)
+ts_summarise(df, digits = 1)
 }
 \arguments{
 \item{df}{Data frame containing ABS time series}
+
+\item{digits}{Number of digits to round numbers to}
 }
 \value{
 Data frame with the following columns
 \itemize{
-\item {series_id}{Unique ABS time series ID}
-\item {series}{Name of the ABS time series}
-\item {latest_date}{Date of latest value}
-\item {latest_value}{Latest value}
-\item {d_year_abs}{Change between latest observation and prior year in absolute terms}
-\item {d_year_perc}{Change between latest observation and prior year in percentage terms}
-\item {d_period_abs}{Change between previous and latest period in absolute terms}
-\item {d_period_perc}{Change between previous and latest period in percentage terms}
-\item {latest_month}{Month of latest value}
-\item {latest_year}{Year of latest value}
+\item {series_id}{ Unique ABS time series ID}
+\item {series}{ Name of the ABS time series}
+\item {latest_date}{ Date of latest value}
+\item {latest_value}{ Latest value}
+\item {d_year_abs}{ Change between latest observation and prior year in absolute terms}
+\item {d_year_perc}{ Change between latest observation and prior year in percentage terms}
+\item {d_period_abs}{ Change between previous and latest period in absolute terms}
+\item {d_period_perc}{ Change between previous and latest period in percentage terms}
+\item {ptile_latest_value}{ Percentile of latest value within full history}
+\item {ptile_d_year_abs}{ Percentile of absolute changee over past year, within full history}
+\item {ptile_d_year_perc}{ Percentile of percentage change over past year, within full history}
+\item {ptile_d_period_abs}{ Percentile of absolute change over latest period, within full history}
+\item {ptile_d_period_perc}{ Percentile of percentage change over latest period, within full history}
+\item {latest_period}{ Month of latest value}
+\item {latest_year}{ Year of latest value}
+\item {prev_date}{ Date of previous period}
+\item {prev_value}{ Value in previous period}
+\item {prev_period}{ Month of previous period}
+\item {min_date}{ Date of earliest observation in data for series}
 }
 }
 \description{
