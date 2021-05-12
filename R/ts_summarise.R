@@ -23,6 +23,8 @@
 #'   \item {prev_value}{ Value in previous period}
 #'   \item {prev_period}{ Month of previous period}
 #'   \item {min_date}{ Date of earliest observation in data for series}
+#'   \item {precovid_value}{ Value on the observation prior to 2020-03-14}
+#'   \item {d_sincecovid_perc}{ Percentage change in value since the observation prior to 2020-03-14}
 #' }
 #'
 #'
@@ -82,6 +84,21 @@ ts_summarise <- function(df, digits = 1) {
                   min_date = min(.data$date)) %>%
     dplyr::ungroup()
 
+  # Calc change since COVID
+  comb_df <- comb_df %>%
+    dplyr::filter(.data$date <= as.Date("2020-03-14")) %>%
+    dplyr::group_by(.data$series_id) %>%
+    dplyr::filter(.data$date == max(.data$date)) %>%
+    dplyr::select(.data$series_id,
+                  precovid_date = .data$date) %>%
+    dplyr::right_join(comb_df, by = "series_id") %>%
+    dplyr::group_by(.data$series, .data$series_id) %>%
+    dplyr::mutate(precovid_value = .data$value[.data$date == .data$precovid_date],
+                  d_sincecovid_perc = 100 *
+             ((.data$value / .data$precovid_value) - 1)) %>%
+    dplyr::select(-precovid_date) %>%
+    dplyr::ungroup()
+
   # Calculate percentiles of value and change variables
   ptile_df <- comb_df %>%
     dplyr::select(c(dplyr::all_of(c("series_id", "value")),
@@ -114,7 +131,9 @@ ts_summarise <- function(df, digits = 1) {
 
   # We want values and changes to 1 digit
   comb_df <- comb_df %>%
-    dplyr::mutate(across(c(value, dplyr::starts_with("d_")), ~round(.x, 1)))
+    dplyr::mutate(across(c(contains("value"),
+                           dplyr::starts_with("d_")),
+                         ~round(.x, 2)))
 
   comb_df %>%
     dplyr::select(-.data$frequency) %>%

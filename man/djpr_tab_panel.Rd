@@ -5,7 +5,7 @@
 \title{Creates a \code{shiny::tabPanel()} that includes a table of contents,
 using \code{toc_row()}}
 \usage{
-djpr_tab_panel(title, ..., toc_space = 3, right_space = toc_space)
+djpr_tab_panel(title, ..., toc_space = 2, right_space = toc_space)
 }
 \arguments{
 \item{title}{The title of the panel}

@@ -33,6 +33,8 @@ Data frame with the following columns
 \item {prev_value}{ Value in previous period}
 \item {prev_period}{ Month of previous period}
 \item {min_date}{ Date of earliest observation in data for series}
+\item {precovid_value}{ Value on the observation prior to 2020-03-14}
+\item {d_sincecovid_perc}{ Percentage change in value since the observation prior to 2020-03-14}
 }
 }
 \description{
