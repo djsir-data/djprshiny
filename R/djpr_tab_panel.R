@@ -39,7 +39,7 @@
 
 djpr_tab_panel <- function(title,
                            ...,
-                           toc_space = 3,
+                           toc_space = 2,
                            right_space = toc_space) {
 
   page_id <- tolower(title)
