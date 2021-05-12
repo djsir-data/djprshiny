@@ -15,13 +15,10 @@
 djpr_page <- function(title,
                       ...,
                       col_widths = c(2, 8, 2)) {
-
   shiny::fluidPage(
-
     theme = djpr_shiny_theme(),
     ggiraph_js(col_widths = col_widths),
     toc_header(),
-
     navbarPage(
       title = title,
       lang = "en",
@@ -29,8 +26,5 @@ djpr_page <- function(title,
       collapsible = TRUE,
       ...
     )
-
   )
-
-
 }

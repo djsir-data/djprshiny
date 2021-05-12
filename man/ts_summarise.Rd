@@ -16,6 +16,8 @@ Data frame with the following columns
 \itemize{
 \item {series_id}{ Unique ABS time series ID}
 \item {series}{ Name of the ABS time series}
+\item {indicator}{ Fragment of the series that refers to the thing that is
+being measured (eg. 'Unemployment rate'). Only defined for the LFS.}
 \item {latest_date}{ Date of latest value}
 \item {latest_value}{ Latest value}
 \item {d_year_abs}{ Change between latest observation and prior year in absolute terms}
@@ -35,6 +37,8 @@ Data frame with the following columns
 \item {min_date}{ Date of earliest observation in data for series}
 \item {precovid_value}{ Value on the observation prior to 2020-03-14}
 \item {d_sincecovid_perc}{ Percentage change in value since the observation prior to 2020-03-14}
+\item {up_is_good}{ Logical. \code{TRUE} if an increase in value is 'good',
+\code{FALSE} if it is 'bad', NA if it is undefined or neither good nor bad. Only defined for the LFS.}
 }
 }
 \description{

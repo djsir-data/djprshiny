@@ -20,6 +20,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
     bslib,
+    djprdashdata (>= 0.0.0.9000),
     djprtheme (>= 0.0.0.9000),
     dplyr,
     ggiraph (>= 0.7.9),
@@ -33,10 +34,12 @@ Imports:
     rlang,
     shiny (>= 1.6.0),
     shinyWidgets,
-    stringr
+    stringr,
+    tibble
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Remotes: 
     djpr-data/djprtheme,
-    davidgohel/ggiraph
+    davidgohel/ggiraph,
+    djpr-data/djprdashdata

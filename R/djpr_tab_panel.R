@@ -14,34 +14,33 @@
 #' \dontrun{
 #' library(shiny)
 #'
-#'example_panel <- djpr_tab_panel(title = "Example",
-#'                                h1("A heading"),
-#'                                "Lorem ipsum",
-#'                                h2("A subheading"),
-#'                                "Lorem ipsum",
-#'                                h1("Another heading"))
+#' example_panel <- djpr_tab_panel(
+#'   title = "Example",
+#'   h1("A heading"),
+#'   "Lorem ipsum",
+#'   h2("A subheading"),
+#'   "Lorem ipsum",
+#'   h1("Another heading")
+#' )
 #'
-#'ui <- fluidPage(
-#'  djpr_page(
-#'    title = "Example",
-#'    example_panel
-#'  )
-#')
+#' ui <- fluidPage(
+#'   djpr_page(
+#'     title = "Example",
+#'     example_panel
+#'   )
+#' )
 #'
-#'server <- function(input, output, session) {
+#' server <- function(input, output, session) {
 #'
-#'}
-#'
-#'shinyApp(ui, server)
 #' }
 #'
-
-
+#' shinyApp(ui, server)
+#' }
+#'
 djpr_tab_panel <- function(title,
                            ...,
                            toc_space = 2,
                            right_space = toc_space) {
-
   page_id <- tolower(title)
   page_id <- gsub(" ", "-", page_id)
 
@@ -53,8 +52,9 @@ djpr_tab_panel <- function(title,
     br(),
     br(),
     toc_row(...,
-            page_id = page_id,
-            toc_space = toc_space,
-            right_space = right_space)
+      page_id = page_id,
+      toc_space = toc_space,
+      right_space = right_space
+    )
   )
 }

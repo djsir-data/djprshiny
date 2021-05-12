@@ -32,18 +32,20 @@ Intended for use inside \code{djpr_page()}.
 \dontrun{
 library(shiny)
 
-example_panel <- djpr_tab_panel(title = "Example",
-                               h1("A heading"),
-                               "Lorem ipsum",
-                               h2("A subheading"),
-                               "Lorem ipsum",
-                               h1("Another heading"))
+example_panel <- djpr_tab_panel(
+  title = "Example",
+  h1("A heading"),
+  "Lorem ipsum",
+  h2("A subheading"),
+  "Lorem ipsum",
+  h1("Another heading")
+)
 
 ui <- fluidPage(
- djpr_page(
-   title = "Example",
-   example_panel
- )
+  djpr_page(
+    title = "Example",
+    example_panel
+  )
 )
 
 server <- function(input, output, session) {

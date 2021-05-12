@@ -35,8 +35,10 @@ ui <- djpr_page(
     br(),
     djpr_plot_ui("plot2")
   ),
-  djpr_tab_panel(title = "Nothing to see here",
-                 "Blank tab")
+  djpr_tab_panel(
+    title = "Nothing to see here",
+    "Blank tab"
+  )
 )
 
 server <- function(input, output, session) {

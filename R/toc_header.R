@@ -14,8 +14,7 @@ toc_header <- function() {
         href = "https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"
       ),
       tags$script(src = "https://cdn.rawgit.com/afel
-d/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"
-      ),
+d/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"),
       tags$style(HTML(".sticky-top {
     top: 100px; /* height of header */
 }"))

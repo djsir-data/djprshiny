@@ -45,8 +45,7 @@ djpr_ts_linechart <- function(data,
                               dot = TRUE,
                               label = TRUE,
                               label_num = round(.data$value, 1),
-                              y_labels = ggplot2::waiver()
-                              ) {
+                              y_labels = ggplot2::waiver()) {
   max_date <- data %>%
     dplyr::filter(date == max(.data$date))
 
@@ -100,7 +99,6 @@ djpr_ts_linechart <- function(data,
           "\n",
           stringr::str_wrap({{ label_num }}, 10)
         ))
-
     } else {
       lab_df <- max_date %>%
         dplyr::mutate(label = stringr::str_wrap({{ label_num }}, 10))
@@ -138,17 +136,19 @@ djpr_ts_linechart <- function(data,
         ),
         date_labels = "%b\n%Y"
       ) +
-      scale_y_continuous(expand = expansion(mult = 0.1),
-                         labels = y_labels) +
+      scale_y_continuous(
+        expand = expansion(mult = 0.1),
+        labels = y_labels
+      ) +
       # theme(plot.margin = unit(c(0.5, 0.1, 0.1, 0.01), "lines")) +
       NULL
   }
 
   p <- p +
     ggiraph::geom_point_interactive(aes(tooltip = .data$tooltip),
-                                    size = 3,
-                                    colour = "white",
-                                    alpha = 0.01
+      size = 3,
+      colour = "white",
+      alpha = 0.01
     )
 
   p

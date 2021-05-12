@@ -17,8 +17,8 @@
 #' @return Length-one character vector, with inline CSS.
 #' @export
 #' @examples
-#' string <- "The unemployment  rate went up by XX percentage points to XX per cent. This is XX per cent bad."
-#' numbers <- c(0.2, 6.1, 100.0)
+#' string <- "The unemployment  rate went up by XX percentage points to XX per cent."
+#' numbers <- c(0.2, 6.1)
 #' text_active(string, numbers)
 #' text_active(string, numbers, colour = "#007b4b", alpha = 0.5)
 #' text_active(string, numbers,
@@ -27,7 +27,7 @@
 #' )
 text_active <- function(string,
                         numbers,
-                        colour = "#71c5e8",
+                        colour = "#ffffff",
                         alpha = 25,
                         extra_style = "") {
   stopifnot(length(string) == 1)

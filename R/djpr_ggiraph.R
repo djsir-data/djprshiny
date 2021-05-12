@@ -96,16 +96,20 @@ djpr_girafe <- function(ggobj,
 #' @keywords internal
 ggiraph_js <- function(col_widths = c(2, 8, 2)) {
   tagList(
-    tags$body(shiny::div(id = "ppitest", style = "width:0.75in;visible:hidden;padding:0px"),
-              # This is not ideal - the column widths are hard-coded into each
-              # sub-page, so that we can have 1 container to use to measure
-              # the width of the content column in pixels for resizing ggiraphs
-              shiny::fluidRow(style = "visible: hidden",
-                              column(col_widths[1]),
-                              column(col_widths[2],
-                                     id = "girafe_container"),
-                              column(col_widths[3]))
-              ),
+    tags$body(
+      shiny::div(id = "ppitest", style = "width:0.75in;visible:hidden;padding:0px"),
+      # This is not ideal - the column widths are hard-coded into each
+      # sub-page, so that we can have 1 container to use to measure
+      # the width of the content column in pixels for resizing ggiraphs
+      shiny::fluidRow(
+        style = "visible: hidden",
+        column(col_widths[1]),
+        column(col_widths[2],
+          id = "girafe_container"
+        ),
+        column(col_widths[3])
+      )
+    ),
     tags$script('$(document).on("shiny:connected", function(e) {
                                     var w = document.getElementById("girafe_container").offsetWidth;
                                     var h = window.innerHeight;

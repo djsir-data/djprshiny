@@ -56,14 +56,18 @@ centred_row <- function(content,
   }
 
   shiny::fluidRow(
-    shiny::column(width = left_space,
-                  left_content),
+    shiny::column(
+      width = left_space,
+      left_content
+    ),
     shiny::column(12 - left_space - right_space,
       content,
       style = paste0("max-width: ", max_width_px, "px;"),
       ...
     ),
-    shiny::column(right_space,
-                  right_content)
+    shiny::column(
+      right_space,
+      right_content
+    )
   )
 }

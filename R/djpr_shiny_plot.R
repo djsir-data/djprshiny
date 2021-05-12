@@ -20,8 +20,7 @@
 #'   ggiraph_js(),
 #'   centred_row(
 #'     djpr_plot_ui("plot")
-#'  )
-#'
+#'   )
 #' )
 #'
 #' plot_function <- function(data = economics,
@@ -52,48 +51,48 @@
 #' }
 #'
 djpr_plot_ui <- function(id) {
-    tagList(
-      shinyWidgets::chooseSliderSkin("Flat",
-        color = "#2A6FA2"
+  tagList(
+    shinyWidgets::chooseSliderSkin("Flat",
+      color = "#2A6FA2"
+    ),
+    br(),
+    textOutput(NS(id, "title"), container = djpr_plot_title),
+    textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
+    div(
+      # id = "girafe_container",
+      ggiraph::girafeOutput(NS(id, "plot"),
+        width = "100%",
+        height = "400px"
+      )
+    ),
+    fluidRow(
+      column(
+        8,
+        br(),
+        textOutput(NS(id, "caption"), container = djpr_plot_caption)
       ),
-      br(),
-      textOutput(NS(id, "title"), container = djpr_plot_title),
-      textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
-      div(
-        # id = "girafe_container",
-        ggiraph::girafeOutput(NS(id, "plot"),
-          width = "100%",
-          height = "400px"
-        )
-      ),
-      fluidRow(
-        column(
-          8,
-          br(),
-          textOutput(NS(id, "caption"), container = djpr_plot_caption)
+      column(4,
+        downloadButton(NS(id, "download"),
+          "Download",
+          style = "font-weight: normal",
+          class = "bg-white",
+          icon = shiny::icon("arrow-circle-down")
         ),
-        column(4,
-          downloadButton(NS(id, "download"),
-            "Download",
-            style = "font-weight: normal",
-            class = "bg-white",
-            icon = shiny::icon("arrow-circle-down")
-          ),
-          align = "right"
-        )
+        align = "right"
+      )
+    ),
+    fluidRow(
+      column(
+        6,
+        uiOutput(NS(id, "date_slider"))
       ),
-      fluidRow(
-        column(
-          6,
-          uiOutput(NS(id, "date_slider"))
-        ),
-        column(
-          6,
-          uiOutput(NS(id, "check_box"))
-        )
-      ),
-      br()
-    )
+      column(
+        6,
+        uiOutput(NS(id, "check_box"))
+      )
+    ),
+    br()
+  )
 }
 
 #' Shiny module to create DJPR plot environment.
@@ -256,13 +255,15 @@ djpr_plot_server <- function(id,
         static_plot()$labels$caption
       })
 
-      window_size <- reactiveValues(width = 1140,
-                                    dpi = 72,
-                                    height = 400)
+      window_size <- reactiveValues(
+        width = 1140,
+        dpi = 72,
+        height = 400
+      )
 
       observeEvent(plt_change()$width, {
         window_size$width <- plt_change()$width
-        })
+      })
 
       observeEvent(plt_change()$height, {
         window_size$height <- plt_change()$height
@@ -286,7 +287,6 @@ djpr_plot_server <- function(id,
           window_size$width
         ))
         girafe_height <- max(c(
-
           window_size$height / window_size$dpi * 0.4,
           200 / window_size$dpi
         ))
@@ -294,7 +294,6 @@ djpr_plot_server <- function(id,
         ggiraph::girafe(
           ggobj = static_plot,
           width_svg = (1 * girafe_width / window_size$dpi),
-
           height_svg = girafe_height,
           options = list(
             ggiraph::opts_toolbar(saveaspng = FALSE),
@@ -309,9 +308,10 @@ djpr_plot_server <- function(id,
           fonts = list(sans = "Roboto")
         )
       }) %>%
-        shiny::bindCache(plot_data(),
-                         plt_change()
-                         )
+        shiny::bindCache(
+          plot_data(),
+          plt_change()
+        )
 
       output$download <- downloadHandler(
         filename = function() {

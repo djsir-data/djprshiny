@@ -25,7 +25,6 @@ toc_row <- function(...,
                     toc_space = 2,
                     right_space = toc_space,
                     max_width_px = 1140) {
-
   if (toc_space < 1 || right_space < 1) {
     stop("`toc_space` and `right_space` must be 1 or greater.")
   }
@@ -34,21 +33,22 @@ toc_row <- function(...,
     stop("`toc_space` and `right_space` combined must not exceed 11.")
   }
 
-  main_space = 12 - right_space - toc_space
+  main_space <- 12 - right_space - toc_space
 
   toc_id <- paste0("#toc-", page_id)
 
   shiny::fluidRow(
     # Left column containing TOC
-    shiny::column(width = toc_space,
-           htmltools::br(),
-           htmltools::br(),
-           htmltools::tags$nav(
-             id = gsub("#", "", toc_id),
-             class="sticky-top"
-           ),
-           htmltools::tags$script(
-             paste0('$(function() {
+    shiny::column(
+      width = toc_space,
+      htmltools::br(),
+      htmltools::br(),
+      htmltools::tags$nav(
+        id = gsub("#", "", toc_id),
+        class = "sticky-top"
+      ),
+      htmltools::tags$script(
+        paste0('$(function() {
                         var navSelector = "', toc_id, '";
                         var $myNav = $(navSelector);
                         Toc.init({
@@ -58,20 +58,18 @@ toc_row <- function(...,
                         $("body").scrollspy({
                           target: navSelector
                         });
-                      });'
-           )
-           )
-           ),
+                      });')
+      )
+    ),
     # Main column containing content
-    shiny::column(width = main_space,
-           ...,
-           style = paste0("max-width: ", max_width_px, "px;"),
-           class = "main-content",
-           id = page_id),
+    shiny::column(
+      width = main_space,
+      ...,
+      style = paste0("max-width: ", max_width_px, "px;"),
+      class = "main-content",
+      id = page_id
+    ),
     # Right column, blank space
     shiny::column(width = right_space)
   )
-
-
-
 }
