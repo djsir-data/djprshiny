@@ -21,6 +21,7 @@ djpr_page <- function(title,
     toc_header(),
     navbarPage(
       title = title,
+      id = "navbarpage",
       lang = "en",
       position = "fixed-top",
       collapsible = TRUE,
