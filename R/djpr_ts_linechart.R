@@ -124,25 +124,15 @@ djpr_ts_linechart <- function(data,
         fontface = "bold",
         nudge_x = days_in_data * 0.033,
         label.padding = 0.01,
-        label.size = 0.001,
+        label.size = NA,
         lineheight = 0.9,
         point.padding = unit(0, "lines"),
         direction = "y",
         seed = 123,
         show.legend = FALSE,
         min.segment.length = unit(5, "lines"),
-        size = 12 / .pt
+        size = 14 / .pt
       ) +
-      # ggplot2::geom_label(
-      #   data = lab_df,
-      #   aes(label = label),
-      #   hjust = 0,
-      #   nudge_x = days_in_data * 0.0375,
-      #   label.padding = unit(0.05, "lines"),
-      #   label.size = 0.001,
-      #   show.legend = FALSE,
-      #   size = 12 / .pt
-      # ) +
       scale_x_date(
         expand = expansion( # mult = c(0, 0.08)
           add = c(0, days_in_data * 0.18)
