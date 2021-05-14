@@ -36,5 +36,16 @@ djpr_shiny_theme <- function(...) {
     ),
     `enable-shadows` = TRUE,
   ) %>%
-    bslib::bs_add_variables("navbar-padding-y" = "spacer / 2")
+    bslib::bs_add_variables("navbar-padding-y" = "spacer / 2",
+                            "navbar-brand-font-size" = "1rem") %>%
+    # Hacky way to add spacing around brand:
+    # https://stackoverflow.com/questions/60980409/separate-the-title-from-the-tabpanels-in-navbarpage
+    bslib::bs_add_rules(
+      "
+      .navbar-brand {
+        font-weight: 700;
+      }
+
+      "
+    )
 }
