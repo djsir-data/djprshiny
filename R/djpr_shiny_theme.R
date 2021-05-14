@@ -32,6 +32,9 @@ djpr_shiny_theme <- function(...) {
     ),
     heading_font = list(
       bslib::font_google("Roboto"),
+      "Helvetica Neue",
+      "Arial",
+      "sans-serif",
       "sans"
     ),
     `enable-shadows` = TRUE,

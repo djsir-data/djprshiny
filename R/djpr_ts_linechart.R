@@ -18,6 +18,9 @@
 #' on the chart. Default is `round(value, 1)`. Ignored if `label` is `FALSE`.
 #' @param y_labels Supplied to the `labels` argument of
 #' `ggplot2::scale_y_continuous()`
+#' @param hline Numeric. If non-`NULL` (the default), a horizontal line will
+#' be drawn at the data value given. eg. if `hline` = `0`, a `geom_hline()`
+#' will be added at y = 0.
 #' @return A ggplot2 object
 #' @details If a column called 'tooltip' is present, it will be used as the
 #' ggiraph tooltip; if not, one will be created.
@@ -45,7 +48,8 @@ djpr_ts_linechart <- function(data,
                               dot = TRUE,
                               label = TRUE,
                               label_num = round(.data$value, 1),
-                              y_labels = ggplot2::waiver()) {
+                              y_labels = ggplot2::waiver(),
+                              hline = NULL) {
   max_date <- data %>%
     dplyr::filter(date == max(.data$date))
 
@@ -68,7 +72,15 @@ djpr_ts_linechart <- function(data,
       x = .data$date,
       y = .data$value,
       col = {{ col_var }}
-    )) +
+    ))
+
+  if (!is.null(hline)) {
+    p <- p +
+      geom_hline(yintercept = hline,
+                 colour = "black")
+  }
+
+  p <- p +
     geom_line() +
     scale_colour_discrete(palette = djprtheme::djpr_pal) +
     djprtheme::theme_djpr() +

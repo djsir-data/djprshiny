@@ -10,7 +10,8 @@ djpr_ts_linechart(
   dot = TRUE,
   label = TRUE,
   label_num = round(.data$value, 1),
-  y_labels = ggplot2::waiver()
+  y_labels = ggplot2::waiver(),
+  hline = NULL
 )
 }
 \arguments{
@@ -36,6 +37,10 @@ on the chart. Default is \code{round(value, 1)}. Ignored if \code{label} is \cod
 
 \item{y_labels}{Supplied to the \code{labels} argument of
 \code{ggplot2::scale_y_continuous()}}
+
+\item{hline}{Numeric. If non-\code{NULL} (the default), a horizontal line will
+be drawn at the data value given. eg. if \code{hline} = \code{0}, a \code{geom_hline()}
+will be added at y = 0.}
 }
 \value{
 A ggplot2 object
