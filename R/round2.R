@@ -5,6 +5,9 @@
 #'  IEC 60559 standard by rounding numbers ending in .5 to the even
 #'  digit. Instead, 0.5 is rounded up.
 #' @export
+#' @param x a numeric vector of numbers to round
+#' @param digits integer indicating the number of decimal places
+#' to which `x` should be rounded.
 #' @examples
 #' # This gives '2'
 #' base::round(2.5)

@@ -10,6 +10,12 @@ https://stackoverflow.com/questions/12688717/round-up-from-5
 \usage{
 round2(x, digits = 0)
 }
+\arguments{
+\item{x}{a numeric vector of numbers to round}
+
+\item{digits}{integer indicating the number of decimal places
+to which \code{x} should be rounded.}
+}
 \description{
 Unlike \code{base::round()}, it does NOT follow the
 IEC 60559 standard by rounding numbers ending in .5 to the even
