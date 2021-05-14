@@ -21,19 +21,16 @@ RoxygenNote: 7.1.1
 Imports: 
     bslib,
     djprdashdata (>= 0.0.0.9000),
-    djprtheme (>= 0.0.0.9000),
-    dplyr,
+    djprtheme (>= 0.0.2),
+    dplyr (>= 1.0.5),
     ggiraph (>= 0.7.9),
     ggplot2,
     ggrepel,
-    glue,
     htmltools,
-    lubridate,
-    magrittr,
     purrr,
     rlang,
     shiny (>= 1.6.0),
-    shinyWidgets,
+    shinyWidgets (>= 0.6.0),
     stringr,
     tibble
 Suggests: 

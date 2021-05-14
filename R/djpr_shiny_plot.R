@@ -59,7 +59,6 @@ djpr_plot_ui <- function(id) {
     textOutput(NS(id, "title"), container = djpr_plot_title),
     textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
     div(
-      # id = "girafe_container",
       ggiraph::girafeOutput(NS(id, "plot"),
         width = "100%",
         height = "400px"
@@ -72,12 +71,7 @@ djpr_plot_ui <- function(id) {
         textOutput(NS(id, "caption"), container = djpr_plot_caption)
       ),
       column(4,
-        downloadButton(NS(id, "download"),
-          "Download",
-          style = "font-weight: normal",
-          class = "bg-white",
-          icon = shiny::icon("arrow-circle-down")
-        ),
+        download_dropdown(id),
         align = "right"
       )
     ),
@@ -313,19 +307,36 @@ djpr_plot_server <- function(id,
           plt_change()
         )
 
-      output$download <- downloadHandler(
+      output$download_data <- downloadHandler(
         filename = function() {
-          paste0(id, ".png")
+          paste0(id, "_data.csv")
         },
         content = function(file) {
-          obj <- static_plot()
+          plot <- static_plot()
+          data <- djprtheme::get_plot_data(plot)
 
-          ggplot2::ggsave(
-            filename = file,
-            plot = obj
+          utils::write.csv(
+            x = data,
+            file = file
           )
         }
       )
+
+      output$download_plot <- downloadHandler(
+        filename = function() {
+          paste0(id, "_plot.pptx")
+        },
+        content = function(file) {
+
+          djprtheme::djpr_save_pptx(
+            destination = file,
+            plot = static_plot()
+          )
+
+        }
+      )
+
+
     }
   )
 }
