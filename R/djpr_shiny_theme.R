@@ -46,6 +46,12 @@ djpr_shiny_theme <- function(...) {
       "
       .navbar-brand {
         font-weight: 700;
+        color: #1F1547;
+      }
+
+      .navbar-nav {
+        font-weight: 600;
+        color: #1F1547;
       }
 
       "
