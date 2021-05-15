@@ -24,24 +24,14 @@ djpr_shiny_theme <- function(...) {
     # We want 14 = 0.875 x 16
     "font-size-base" = "0.875rem",
     base_font = list(
-      # bslib::font_google("Roboto"),
-      bslib::font_face(
-        family = "Roboto",
-        style = "normal",
-        src = system.file("extdata", "Roboto", "Roboto-Regular.ttf", package = "djprshiny")
-      ),
+      "Roboto",
       "Helvetica Neue",
       "Arial",
       "sans-serif",
       "sans"
     ),
     heading_font = list(
-      # bslib::font_google("Roboto"),
-      bslib::font_face(
-        family = "Roboto",
-        style = "normal",
-        src = system.file("extdata", "Roboto", "Roboto-Regular.ttf", package = "djprshiny")
-      ),
+      "Roboto",
       "Helvetica Neue",
       "Arial",
       "sans-serif",
@@ -59,7 +49,7 @@ djpr_shiny_theme <- function(...) {
     bslib::bs_add_rules(
       "
       .navbar-brand {
-        font-weight: 600;
+        font-weight: 500;
         font-size: 1rem;
         color: #1F1547;
         font-family: 'Roboto';
@@ -68,7 +58,7 @@ djpr_shiny_theme <- function(...) {
       .navbar-nav {
         font-weight: 400;
         color: #1F1547;
-        font-size: 1rem;
+        font-size: 0.875rem;
       }
 
       "
