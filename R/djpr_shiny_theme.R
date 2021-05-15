@@ -24,14 +24,24 @@ djpr_shiny_theme <- function(...) {
     # We want 14 = 0.875 x 16
     "font-size-base" = "0.875rem",
     base_font = list(
-      bslib::font_google("Roboto"),
+      # bslib::font_google("Roboto"),
+      bslib::font_face(
+        family = "Roboto",
+        style = "normal",
+        src = system.file("extdata", "Roboto", "Roboto-Regular.ttf", package = "djprshiny")
+      ),
       "Helvetica Neue",
       "Arial",
       "sans-serif",
       "sans"
     ),
     heading_font = list(
-      bslib::font_google("Roboto"),
+      # bslib::font_google("Roboto"),
+      bslib::font_face(
+        family = "Roboto",
+        style = "normal",
+        src = system.file("extdata", "Roboto", "Roboto-Regular.ttf", package = "djprshiny")
+      ),
       "Helvetica Neue",
       "Arial",
       "sans-serif",
@@ -41,20 +51,24 @@ djpr_shiny_theme <- function(...) {
   ) %>%
     bslib::bs_add_variables(
       "navbar-padding-y" = "spacer / 2",
-      "navbar-brand-font-size" = "1rem"
+      "navbar-brand-font-size" = "1rem",
+      "font-family-sans-serif" = '"Roboto", "Helvetica Neue", "Arial", "sans-serif", "sans"'
     ) %>%
     # Hacky way to add spacing around brand:
     # https://stackoverflow.com/questions/60980409/separate-the-title-from-the-tabpanels-in-navbarpage
     bslib::bs_add_rules(
       "
       .navbar-brand {
-        font-weight: 700;
+        font-weight: 600;
+        font-size: 1rem;
         color: #1F1547;
+        font-family: 'Roboto';
       }
 
       .navbar-nav {
-        font-weight: 600;
+        font-weight: 400;
         color: #1F1547;
+        font-size: 1rem;
       }
 
       "
