@@ -49,7 +49,8 @@ djpr_ts_linechart <- function(data,
                               label = TRUE,
                               label_num = round(.data$value, 1),
                               y_labels = ggplot2::waiver(),
-                              hline = NULL) {
+                              hline = NULL,
+                              title = "") {
   max_date <- data %>%
     dplyr::filter(date == max(.data$date))
 
@@ -153,6 +154,11 @@ djpr_ts_linechart <- function(data,
       colour = "white",
       alpha = 0.01
     )
+
+  if (title != "") {
+    p <- p +
+      labs(title = title)
+  }
 
   p
 }

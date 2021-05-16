@@ -40,6 +40,8 @@ included in \code{check_box_options}. \code{series} by default.}
 \item{data}{data frame containing data to visualise}
 
 \item{plt_change}{reactive(input$plt_change)}
+
+\item{title}{plot title}
 }
 \description{
 Server-side companion to \code{djpr_plot_ui()}.

@@ -19,12 +19,12 @@
 #' @export
 
 djpr_plot_title <- function(...,
-                            rel_font_size = 163) {
+                            rel_font_size = 150) {
   htmltools::h3(...,
     style = paste0(
       "font-size: ",
       rel_font_size,
-      "%; font-weight: bold; line-height: 1.2; margin-top: 0px; margin-bottom: 1px;"
+      "%; font-weight: bold; line-height: 1.2; margin-top: 12px; margin-bottom: 1px;"
     )
   )
 }
@@ -32,12 +32,12 @@ djpr_plot_title <- function(...,
 #' @rdname djpr_plot_text
 #' @export
 djpr_plot_subtitle <- function(...,
-                               rel_font_size = 145) {
+                               rel_font_size = 100) {
   htmltools::h4(...,
     style = paste0(
       "font-size: ",
       rel_font_size,
-      "%; font-weight: normal; line-height: 1.1; margin-top: 0px; margin-bottom: 1px;"
+      "%; font-weight: normal; line-height: 1.5; margin-top: 0px; margin-bottom: 1px;"
     )
   )
 }
@@ -49,6 +49,6 @@ djpr_plot_caption <- function(...,
   htmltools::div(..., style = paste0(
     "font-size: ",
     rel_font_size,
-    "%; font-weight: normal; line-height: 0.9"
+    "%; font-weight: normal; line-height: 1"
   ))
 }

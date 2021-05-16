@@ -42,7 +42,7 @@ djpr_shiny_theme <- function(...) {
     bslib::bs_add_variables(
       "navbar-padding-y" = "spacer / 2",
       "navbar-brand-font-size" = "1rem",
-      "font-family-sans-serif" = '"Roboto", "Helvetica Neue", "Arial", "sans-serif", "sans"'
+      "font-family-sans-serif" = '"Lato", "Helvetica Neue", "Arial", "sans-serif", "sans"'
     ) %>%
     # Hacky way to add spacing around brand:
     # https://stackoverflow.com/questions/60980409/separate-the-title-from-the-tabpanels-in-navbarpage
@@ -52,7 +52,7 @@ djpr_shiny_theme <- function(...) {
         font-weight: 500;
         font-size: 1rem;
         color: #1F1547;
-        font-family: 'Roboto';
+        font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans';
       }
 
       .navbar-nav {
@@ -60,7 +60,6 @@ djpr_shiny_theme <- function(...) {
         color: #1F1547;
         font-size: 0.875rem;
       }
-
       "
     )
 }

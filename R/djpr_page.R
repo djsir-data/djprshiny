@@ -18,6 +18,21 @@ djpr_page <- function(title,
   shiny::fluidPage(
     theme = djpr_shiny_theme(),
     ggiraph_js(col_widths = col_widths),
+    # shinyWidgets::chooseSliderSkin("Flat",
+    #                                color = "#2A6FA2"
+    # ),
+    htmltools::tags$link(
+      href = "https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,500,600,700,700italic",
+      rel = "stylesheet",
+      type = "text/css"
+      ),
+    htmltools::tags$head(
+      htmltools::tags$style(
+        ".leaflet .legend {
+                 line-height: 16px;
+                 font-size: 12px;
+        }
+        ")),
     toc_header(),
     navbarPage(
       title = title,

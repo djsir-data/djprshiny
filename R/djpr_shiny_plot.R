@@ -50,18 +50,19 @@
 #' shinyApp(ui, server)
 #' }
 #'
-djpr_plot_ui <- function(id) {
+djpr_plot_ui <- function(id,
+                         height = "400px") {
   tagList(
-    shinyWidgets::chooseSliderSkin("Flat",
-      color = "#2A6FA2"
-    ),
+    # shinyWidgets::chooseSliderSkin("Flat",
+    #   color = "#2A6FA2"
+    # ),
     br(),
     textOutput(NS(id, "title"), container = djpr_plot_title),
     textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
     div(
       ggiraph::girafeOutput(NS(id, "plot"),
         width = "100%",
-        height = "400px"
+        height = height
       )
     ),
     fluidRow(
@@ -109,6 +110,7 @@ djpr_plot_ui <- function(id) {
 #' @param check_box_var name of column in `data` that contains the levels
 #' included in `check_box_options`. `series` by default.
 #' @param data data frame containing data to visualise
+#' @param title plot title
 #' @param plt_change reactive(input$plt_change)
 #' @import shiny
 #' @importFrom rlang .data .env

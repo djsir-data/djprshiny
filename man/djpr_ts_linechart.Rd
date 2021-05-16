@@ -11,7 +11,8 @@ djpr_ts_linechart(
   label = TRUE,
   label_num = round(.data$value, 1),
   y_labels = ggplot2::waiver(),
-  hline = NULL
+  hline = NULL,
+  title = ""
 )
 }
 \arguments{

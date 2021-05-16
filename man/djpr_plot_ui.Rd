@@ -6,7 +6,7 @@
 title and subtitle, chart, notes, and download buttons
 Takes as input a function to create a ggplot2 or ggirafe object}
 \usage{
-djpr_plot_ui(id)
+djpr_plot_ui(id, height = "400px")
 }
 \arguments{
 \item{id}{a Shiny \code{outputId} specific to the individual plot.}
