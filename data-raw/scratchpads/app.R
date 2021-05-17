@@ -35,6 +35,7 @@ dual_plots <- function(data = ggplot2::economics) {
 
   comb_plots <- patchwork::wrap_plots(plot1, plot2, ncol = 2) +
     plot_annotation(title = "Combined plot title",
+                    subtitle = "Combined plot subtitle",
                     caption = "Data source")
 
   comb_plots

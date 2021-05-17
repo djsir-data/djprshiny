@@ -241,17 +241,14 @@ djpr_plot_server <- function(id,
 
       output$title <- renderText({
         extract_labs(static_plot(), "title")
-        # static_plot()$labels$title
       })
 
       output$subtitle <- renderText({
         extract_labs(static_plot(), "subtitle")
-        # static_plot()$labels$subtitle
       })
 
       output$caption <- renderText({
         extract_labs(static_plot(), "caption")
-        # static_plot()$labels$caption
       })
 
       window_size <- reactiveValues(
@@ -280,6 +277,9 @@ djpr_plot_server <- function(id,
         static_plot$labels$title <- NULL
         static_plot$labels$subtitle <- NULL
         static_plot$labels$caption <- NULL
+        static_plot$patches$annotation$title <- NULL
+        static_plot$patches$annotation$subtitle <- NULL
+        static_plot$patches$annotation$caption <- NULL
 
         girafe_width <- min(c(
           1140,
