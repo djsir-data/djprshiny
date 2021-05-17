@@ -112,6 +112,7 @@ djpr_plot_ui <- function(id,
 #' included in `check_box_options`. `series` by default.
 #' @param data data frame containing data to visualise
 #' @param plt_change reactive(input$plt_change)
+#' @param ... arguments passed to `plot_function`
 #' @import shiny
 #' @importFrom rlang .data .env
 #' @export
@@ -156,7 +157,8 @@ djpr_plot_server <- function(id,
                              check_box_options = NULL,
                              check_box_var = series,
                              data,
-                             plt_change) {
+                             plt_change,
+                             ...) {
   moduleServer(
     id,
     function(input, output, session) {
@@ -193,7 +195,8 @@ djpr_plot_server <- function(id,
 
       static_plot <- reactive({
         req(plot_data())
-        plot_function(data = plot_data())
+        plot_function(data = plot_data(),
+                      ...)
       }) %>%
         shiny::bindCache(plot_data())
 

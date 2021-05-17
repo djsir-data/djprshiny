@@ -5,7 +5,7 @@ library(shiny)
 library(ggplot2)
 library(dplyr)
 library(djprtheme)
-# library(showtext)
+library(patchwork)
 
 econ_plot <- function(data,
                       title = "A title",
@@ -24,12 +24,13 @@ econ_plot <- function(data,
     facet_wrap(~series, scales = "free")
 }
 
-dual_plots <- function(data = ggplot2::economics) {
+dual_plots <- function(data = ggplot2::economics,
+                       second_var = uempmed) {
   plot1 <- ggplot(data, aes(x = date, y = unemploy)) +
     geom_line() +
     labs(subtitle = "Plot 1 subtitle")
 
-  plot2 <- ggplot(data, aes(x = date, y = uempmed)) +
+  plot2 <- ggplot(data, aes(x = date, y = {{second_var}})) +
     geom_line() +
     labs(subtitle = "Plot 2 subtitle")
 
@@ -107,7 +108,8 @@ server <- function(input, output, session) {
   djpr_plot_server("dual_lines",
                    plot_function = dual_plots,
                    data = ggplot2::economics,
-                   plt_change = reactive(input$plt_change))
+                   plt_change = reactive(input$plt_change),
+                   second_var = pop)
 }
 
 shinyApp(ui, server)

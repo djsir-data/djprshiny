@@ -49,6 +49,6 @@ djpr_plot_caption <- function(...,
   htmltools::div(..., style = paste0(
     "font-size: ",
     rel_font_size,
-    "%; font-weight: normal; line-height: 1"
+    "%; font-weight: normal; line-height: 1; font-style: italic; padding-top: 6px;"
   ))
 }
