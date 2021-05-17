@@ -27,6 +27,7 @@ Imports:
     ggplot2,
     ggrepel,
     htmltools,
+    patchwork,
     purrr,
     rlang,
     shiny (>= 1.6.0),

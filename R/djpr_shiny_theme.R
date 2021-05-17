@@ -60,6 +60,11 @@ djpr_shiny_theme <- function(...) {
         color: #1F1547;
         font-size: 0.875rem;
       }
+
+      .navbar.navbar-default {
+        border-bottom-color: rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0 transparent,0 0 transparent,1px 3px 6px #00000010
+      }
       "
     )
 }

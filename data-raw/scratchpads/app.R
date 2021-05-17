@@ -24,6 +24,23 @@ econ_plot <- function(data,
     facet_wrap(~series, scales = "free")
 }
 
+dual_plots <- function(data = ggplot2::economics) {
+  plot1 <- ggplot(data, aes(x = date, y = unemploy)) +
+    geom_line() +
+    labs(subtitle = "Plot 1 subtitle")
+
+  plot2 <- ggplot(data, aes(x = date, y = uempmed)) +
+    geom_line() +
+    labs(subtitle = "Plot 2 subtitle")
+
+  comb_plots <- patchwork::wrap_plots(plot1, plot2, ncol = 2) +
+    plot_annotation(title = "Combined plot title",
+                    caption = "Data source")
+
+  comb_plots
+
+}
+
 ui <- djpr_page(
   title = "Some title",
   djpr_tab_panel(
@@ -36,7 +53,9 @@ ui <- djpr_page(
     "Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur.",
     br(),
     br(),
-    djpr_plot_ui("plot2")
+    djpr_plot_ui("plot2"),
+    br(),
+    djpr_plot_ui("dual_lines")
   ),
   djpr_tab_panel(
     title = "Nothing to see here",
@@ -83,6 +102,11 @@ server <- function(input, output, session) {
                      mutate(series = "Unemployment"),
                    plt_change = reactive(input$plt_change)
   )
+
+  djpr_plot_server("dual_lines",
+                   plot_function = dual_plots,
+                   data = ggplot2::economics,
+                   plt_change = reactive(input$plt_change))
 }
 
 shinyApp(ui, server)

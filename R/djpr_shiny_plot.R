@@ -3,6 +3,7 @@
 #' title and subtitle, chart, notes, and download buttons
 #' Takes as input a function to create a ggplot2 or ggirafe object
 #' @param id a Shiny `outputId` specific to the individual plot.
+#' @param height Height of container
 #' @return A `shiny.tag` object creating a plot environment, with
 #' labels (title, subtitle, caption) as HTML text, a download button,
 #' and optional input controls.
@@ -110,7 +111,6 @@ djpr_plot_ui <- function(id,
 #' @param check_box_var name of column in `data` that contains the levels
 #' included in `check_box_options`. `series` by default.
 #' @param data data frame containing data to visualise
-#' @param title plot title
 #' @param plt_change reactive(input$plt_change)
 #' @import shiny
 #' @importFrom rlang .data .env
@@ -240,15 +240,18 @@ djpr_plot_server <- function(id,
       })
 
       output$title <- renderText({
-        static_plot()$labels$title
+        extract_labs(static_plot(), "title")
+        # static_plot()$labels$title
       })
 
       output$subtitle <- renderText({
-        static_plot()$labels$subtitle
+        extract_labs(static_plot(), "subtitle")
+        # static_plot()$labels$subtitle
       })
 
       output$caption <- renderText({
-        static_plot()$labels$caption
+        extract_labs(static_plot(), "caption")
+        # static_plot()$labels$caption
       })
 
       window_size <- reactiveValues(

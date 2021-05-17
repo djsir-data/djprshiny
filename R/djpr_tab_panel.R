@@ -55,6 +55,7 @@ djpr_tab_panel <- function(title,
       page_id = page_id,
       toc_space = toc_space,
       right_space = right_space
-    )
+    ),
+    br()
   )
 }

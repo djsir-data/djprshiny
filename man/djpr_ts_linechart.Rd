@@ -42,6 +42,8 @@ on the chart. Default is \code{round(value, 1)}. Ignored if \code{label} is \cod
 \item{hline}{Numeric. If non-\code{NULL} (the default), a horizontal line will
 be drawn at the data value given. eg. if \code{hline} = \code{0}, a \code{geom_hline()}
 will be added at y = 0.}
+
+\item{title}{Plot title}
 }
 \value{
 A ggplot2 object

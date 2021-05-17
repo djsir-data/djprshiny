@@ -21,6 +21,7 @@
 #' @param hline Numeric. If non-`NULL` (the default), a horizontal line will
 #' be drawn at the data value given. eg. if `hline` = `0`, a `geom_hline()`
 #' will be added at y = 0.
+#' @param title Plot title
 #' @return A ggplot2 object
 #' @details If a column called 'tooltip' is present, it will be used as the
 #' ggiraph tooltip; if not, one will be created.

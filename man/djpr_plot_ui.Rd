@@ -10,6 +10,8 @@ djpr_plot_ui(id, height = "400px")
 }
 \arguments{
 \item{id}{a Shiny \code{outputId} specific to the individual plot.}
+
+\item{height}{Height of container}
 }
 \value{
 A \code{shiny.tag} object creating a plot environment, with
