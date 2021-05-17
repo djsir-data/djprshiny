@@ -11,6 +11,7 @@ djpr_plot_server(
   date_slider_value_min = NULL,
   check_box_options = NULL,
   check_box_var = series,
+  width_percent = 100,
   data,
   plt_change,
   ...
@@ -37,6 +38,8 @@ in a check box. \code{NULL} by default, which suppresses the check box.}
 
 \item{check_box_var}{name of column in \code{data} that contains the levels
 included in \code{check_box_options}. \code{series} by default.}
+
+\item{width_percent}{Width of plot object, as a percentage of the standard}
 
 \item{data}{data frame containing data to visualise}
 

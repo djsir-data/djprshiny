@@ -110,6 +110,7 @@ djpr_plot_ui <- function(id,
 #' in a check box. `NULL` by default, which suppresses the check box.
 #' @param check_box_var name of column in `data` that contains the levels
 #' included in `check_box_options`. `series` by default.
+#' @param width_percent Width of plot object, as a percentage of the standard
 #' @param data data frame containing data to visualise
 #' @param plt_change reactive(input$plt_change)
 #' @param ... arguments passed to `plot_function`
@@ -156,6 +157,7 @@ djpr_plot_server <- function(id,
                              date_slider_value_min = NULL,
                              check_box_options = NULL,
                              check_box_var = series,
+                             width_percent = 100,
                              data,
                              plt_change,
                              ...) {
@@ -261,7 +263,8 @@ djpr_plot_server <- function(id,
       )
 
       observeEvent(plt_change()$width, {
-        window_size$width <- plt_change()$width
+        window_size$width <- plt_change()$width *
+          (width_percent / 100)
       })
 
       observeEvent(plt_change()$height, {

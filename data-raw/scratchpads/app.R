@@ -25,7 +25,8 @@ econ_plot <- function(data,
 }
 
 dual_plots <- function(data = ggplot2::economics,
-                       second_var = uempmed) {
+                       second_var = uempmed,
+                       title = "something") {
   plot1 <- ggplot(data, aes(x = date, y = unemploy)) +
     geom_line() +
     labs(subtitle = "Plot 1 subtitle")
@@ -35,12 +36,20 @@ dual_plots <- function(data = ggplot2::economics,
     labs(subtitle = "Plot 2 subtitle")
 
   comb_plots <- patchwork::wrap_plots(plot1, plot2, ncol = 2) +
-    plot_annotation(title = "Combined plot title",
+    plot_annotation(title = title,
                     subtitle = "Combined plot subtitle",
                     caption = "Data source")
 
   comb_plots
 
+}
+
+title_ui <- function(id) {
+  tagList(
+    textInput(NS(id, "manual_title"),
+              label = "Enter a title"),
+    djpr_plot_ui(id)
+  )
 }
 
 ui <- djpr_page(
@@ -57,7 +66,7 @@ ui <- djpr_page(
     br(),
     djpr_plot_ui("plot2"),
     br(),
-    djpr_plot_ui("dual_lines")
+    title_ui("title_test")
   ),
   djpr_tab_panel(
     title = "Nothing to see here",
@@ -68,9 +77,6 @@ ui <- djpr_page(
 )
 
 server <- function(input, output, session) {
-
-  # sysfonts::font_add_google("Roboto", "Roboto")
-  # showtext_auto()
 
   djpr_plot_server("plot1",
     plot_function = econ_plot,
@@ -94,6 +100,7 @@ server <- function(input, output, session) {
     data = ggplot2::economics %>%
       rename(value = unemploy) %>%
       mutate(series = "Unemployment"),
+    width_percent = 50,
     plt_change = reactive(input$plt_change)
   )
 
@@ -105,11 +112,24 @@ server <- function(input, output, session) {
                    plt_change = reactive(input$plt_change)
   )
 
-  djpr_plot_server("dual_lines",
-                   plot_function = dual_plots,
-                   data = ggplot2::economics,
-                   plt_change = reactive(input$plt_change),
-                   second_var = pop)
+  title_server <- function(id) {
+    moduleServer(id, function(input, output, session) {
+      output$title_test <- djpr_plot_server(id,
+                       plot_function = dual_plots,
+                       data = ggplot2::economics,
+                       plt_change = reactive(input$plt_change),
+                       second_var = pop)
+    })
+  }
+
+  title_server("title_test")
+  # djpr_plot_server("title_test",
+  #                  plot_function = dual_plots,
+  #                  data = ggplot2::economics,
+  #                  plt_change = reactive(input$plt_change),
+  #                  second_var = pop,
+  #                  title = reactive({input$manual_title})
+  # )
 }
 
 shinyApp(ui, server)
