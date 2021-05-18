@@ -323,6 +323,7 @@ djpr_plot_server <- function(id,
           paste0(id, "_data.csv")
         },
         content = function(file) {
+          req(static_plot())
           plot <- static_plot()
           data <- djprtheme::get_plot_data(plot)
 
