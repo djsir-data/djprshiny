@@ -17,13 +17,13 @@ download_dropdown <- function(id, ...) {
     icon = shiny::icon("arrow-circle-down"),
     shiny::downloadButton(NS(id, "download_data"),
                    "Download data",
-                   style = "font-weight: normal",
+                   style = "font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
                    class = "bg-white",
                    icon = shiny::icon("arrow-circle-down")
     ),
     shiny::downloadButton(NS(id, "download_plot"),
                    "Download plot",
-                   style = "font-weight: normal",
+                   style = "font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
                    class = "bg-white",
                    icon = shiny::icon("arrow-circle-down")
     ),

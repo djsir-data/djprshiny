@@ -31,6 +31,7 @@ Imports:
     purrr,
     rlang,
     shiny (>= 1.6.0),
+    shinycssloaders,
     shinyWidgets (>= 0.6.0),
     stringr,
     tibble

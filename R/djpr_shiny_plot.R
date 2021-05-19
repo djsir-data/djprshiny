@@ -64,7 +64,8 @@ djpr_plot_ui <- function(id,
       ggiraph::girafeOutput(NS(id, "plot"),
         width = "100%",
         height = height
-      )
+      ) %>%
+        djpr_with_spinner()
     ),
     fluidRow(
       column(
