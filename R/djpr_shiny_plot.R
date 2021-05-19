@@ -73,7 +73,7 @@ djpr_plot_ui <- function(id,
         textOutput(NS(id, "caption"), container = djpr_plot_caption)
       ),
       column(4,
-        download_dropdown(id),
+        uiOutput(NS(id, "download_dropdown")),
         align = "right"
       )
     ),
@@ -317,6 +317,11 @@ djpr_plot_server <- function(id,
           plot_data(),
           plt_change()
         )
+
+      output$download_dropdown <- renderUI({
+        req(static_plot())
+        download_dropdown(id)
+      })
 
       output$download_data <- downloadHandler(
         filename = function() {
