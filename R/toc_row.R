@@ -48,12 +48,13 @@ toc_row <- function(...,
         class = "sticky-top"
       ),
       htmltools::tags$script(
+        #                         $scope: $(document.getElementById("', page_id, '").querySelectorAll("h1, h2, h3, h4"))
         paste0('$(function() {
                         var navSelector = "', toc_id, '";
                         var $myNav = $(navSelector);
                         Toc.init({
                         $nav: $("', toc_id, '"),
-                        $scope: $(document.getElementById("', page_id, '").querySelectorAll("h1, h2, h3, h4"))
+                        $scope: $(document.getElementById("', page_id, '"))
                         });
                         $("body").scrollspy({
                           target: navSelector
