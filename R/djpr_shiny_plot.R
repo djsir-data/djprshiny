@@ -344,10 +344,12 @@ djpr_plot_server <- function(id,
           paste0(id, "_plot.pptx")
         },
         content = function(file) {
+          req(static_plot())
+          plot <- static_plot()
 
           djprtheme::djpr_save_pptx(
             destination = file,
-            plot = static_plot()
+            plot = plot
           )
 
         }

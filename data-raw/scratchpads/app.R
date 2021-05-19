@@ -66,7 +66,7 @@ ui <- djpr_page(
     br(),
     djpr_plot_ui("plot2"),
     br(),
-    title_ui("title_test")
+    djpr_plot_ui("dual_plots")
   ),
   djpr_tab_panel(
     title = "Nothing to see here",
@@ -112,24 +112,13 @@ server <- function(input, output, session) {
                    plt_change = reactive(input$plt_change)
   )
 
-  title_server <- function(id) {
-    moduleServer(id, function(input, output, session) {
-      output$title_test <- djpr_plot_server(id,
-                       plot_function = dual_plots,
-                       data = ggplot2::economics,
-                       plt_change = reactive(input$plt_change),
-                       second_var = pop)
-    })
-  }
+  djpr_plot_server("dual_plots",
+                   dual_plots,
+                   data = ggplot2::economics,
+                   second_var = uempmed,
+                   title = "something",
+                   plt_change = reactive(input$plt_change))
 
-  title_server("title_test")
-  # djpr_plot_server("title_test",
-  #                  plot_function = dual_plots,
-  #                  data = ggplot2::economics,
-  #                  plt_change = reactive(input$plt_change),
-  #                  second_var = pop,
-  #                  title = reactive({input$manual_title})
-  # )
 }
 
 shinyApp(ui, server)
