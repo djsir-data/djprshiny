@@ -101,7 +101,8 @@ server <- function(input, output, session) {
       rename(value = unemploy) %>%
       mutate(series = "Unemployment"),
     width_percent = 50,
-    plt_change = reactive(input$plt_change)
+    plt_change = reactive(input$plt_change),
+    height_scale = 2
   )
 
   djpr_plot_server("plot3",

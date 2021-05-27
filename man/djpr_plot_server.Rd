@@ -14,6 +14,7 @@ djpr_plot_server(
   width_percent = 100,
   data,
   plt_change,
+  height_scale = 1,
   ...
 )
 }
@@ -44,6 +45,8 @@ included in \code{check_box_options}. \code{series} by default.}
 \item{data}{data frame containing data to visualise}
 
 \item{plt_change}{reactive(input$plt_change)}
+
+\item{height_scale}{scaling factor for height; 1 = default}
 
 \item{...}{arguments passed to \code{plot_function}}
 }

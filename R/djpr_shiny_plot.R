@@ -114,6 +114,7 @@ djpr_plot_ui <- function(id,
 #' @param width_percent Width of plot object, as a percentage of the standard
 #' @param data data frame containing data to visualise
 #' @param plt_change reactive(input$plt_change)
+#' @param height_scale scaling factor for height; 1 = default
 #' @param ... arguments passed to `plot_function`
 #' @import shiny
 #' @importFrom rlang .data .env
@@ -161,6 +162,7 @@ djpr_plot_server <- function(id,
                              width_percent = 100,
                              data,
                              plt_change,
+                             height_scale = 1,
                              ...) {
   moduleServer(
     id,
@@ -299,8 +301,8 @@ djpr_plot_server <- function(id,
 
         ggiraph::girafe(
           ggobj = static_plot,
-          width_svg = (1 * girafe_width / window_size$dpi),
-          height_svg = girafe_height,
+          width_svg = (1 * girafe_width / window_size$dpi) * height_scale,
+          height_svg = girafe_height * height_scale,
           options = list(
             ggiraph::opts_toolbar(saveaspng = FALSE),
             ggiraph::opts_sizing(rescale = FALSE),

@@ -4,12 +4,12 @@
 \alias{djpr_with_spinner}
 \title{Wrapper around shinycssloaders::withSpinner() with DJPR defaults}
 \usage{
-djpr_with_spinner(ui_element, type = 8, color = "#2A6FA2")
+djpr_with_spinner(ui_element, type = 8, colour = "#2A6FA2")
 }
 \arguments{
 \item{ui_element}{An element such as \code{plotOutput()}}
 
-\item{type}{See \link{https://daattali.com/shiny/shinycssloaders-demo}}
+\item{type}{See \url{https://daattali.com/shiny/shinycssloaders-demo}}
 
 \item{colour}{Hex code for spinner}
 }
