@@ -83,7 +83,9 @@ djpr_girafe <- function(ggobj,
       )
     ),
     width_svg = (1 * input$plt_change$width / input$plt_change$dpi),
-    height_svg = (0.6 * input$plt_change$height / input$plt_change$dpi)
+    height_svg = (height_cf_width *
+                    input$plt_change$height /
+                    input$plt_change$dpi)
   )
 }
 
