@@ -74,6 +74,7 @@ djpr_plot_ui <- function(id,
         textOutput(NS(id, "caption"), container = djpr_plot_caption)
       ),
       column(4,
+        br(),
         uiOutput(NS(id, "download_dropdown")),
         align = "right"
       )
@@ -200,8 +201,10 @@ djpr_plot_server <- function(id,
 
       static_plot <- reactive({
         req(plot_data())
-        plot_function(data = plot_data(),
-                      ...)
+        plot_function(
+          data = plot_data(),
+          ...
+        )
       }) %>%
         shiny::bindCache(plot_data())
 
@@ -301,7 +304,7 @@ djpr_plot_server <- function(id,
 
         ggiraph::girafe(
           ggobj = static_plot,
-          width_svg = (1 * girafe_width / window_size$dpi) ,
+          width_svg = (1 * girafe_width / window_size$dpi),
           height_svg = girafe_height * height_scale,
           options = list(
             ggiraph::opts_toolbar(saveaspng = FALSE),
@@ -313,7 +316,7 @@ djpr_plot_server <- function(id,
               css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif; line-height: 100%;"
             )
           ),
-          fonts = list(sans = "Roboto")
+          fonts = list(sans = c("Roboto, Arial, Helvetica, sans-serif"))
         )
       }) %>%
         shiny::bindCache(
@@ -354,11 +357,8 @@ djpr_plot_server <- function(id,
             destination = file,
             plot = plot
           )
-
         }
       )
-
-
     }
   )
 }

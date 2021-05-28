@@ -78,8 +78,10 @@ djpr_ts_linechart <- function(data,
 
   if (!is.null(hline)) {
     p <- p +
-      geom_hline(yintercept = hline,
-                 colour = "black")
+      geom_hline(
+        yintercept = hline,
+        colour = "black"
+      )
   }
 
   p <- p +

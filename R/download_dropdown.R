@@ -16,18 +16,18 @@ download_dropdown <- function(id, ...) {
     inline = TRUE,
     icon = shiny::icon("arrow-circle-down"),
     shiny::downloadButton(NS(id, "download_data"),
-                   "Download data",
-                   style = "font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
-                   class = "bg-white",
-                   icon = shiny::icon("arrow-circle-down")
+      "Download data",
+      style = "font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
+      class = "bg-white",
+      icon = shiny::icon("arrow-circle-down")
     ),
     shiny::downloadButton(NS(id, "download_plot"),
-                   "Download plot",
-                   style = "font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
-                   class = "bg-white",
-                   icon = shiny::icon("arrow-circle-down")
+      "Download plot",
+      style = "font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
+      class = "bg-white",
+      icon = shiny::icon("arrow-circle-down")
     ),
-    label="Download",
+    label = "Download",
     ...
   )
 }
