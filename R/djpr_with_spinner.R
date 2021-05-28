@@ -18,6 +18,8 @@ djpr_with_spinner <- function(ui_element,
   shinycssloaders::withSpinner(
     ui_element = ui_element,
     type = type,
-    color = colour
+    color = colour,
+    size = 0.8,
+    hide.ui = FALSE
   )
 }

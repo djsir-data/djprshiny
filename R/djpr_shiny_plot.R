@@ -301,7 +301,7 @@ djpr_plot_server <- function(id,
 
         ggiraph::girafe(
           ggobj = static_plot,
-          width_svg = (1 * girafe_width / window_size$dpi) * height_scale,
+          width_svg = (1 * girafe_width / window_size$dpi) ,
           height_svg = girafe_height * height_scale,
           options = list(
             ggiraph::opts_toolbar(saveaspng = FALSE),
