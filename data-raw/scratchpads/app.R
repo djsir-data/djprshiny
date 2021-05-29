@@ -10,7 +10,7 @@ library(patchwork)
 econ_plot <- function(data,
                       title = "A title",
                       subtitle = "A very long subtitle lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
-                      caption = "A caption") {
+                      caption = "A caption foo bar lorem ipsum blah blah sdfhsdkufh isduhf iushdi us dfiushd iufhsiu dhfiuh sdiufh siudh fiushdf ihs idufhisud hfiusd fhisdfiuhsd iufh") {
   data %>%
     ggplot(aes(x = date, y = value, col = series)) +
     geom_line() +
@@ -63,14 +63,19 @@ ui <- djpr_page(
     focus_box(
       "Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur.",
       br(),
-      djpr_plot_ui("plot1") %>% djpr_with_spinner()
+      fluidRow(
+      column(6,
+      djpr_plot_ui("plot1") %>% djpr_with_spinner()),
+      column(6,
+             djpr_plot_ui("dual_plots") %>% djpr_with_spinner())
+      )
     ),
     "Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur.",
     br(),
     br(),
     djpr_plot_ui("plot2"),
-    br(),
-    djpr_plot_ui("dual_plots")
+    br()
+    # djpr_plot_ui("dual_plots")
   ),
   djpr_tab_panel(
     title = "Nothing to see here",
@@ -83,6 +88,7 @@ ui <- djpr_page(
 server <- function(input, output, session) {
   djpr_plot_server("plot1",
     plot_function = econ_plot,
+    width_percent = 45,
     date_slider = TRUE,
     check_box_options = c(
       "pce",
@@ -103,7 +109,7 @@ server <- function(input, output, session) {
     data = ggplot2::economics %>%
       rename(value = unemploy) %>%
       mutate(series = "Unemployment"),
-    width_percent = 50,
+    width_percent = 45,
     plt_change = reactive(input$plt_change),
     height_scale = 2
   )
@@ -118,6 +124,7 @@ server <- function(input, output, session) {
 
   djpr_plot_server("dual_plots",
     dual_plots,
+    width_percent = 45,
     data = ggplot2::economics,
     second_var = uempmed,
     title = "something",

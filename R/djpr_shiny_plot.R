@@ -69,11 +69,11 @@ djpr_plot_ui <- function(id,
     ),
     fluidRow(
       column(
-        8,
+        6,
         br(),
         textOutput(NS(id, "caption"), container = djpr_plot_caption)
       ),
-      column(4,
+      column(6,
         br(),
         uiOutput(NS(id, "download_dropdown")),
         align = "right"
@@ -269,8 +269,7 @@ djpr_plot_server <- function(id,
       )
 
       observeEvent(plt_change()$width, {
-        window_size$width <- plt_change()$width *
-          (width_percent / 100)
+        window_size$width <- plt_change()$width
       })
 
       observeEvent(plt_change()$height, {
@@ -296,7 +295,9 @@ djpr_plot_server <- function(id,
         girafe_width <- min(c(
           1140,
           window_size$width
-        ))
+        )) *
+          (width_percent / 100)
+
         girafe_height <- max(c(
           window_size$height / window_size$dpi * 0.4,
           200 / window_size$dpi
@@ -316,7 +317,7 @@ djpr_plot_server <- function(id,
               css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif; line-height: 100%;"
             )
           ),
-          fonts = list(sans = c("Roboto, Arial, Helvetica, sans-serif"))
+          fonts = list(sans = c("Arial"))
         )
       }) %>%
         shiny::bindCache(

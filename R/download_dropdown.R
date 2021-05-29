@@ -11,7 +11,8 @@
 download_dropdown <- function(id, ...) {
   shinyWidgets::dropdownButton(
     circle = FALSE,
-    # tags$style("font-weight: normal"),
+    tooltip = FALSE,
+    size = "sm",
     status = "default bg-white",
     inline = TRUE,
     icon = shiny::icon("arrow-circle-down"),
