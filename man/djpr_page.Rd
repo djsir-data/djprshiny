@@ -4,7 +4,13 @@
 \alias{djpr_page}
 \title{Create a \code{shiny::fluidPage()} with the DJPR theme}
 \usage{
-djpr_page(title, ..., col_widths = c(2, 8, 2))
+djpr_page(
+  title,
+  ...,
+  col_widths = c(2, 8, 2),
+  logo = NULL,
+  logo_style = "float:right;width:83px;height:20px;padding-top:0px;"
+)
 }
 \arguments{
 \item{title}{Dashboard title, such as "DJPR Labour Dashboard"}
@@ -14,6 +20,12 @@ should typically be one or more \code{tabPanel}s.}
 
 \item{col_widths}{Numeric vector of length 3; must sum to 12. Second
 element of vector defines width of main content.}
+
+\item{logo}{Filename for logo, which will be placed at RHS of navbar.
+File should be included in the \code{www} folder of the Shiny app. If \code{NULL},
+no logo is displated.}
+
+\item{logo_style}{CSS to style the logo.}
 }
 \description{
 Structured as a \code{navbarPage()}. Provides option to include a table of

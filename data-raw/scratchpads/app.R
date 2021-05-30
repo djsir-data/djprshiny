@@ -56,6 +56,7 @@ title_ui <- function(id) {
 
 ui <- djpr_page(
   title = "Some title",
+  logo = "spp_data_logo.png",
   djpr_tab_panel(
     h1("This is an h1"),
     title = "Overview",
@@ -74,13 +75,16 @@ ui <- djpr_page(
     br(),
     br(),
     djpr_plot_ui("plot2"),
+    br(),
+    djpr_plot_ui("plot3"),
     br()
     # djpr_plot_ui("dual_plots")
   ),
   djpr_tab_panel(
     title = "Nothing to see here",
+    # logo = "spp_data_logo.png",
     "Blank tab",
-    djpr_plot_ui("plot3"),
+    "foobar",
     br()
   )
 )
@@ -109,9 +113,9 @@ server <- function(input, output, session) {
     data = ggplot2::economics %>%
       rename(value = unemploy) %>%
       mutate(series = "Unemployment"),
-    width_percent = 45,
+    width_percent = 100,
     plt_change = reactive(input$plt_change),
-    height_scale = 2
+    height_percent = 100
   )
 
   djpr_plot_server("plot3",

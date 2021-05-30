@@ -48,23 +48,35 @@ djpr_shiny_theme <- function(...) {
     # https://stackoverflow.com/questions/60980409/separate-the-title-from-the-tabpanels-in-navbarpage
     bslib::bs_add_rules(
       "
+
       .navbar-brand {
         font-weight: 500;
         font-size: 1rem;
-        color: #1F1547;
         font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans';
       }
 
       .navbar-nav {
         font-weight: 400;
-        color: #1F1547;
         font-size: 0.875rem;
       }
 
       .navbar.navbar-default {
         border-bottom-color: rgba(0, 0, 0, 0.1);
-        box-shadow: 0 0 transparent,0 0 transparent,1px 3px 6px #00000010
+        box-shadow: 0 0 transparent,0 0 transparent,1px 3px 6px #00000010;
       }
+
+      .navbar.navbar-default .navbar-brand {
+        color: #1F1547
+      }
+
+      .navbar.navbar-default ul.nav.navbar-nav>li.active>a {
+        color: #1F1547
+      }
+
+      .nav {
+        font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans';
+      }
+
       "
     )
 }

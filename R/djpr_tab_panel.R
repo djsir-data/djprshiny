@@ -47,6 +47,7 @@ djpr_tab_panel <- function(title,
   tabPanel(
     title = title,
     ggiraph_js(),
+    HTML(""),
     value = paste0("tab-", page_id),
     br(),
     br(),

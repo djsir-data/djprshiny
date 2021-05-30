@@ -51,12 +51,10 @@
 #' shinyApp(ui, server)
 #' }
 #'
+
 djpr_plot_ui <- function(id,
                          height = "400px") {
   tagList(
-    # shinyWidgets::chooseSliderSkin("Flat",
-    #   color = "#2A6FA2"
-    # ),
     br(),
     textOutput(NS(id, "title"), container = djpr_plot_title),
     textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
@@ -69,11 +67,11 @@ djpr_plot_ui <- function(id,
     ),
     fluidRow(
       column(
-        6,
+        7,
         br(),
         textOutput(NS(id, "caption"), container = djpr_plot_caption)
       ),
-      column(6,
+      column(5,
         br(),
         uiOutput(NS(id, "download_dropdown")),
         align = "right"
@@ -113,9 +111,9 @@ djpr_plot_ui <- function(id,
 #' @param check_box_var name of column in `data` that contains the levels
 #' included in `check_box_options`. `series` by default.
 #' @param width_percent Width of plot object, as a percentage of the standard
+#' @param height_percent Height of plot object, as a percentage of the standard
 #' @param data data frame containing data to visualise
 #' @param plt_change reactive(input$plt_change)
-#' @param height_scale scaling factor for height; 1 = default
 #' @param ... arguments passed to `plot_function`
 #' @import shiny
 #' @importFrom rlang .data .env
@@ -161,9 +159,9 @@ djpr_plot_server <- function(id,
                              check_box_options = NULL,
                              check_box_var = series,
                              width_percent = 100,
+                             height_percent = 100,
                              data,
                              plt_change,
-                             height_scale = 1,
                              ...) {
   moduleServer(
     id,
@@ -306,7 +304,7 @@ djpr_plot_server <- function(id,
         ggiraph::girafe(
           ggobj = static_plot,
           width_svg = (1 * girafe_width / window_size$dpi),
-          height_svg = girafe_height * height_scale,
+          height_svg = girafe_height * (height_percent / 100),
           options = list(
             ggiraph::opts_toolbar(saveaspng = FALSE),
             ggiraph::opts_sizing(rescale = FALSE),

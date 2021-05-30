@@ -12,9 +12,9 @@ djpr_plot_server(
   check_box_options = NULL,
   check_box_var = series,
   width_percent = 100,
+  height_percent = 100,
   data,
   plt_change,
-  height_scale = 1,
   ...
 )
 }
@@ -42,11 +42,11 @@ included in \code{check_box_options}. \code{series} by default.}
 
 \item{width_percent}{Width of plot object, as a percentage of the standard}
 
+\item{height_percent}{Height of plot object, as a percentage of the standard}
+
 \item{data}{data frame containing data to visualise}
 
 \item{plt_change}{reactive(input$plt_change)}
-
-\item{height_scale}{scaling factor for height; 1 = default}
 
 \item{...}{arguments passed to \code{plot_function}}
 }
