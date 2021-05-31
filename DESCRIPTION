@@ -40,5 +40,4 @@ Suggests:
 Config/testthat/edition: 3
 Remotes: 
     djpr-data/djprtheme,
-    davidgohel/ggiraph,
     djpr-data/djprdashdata
