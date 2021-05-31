@@ -54,38 +54,51 @@
 #' @keywords internal
 #' @rdname djpr_girafe
 #' @param ggobj A ggplot2 object
-#' @param height_cf_width Numeric. How high should the container for your plot be,
-#' relative to its width? A value of `0.5` means the plot will be half as tall
-#' as it is wide. A value of `1` means your plot will be square.
-#' @param input The Shiny input object; specify `input = input` as in the
-#' example.
+#' @param height height in inches
+#' @param width width in inches
+#' @return A `ggiraph::girafe()` object
+#' @examples
+#' library(ggplot2)
+#' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+#'   geom_point()
+#'
+#' djpr_girafe(p, 5, 6)
+#'
 #' @details
 #' `djpr_girafe()` should be used within `renderGirafe({})`, in place of
-#' `ggiraph::girafe()`, within the `server` component of a Shiny app.
+#' `ggiraph::girafe()`, within the `server` component of a Shiny app. **NOTE**
+#' that `djpr_girafe()` is memoised on package load - see `zzz.R`.
 #'
 #' `ggiraph_js()` should be called within the Shiny UI, as in
 #' `fluidPage(ggiraph_js())`.
 #'
 djpr_girafe <- function(ggobj,
-                        input,
-                        height_cf_width = 0.6,
-                        ...) {
+                        height,
+                        width) {
+
+  p <- ggobj
+  p$labels$title <- NULL
+  p$labels$subtitle <- NULL
+  p$labels$caption <- NULL
+  p$patches$annotation$title <- NULL
+  p$patches$annotation$subtitle <- NULL
+  p$patches$annotation$caption <- NULL
+
   ggiraph::girafe(
-    ggobj = ggobj,
+    ggobj = p,
+    width_svg =  width,
+    height_svg = height,
     options = list(
-      ggiraph::opts_sizing(rescale = FALSE),
       ggiraph::opts_toolbar(saveaspng = FALSE),
+      ggiraph::opts_sizing(rescale = FALSE),
       ggiraph::opts_zoom(min = 1, max = 1),
       ggiraph::opts_tooltip(
         delay_mouseover = 100,
         opacity = 0.9,
-        css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif;"
+        css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif; line-height: 100%;"
       )
     ),
-    width_svg = (1 * input$plt_change$width / input$plt_change$dpi),
-    height_svg = (height_cf_width *
-      input$plt_change$height /
-      input$plt_change$dpi)
+    fonts = list(sans = c("Roboto"))
   )
 }
 

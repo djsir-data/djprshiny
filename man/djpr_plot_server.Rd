@@ -7,14 +7,14 @@
 djpr_plot_server(
   id,
   plot_function,
+  data,
+  plt_change,
   date_slider = TRUE,
   date_slider_value_min = NULL,
   check_box_options = NULL,
   check_box_var = series,
   width_percent = 100,
   height_percent = 100,
-  data,
-  plt_change,
   ...
 )
 }
@@ -23,6 +23,10 @@ djpr_plot_server(
 
 \item{plot_function}{A function (without \verb{()}) that creates a ggplot2
 object. Function must contain a \code{data} argument that takes a data.frame.}
+
+\item{data}{data frame containing data to visualise}
+
+\item{plt_change}{reactive(input$plt_change)}
 
 \item{date_slider}{Logical; \code{TRUE} if you want a date slider to be shown.
 If \code{TRUE}, your data must contain a \code{date} column.}
@@ -43,10 +47,6 @@ included in \code{check_box_options}. \code{series} by default.}
 \item{width_percent}{Width of plot object, as a percentage of the standard}
 
 \item{height_percent}{Height of plot object, as a percentage of the standard}
-
-\item{data}{data frame containing data to visualise}
-
-\item{plt_change}{reactive(input$plt_change)}
 
 \item{...}{arguments passed to \code{plot_function}}
 }

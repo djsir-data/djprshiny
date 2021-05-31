@@ -27,6 +27,7 @@ Imports:
     ggplot2,
     ggrepel,
     htmltools,
+    memoise,
     patchwork,
     purrr,
     rlang,

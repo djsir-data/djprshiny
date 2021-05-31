@@ -10,22 +10,22 @@ and https://stackoverflow.com/questions/45191999/ggiraph-plot-doesnt-resize-to-f
 https://stackoverflow.com/questions/36995142/get-the-size-of-the-window-in-shiny
 }
 \usage{
-djpr_girafe(ggobj, input, height_cf_width = 0.6, ...)
+djpr_girafe(ggobj, height, width)
 
 ggiraph_js(col_widths = c(2, 8, 2))
 }
 \arguments{
 \item{ggobj}{A ggplot2 object}
 
-\item{input}{The Shiny input object; specify \code{input = input} as in the
-example.}
+\item{height}{height in inches}
 
-\item{height_cf_width}{Numeric. How high should the container for your plot be,
-relative to its width? A value of \code{0.5} means the plot will be half as tall
-as it is wide. A value of \code{1} means your plot will be square.}
+\item{width}{width in inches}
 
 \item{col_widths}{numeric vector of length 3; elements correspond to
 Bootstrap widths of 3 columns. Must sum to 12.}
+}
+\value{
+A \code{ggiraph::girafe()} object
 }
 \description{
 As a Shiny window  (html container) is resized,
@@ -37,7 +37,8 @@ height available so that the ggiraph object can scale correctly.
 }
 \details{
 \code{djpr_girafe()} should be used within \code{renderGirafe({})}, in place of
-\code{ggiraph::girafe()}, within the \code{server} component of a Shiny app.
+\code{ggiraph::girafe()}, within the \code{server} component of a Shiny app. \strong{NOTE}
+that \code{djpr_girafe()} is memoised on package load - see \code{zzz.R}.
 
 \code{ggiraph_js()} should be called within the Shiny UI, as in
 \code{fluidPage(ggiraph_js())}.
@@ -81,5 +82,11 @@ server <- function(input, output, session) {
 
 shinyApp(ui, server)
 }
+library(ggplot2)
+p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point()
+
+djpr_girafe(p, 5, 6)
+
 }
 \keyword{internal}

@@ -275,45 +275,26 @@ djpr_plot_server <- function(id,
         window_size$dpi <- plt_change()$dpi
       })
 
-
       output$plot <- ggiraph::renderGirafe({
         req(static_plot())
-
-        static_plot <- static_plot()
-        static_plot$labels$title <- NULL
-        static_plot$labels$subtitle <- NULL
-        static_plot$labels$caption <- NULL
-        static_plot$patches$annotation$title <- NULL
-        static_plot$patches$annotation$subtitle <- NULL
-        static_plot$patches$annotation$caption <- NULL
 
         girafe_width <- min(c(
           1140,
           window_size$width
         )) *
-          (width_percent / 100)
+          (width_percent / 100) /
+          window_size$dpi
 
         girafe_height <- max(c(
           window_size$height  * 0.4,
           200
-        )) * (height_percent / 100)
+        )) * (height_percent / 100) /
+          window_size$dpi
 
-        ggiraph::girafe(
-          ggobj = static_plot,
-          width_svg =  girafe_width / window_size$dpi,
-          height_svg = girafe_height  /  window_size$dpi,
-          options = list(
-            ggiraph::opts_toolbar(saveaspng = FALSE),
-            ggiraph::opts_sizing(rescale = FALSE),
-            ggiraph::opts_zoom(min = 1, max = 1),
-            ggiraph::opts_tooltip(
-              delay_mouseover = 100,
-              opacity = 0.9,
-              css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif; line-height: 100%;"
-            )
-          ),
-          fonts = list(sans = c("Roboto"))
-        )
+        djpr_girafe(ggobj = static_plot(),
+                    width = girafe_width,
+                    height = girafe_height)
+
       }) %>%
         shiny::bindCache(
           static_plot(),
