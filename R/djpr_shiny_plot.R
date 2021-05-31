@@ -315,7 +315,7 @@ djpr_plot_server <- function(id,
               css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif; line-height: 100%;"
             )
           ),
-          fonts = list(sans = c("Arial"))
+          fonts = list(sans = c("Roboto"))
         )
       }) %>%
         shiny::bindCache(
