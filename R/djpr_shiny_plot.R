@@ -154,26 +154,23 @@ djpr_plot_ui <- function(id,
 #'
 djpr_plot_server <- function(id,
                              plot_function,
+                             data,
+                             plt_change,
                              date_slider = TRUE,
                              date_slider_value_min = NULL,
                              check_box_options = NULL,
                              check_box_var = series,
                              width_percent = 100,
                              height_percent = 100,
-                             data,
-                             plt_change,
                              ...) {
   moduleServer(
     id,
     function(input, output, session) {
-      base_plot_data <- data
 
       plot_data <- reactive({
-        df <- base_plot_data
-
         if (date_slider == TRUE) {
           req(input$dates)
-          df <- df %>%
+          data <- data %>%
             dplyr::filter(.data$date >= input$dates[1] &
               .data$date <= input$dates[2])
         }
@@ -185,7 +182,7 @@ djpr_plot_server <- function(id,
             collapse = "|"
           )
 
-          df <- df %>%
+          data <- data %>%
             dplyr::filter(
               stringr::str_detect(
                 {{ check_box_var }},
@@ -194,7 +191,7 @@ djpr_plot_server <- function(id,
             )
         }
 
-        df
+        data
       })
 
       static_plot <- reactive({
@@ -202,31 +199,32 @@ djpr_plot_server <- function(id,
         plot_function(
           data = plot_data(),
           ...
-        )
+        ) +
+          theme(text = element_text(family = "Roboto"))
       }) %>%
         shiny::bindCache(plot_data())
 
 
       output$date_slider <- renderUI({
         if (date_slider == TRUE) {
-          req(base_plot_data)
+          req(data)
 
           if (is.null(date_slider_value_min)) {
             date_values <- c(
-              min(base_plot_data$date),
-              max(base_plot_data$date)
+              min(data$date),
+              max(data$date)
             )
           } else {
             date_values <- c(
               date_slider_value_min,
-              max(base_plot_data$date)
+              max(data$date)
             )
           }
 
           sliderInput(NS(id, "dates"),
             label = "",
-            min = min(base_plot_data$date),
-            max = max(base_plot_data$date),
+            min = min(data$date),
+            max = max(data$date),
             value = date_values,
             timeFormat = "%b %Y",
             ticks = FALSE
@@ -236,13 +234,12 @@ djpr_plot_server <- function(id,
 
       output$check_box <- renderUI({
         if (!is.null(check_box_options)) {
-          req(base_plot_data)
+          req(data)
           shinyWidgets::awesomeCheckboxGroup(
             NS(id, "checkboxes"),
             label = "",
             choices = check_box_options,
             selected = check_box_options,
-            # status = "blue",
             inline = TRUE
           )
         }
@@ -297,14 +294,14 @@ djpr_plot_server <- function(id,
           (width_percent / 100)
 
         girafe_height <- max(c(
-          window_size$height / window_size$dpi * 0.4,
-          200 / window_size$dpi
-        ))
+          window_size$height  * 0.4,
+          200
+        )) * (height_percent / 100)
 
         ggiraph::girafe(
           ggobj = static_plot,
-          width_svg = (1 * girafe_width / window_size$dpi),
-          height_svg = girafe_height * (height_percent / 100),
+          width_svg =  girafe_width / window_size$dpi,
+          height_svg = girafe_height  /  window_size$dpi,
           options = list(
             ggiraph::opts_toolbar(saveaspng = FALSE),
             ggiraph::opts_sizing(rescale = FALSE),
@@ -319,8 +316,11 @@ djpr_plot_server <- function(id,
         )
       }) %>%
         shiny::bindCache(
-          plot_data(),
-          plt_change()
+          static_plot(),
+          plt_change(),
+          window_size$width,
+          window_size$height,
+          window_size$width
         )
 
       output$download_dropdown <- renderUI({
@@ -334,8 +334,7 @@ djpr_plot_server <- function(id,
         },
         content = function(file) {
           req(static_plot())
-          plot <- static_plot()
-          data <- djprtheme::get_plot_data(plot)
+          data <- djprtheme::get_plot_data(static_plot())
 
           utils::write.csv(
             x = data,

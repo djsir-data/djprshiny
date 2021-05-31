@@ -29,6 +29,7 @@ dual_plots <- function(data = ggplot2::economics,
                        title = "something") {
   plot1 <- ggplot(data, aes(x = date, y = unemploy)) +
     geom_line() +
+    theme_djpr() +
     labs(subtitle = "Plot 1 subtitle")
 
   plot2 <- ggplot(data, aes(x = date, y = {{ second_var }})) +
