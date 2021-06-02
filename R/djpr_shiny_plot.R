@@ -110,10 +110,15 @@ djpr_plot_ui <- function(id,
 #' in a check box. `NULL` by default, which suppresses the check box.
 #' @param check_box_var name of column in `data` that contains the levels
 #' included in `check_box_options`. `series` by default.
+#' @param download_button logical; `TRUE` by default. When `TRUE`, a download
+#' button is displayed.
 #' @param width_percent Width of plot object, as a percentage of the standard
 #' @param height_percent Height of plot object, as a percentage of the standard
 #' @param data data frame containing data to visualise
-#' @param plt_change reactive(input$plt_change)
+#' @param plt_change This should be: `reactive(input$plt_change)`. Note that
+#' this reactive is created by `ggiraph_js()` which is called by
+#' `djpr_tab_panel()`. `djpr_plot_server()` should only be called in apps that
+#' feature a `djpr_tab_panel()`.
 #' @param ... arguments passed to `plot_function`
 #' @import shiny
 #' @importFrom rlang .data .env
@@ -160,6 +165,7 @@ djpr_plot_server <- function(id,
                              date_slider_value_min = NULL,
                              check_box_options = NULL,
                              check_box_var = series,
+                             download_button = TRUE,
                              width_percent = 100,
                              height_percent = 100,
                              ...) {
@@ -221,7 +227,7 @@ djpr_plot_server <- function(id,
             )
           }
 
-          sliderInput(NS(id, "dates"),
+          sliderInput(session$ns("dates"),
             label = "",
             min = min(data$date),
             max = max(data$date),
@@ -236,7 +242,7 @@ djpr_plot_server <- function(id,
         if (!is.null(check_box_options)) {
           req(data)
           shinyWidgets::awesomeCheckboxGroup(
-            NS(id, "checkboxes"),
+            session$ns("checkboxes"),
             label = "",
             choices = check_box_options,
             selected = check_box_options,
@@ -304,10 +310,12 @@ djpr_plot_server <- function(id,
           window_size$width
         )
 
-      output$download_dropdown <- renderUI({
-        req(static_plot())
-        download_dropdown(id)
-      })
+      if (download_button) {
+        output$download_dropdown <- renderUI({
+          req(static_plot())
+          download_dropdown(session$ns)
+        })
+      }
 
       output$download_data <- downloadHandler(
         filename = function() {

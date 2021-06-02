@@ -1,5 +1,7 @@
 #' Create a `shiny::fluidPage()` with the DJPR theme
 #'
+#' Use in place of `shiny::fluidPage()`.
+#'
 #' Structured as a `navbarPage()`. Provides option to include a table of
 #' contents, which must be further defined within individual `tabPanel`(s) -
 #' see `?toc_row`.

@@ -4,10 +4,11 @@
 \alias{download_dropdown}
 \title{Create a button that drops down into two sub-options}
 \usage{
-download_dropdown(id, ...)
+download_dropdown(session_ns, ...)
 }
 \arguments{
-\item{id}{Unique identifier used by Shiny module}
+\item{session_ns}{Value should be \code{session$ns}. This is supplied rather than
+an \code{id} directly, as it enables nesting Shiny modules that generate UI.}
 
 \item{...}{arguments passed to \code{shinyWidgets::dropdownButton()}}
 }

@@ -28,6 +28,9 @@ no logo is displated.}
 \item{logo_style}{CSS to style the logo.}
 }
 \description{
+Use in place of \code{shiny::fluidPage()}.
+}
+\details{
 Structured as a \code{navbarPage()}. Provides option to include a table of
 contents, which must be further defined within individual \code{tabPanel}(s) -
 see \code{?toc_row}.

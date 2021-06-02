@@ -13,6 +13,7 @@ djpr_plot_server(
   date_slider_value_min = NULL,
   check_box_options = NULL,
   check_box_var = series,
+  download_button = TRUE,
   width_percent = 100,
   height_percent = 100,
   ...
@@ -26,7 +27,10 @@ object. Function must contain a \code{data} argument that takes a data.frame.}
 
 \item{data}{data frame containing data to visualise}
 
-\item{plt_change}{reactive(input$plt_change)}
+\item{plt_change}{This should be: \code{reactive(input$plt_change)}. Note that
+this reactive is created by \code{ggiraph_js()} which is called by
+\code{djpr_tab_panel()}. \code{djpr_plot_server()} should only be called in apps that
+feature a \code{djpr_tab_panel()}.}
 
 \item{date_slider}{Logical; \code{TRUE} if you want a date slider to be shown.
 If \code{TRUE}, your data must contain a \code{date} column.}
@@ -43,6 +47,9 @@ in a check box. \code{NULL} by default, which suppresses the check box.}
 
 \item{check_box_var}{name of column in \code{data} that contains the levels
 included in \code{check_box_options}. \code{series} by default.}
+
+\item{download_button}{logical; \code{TRUE} by default. When \code{TRUE}, a download
+button is displayed.}
 
 \item{width_percent}{Width of plot object, as a percentage of the standard}
 

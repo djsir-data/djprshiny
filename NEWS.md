@@ -1,3 +1,7 @@
+# djprshiny 0.0.2.900
+
+* modifications to plot_server to enable nested modules
+
 # djprshiny 0.0.1.9000
 
 * toc_row() and associated functions added to create table of contents
