@@ -1,5 +1,5 @@
 
-#' Create a standard time series linechart
+#' Create a standard time series linechart with DJPR characteristics
 #'
 #' @param data A dataframe containing time series data.
 #' Your dataframe is presumed to include, at a minimum:
@@ -8,8 +8,10 @@
 #'    \item{"value"}{"A value column, of class `numeric`, containing data to be shown on the y-axis}
 #'    \item{col_var}{"A variable to map to colour, which can be specified with the `col_var` argument."}
 #' }
+#' @param y_var Variable in `data` to map to the y aesthetic;
+#' defauly is `value`.
 #' @param col_var Variable in `data` to map to the colour aesthetic;
-#' default is `series`
+#' default is `series`.
 #' @param dot Logical; `TRUE` by default. When `TRUE`, a filled dot will be shown on the
 #' most recent data point.
 #' @param label Logical; `TRUE` by default. When `TRUE`, a text label will be
@@ -29,8 +31,9 @@
 #' @examples
 #' \dontrun{
 #' library(tidyverse)
-#' data <- djprdashdata::download_abs_ts("6202.0") %>%
-#'   dplyr::filter(table_no == "6202005")
+#' library(readabs)
+#'
+#' data <- readabs::read_abs("6202.0", "5")
 #'
 #' data <- data %>%
 #'   dplyr::filter(
@@ -45,6 +48,7 @@
 #' @export
 
 djpr_ts_linechart <- function(data,
+                              y_var = .data$value,
                               col_var = .data$series,
                               dot = TRUE,
                               label = TRUE,
@@ -72,7 +76,7 @@ djpr_ts_linechart <- function(data,
   p <- data %>%
     ggplot(aes(
       x = .data$date,
-      y = .data$value,
+      y = {{ y_var }},
       col = {{ col_var }}
     ))
 

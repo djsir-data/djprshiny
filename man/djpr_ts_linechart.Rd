@@ -2,10 +2,11 @@
 % Please edit documentation in R/djpr_ts_linechart.R
 \name{djpr_ts_linechart}
 \alias{djpr_ts_linechart}
-\title{Create a standard time series linechart}
+\title{Create a standard time series linechart with DJPR characteristics}
 \usage{
 djpr_ts_linechart(
   data,
+  y_var = .data$value,
   col_var = .data$series,
   dot = TRUE,
   label = TRUE,
@@ -24,8 +25,11 @@ Your dataframe is presumed to include, at a minimum:
 \item{col_var}{"A variable to map to colour, which can be specified with the \code{col_var} argument."}
 }}
 
+\item{y_var}{Variable in \code{data} to map to the y aesthetic;
+defauly is \code{value}.}
+
 \item{col_var}{Variable in \code{data} to map to the colour aesthetic;
-default is \code{series}}
+default is \code{series}.}
 
 \item{dot}{Logical; \code{TRUE} by default. When \code{TRUE}, a filled dot will be shown on the
 most recent data point.}
@@ -49,7 +53,7 @@ will be added at y = 0.}
 A ggplot2 object
 }
 \description{
-Create a standard time series linechart
+Create a standard time series linechart with DJPR characteristics
 }
 \details{
 If a column called 'tooltip' is present, it will be used as the
@@ -58,8 +62,9 @@ ggiraph tooltip; if not, one will be created.
 \examples{
 \dontrun{
 library(tidyverse)
-data <- djprdashdata::download_abs_ts("6202.0") \%>\%
-  dplyr::filter(table_no == "6202005")
+library(readabs)
+
+data <- readabs::read_abs("6202.0", "5")
 
 data <- data \%>\%
   dplyr::filter(
