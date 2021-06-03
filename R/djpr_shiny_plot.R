@@ -55,7 +55,6 @@
 djpr_plot_ui <- function(id,
                          height = "400px") {
   tagList(
-    br(),
     textOutput(NS(id, "title"), container = djpr_plot_title),
     textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
     div(
@@ -86,8 +85,7 @@ djpr_plot_ui <- function(id,
         6,
         uiOutput(NS(id, "check_box"))
       )
-    ),
-    br()
+    )
   )
 }
 

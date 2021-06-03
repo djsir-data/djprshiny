@@ -4,7 +4,14 @@
 \alias{djpr_with_spinner}
 \title{Wrapper around shinycssloaders::withSpinner() with DJPR defaults}
 \usage{
-djpr_with_spinner(ui_element, type = 8, colour = "#2A6FA2")
+djpr_with_spinner(
+  ui_element,
+  type = 8,
+  colour = "#2A6FA2",
+  size = 0.8,
+  hide.ui = FALSE,
+  ...
+)
 }
 \arguments{
 \item{ui_element}{An element such as \code{plotOutput()}}
@@ -12,6 +19,8 @@ djpr_with_spinner(ui_element, type = 8, colour = "#2A6FA2")
 \item{type}{See \url{https://daattali.com/shiny/shinycssloaders-demo}}
 
 \item{colour}{Hex code for spinner}
+
+\item{...}{arguments passed to \code{shinycssloaders::withSpinner()}}
 }
 \description{
 This function displays a spinner in place of Shiny UI elements while
