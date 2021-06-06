@@ -1,5 +1,7 @@
-# djprshiny 0.0.2.900
+# djprshiny 0.0.3.900
+* reactives can now be passed to plot functions through ... in plot_server
 
+# djprshiny 0.0.2.900
 * modifications to plot_server to enable nested modules
 
 # djprshiny 0.0.1.9000

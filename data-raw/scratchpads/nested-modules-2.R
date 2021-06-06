@@ -7,9 +7,11 @@ plot_fn <- function(data = ggplot2::economics) {
   ggplot(data, aes(x = date, y = unemploy)) +
     geom_line() +
     djprtheme::theme_djpr() +
-    labs(title = "Plot title",
-         subtitle = "Plot subtitle",
-         caption = "Plot caption")
+    labs(
+      title = "Plot title",
+      subtitle = "Plot subtitle",
+      caption = "Plot caption"
+    )
 }
 
 library(shiny)
@@ -35,10 +37,11 @@ ui <- djpr_page(
 server <- function(input, output, session) {
   output$date_slider <- renderUI({
     sliderInput("min_date",
-                "",
-                min = min(ggplot2::economics$date),
-                max = max(ggplot2::economics$date),
-                value = as.Date("1990-01-01"))
+      "",
+      min = min(ggplot2::economics$date),
+      max = max(ggplot2::economics$date),
+      value = as.Date("1990-01-01")
+    )
   })
 
   plot_data <- reactive({
@@ -48,12 +51,12 @@ server <- function(input, output, session) {
   })
 
   djpr_plot_server("plot1",
-                   plot_fn,
-                   data = plot_data(),
-                   plt_change = reactive(input$plt_change),
-                   date_slider = F,
-                   download_button = F
-                   )
+    plot_fn,
+    data = plot_data(),
+    plt_change = reactive(input$plt_change),
+    date_slider = F,
+    download_button = F
+  )
 }
 
 shinyApp(ui, server)

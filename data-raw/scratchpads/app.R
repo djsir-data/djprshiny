@@ -25,14 +25,14 @@ econ_plot <- function(data,
 }
 
 dual_plots <- function(data = ggplot2::economics,
-                       second_var = uempmed,
+                       second_var = "uempmed",
                        title = "something") {
   plot1 <- ggplot(data, aes(x = date, y = unemploy)) +
     geom_line() +
     theme_djpr() +
     labs(subtitle = "Plot 1 subtitle")
 
-  plot2 <- ggplot(data, aes(x = date, y = {{ second_var }})) +
+  plot2 <- ggplot(data, aes(x = date, y = .data[[second_var]])) +
     geom_line() +
     labs(subtitle = "Plot 2 subtitle")
 
@@ -65,11 +65,16 @@ ui <- djpr_page(
     focus_box(
       "Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur.",
       br(),
+      textInput("user_title", "", "Title goes here"),
       fluidRow(
-      column(6,
-      djpr_plot_ui("plot1") %>% djpr_with_spinner()),
-      column(6,
-             djpr_plot_ui("dual_plots") %>% djpr_with_spinner())
+        column(
+          6,
+          djpr_plot_ui("plot1") %>% djpr_with_spinner()
+        ),
+        column(
+          6,
+          djpr_plot_ui("dual_plots") %>% djpr_with_spinner()
+        )
       )
     ),
     "Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur.",
@@ -131,8 +136,8 @@ server <- function(input, output, session) {
     dual_plots,
     width_percent = 45,
     data = ggplot2::economics,
-    second_var = uempmed,
-    title = "something",
+    second_var = "uempmed",
+    title = reactive(input$user_title),
     plt_change = reactive(input$plt_change)
   )
 }

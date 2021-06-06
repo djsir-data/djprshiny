@@ -51,7 +51,6 @@
 #' shinyApp(ui, server)
 #' }
 #'
-
 djpr_plot_ui <- function(id,
                          height = "400px") {
   tagList(
@@ -171,6 +170,7 @@ djpr_plot_server <- function(id,
     id,
     function(input, output, session) {
 
+      # Filter data based on user input (slider + checkbox) ----
       plot_data <- reactive({
         if (date_slider == TRUE) {
           req(input$dates)
@@ -198,17 +198,38 @@ djpr_plot_server <- function(id,
         data
       })
 
-      static_plot <- reactive({
+      # Evaluate arguments to plot function ----
+      # Need to pass reactive arguments in ...
+      # (eg `selected_input = input$focus_sa4`) as reactives
+      plot_args <- reactive({
         req(plot_data())
-        plot_function(
-          data = plot_data(),
-          ...
-        ) +
+        lapply(list(data = plot_data(),
+                                 ...), function(x)
+                                   if (is.reactive(x)) {
+                                     x()
+                                   } else {
+                                     x
+                                   }
+        )
+      })
+
+      # Construct static plot -----
+      # Static plot is a ggplot2 object created by the plot_function()
+      # It is not re-rendered on resizing the browser
+      static_plot <- reactive({
+        req(plot_args())
+
+        do.call(plot_function,
+                args = plot_args()
+                ) +
           theme(text = element_text(family = "Roboto"))
-      }) %>%
-        shiny::bindCache(plot_data())
+
+      })   %>%
+        shiny::bindCache(plot_data(),
+                         plot_args())
 
 
+      # Create date slider UI ------
       output$date_slider <- renderUI({
         if (date_slider == TRUE) {
           req(data)
@@ -236,6 +257,7 @@ djpr_plot_server <- function(id,
         }
       })
 
+      # Create check box UI -----
       output$check_box <- renderUI({
         if (!is.null(check_box_options)) {
           req(data)
@@ -249,6 +271,7 @@ djpr_plot_server <- function(id,
         }
       })
 
+      # Extract title, subtitle, and caption as HTML ----
       output$title <- renderText({
         extract_labs(static_plot(), "title")
       })
@@ -267,6 +290,7 @@ djpr_plot_server <- function(id,
         height = 400
       )
 
+      # Capture changes in browser size -----
       observeEvent(plt_change()$width, {
         window_size$width <- plt_change()$width
       })
@@ -279,35 +303,39 @@ djpr_plot_server <- function(id,
         window_size$dpi <- plt_change()$dpi
       })
 
+      girafe_width <- reactive({
+        calc_girafe_width(
+        width_percent = width_percent,
+        window_width = window_size$width,
+        dpi = window_size$dpi
+      )
+      })
+
+      girafe_height <- reactive({
+        calc_girafe_height(
+        height_percent = height_percent,
+        window_height = window_size$height,
+        dpi = window_size$dpi
+      )
+      })
+
+      # Render plot as ggiraph::girafe object (interactive htmlwidget) -----
       output$plot <- ggiraph::renderGirafe({
         req(static_plot())
 
-        girafe_width <- min(c(
-          1140,
-          window_size$width
-        )) *
-          (width_percent / 100) /
-          window_size$dpi
-
-        girafe_height <- max(c(
-          window_size$height  * 0.4,
-          200
-        )) * (height_percent / 100) /
-          window_size$dpi
-
-        djpr_girafe(ggobj = static_plot(),
-                    width = girafe_width,
-                    height = girafe_height)
-
+        djpr_girafe(
+          ggobj = static_plot(),
+          width = girafe_width(),
+          height = girafe_height()
+        )
       }) %>%
         shiny::bindCache(
           static_plot(),
-          plt_change(),
-          window_size$width,
-          window_size$height,
-          window_size$width
+          girafe_width(),
+          girafe_height()
         )
 
+      # Create download button UI -----
       if (download_button) {
         output$download_dropdown <- renderUI({
           req(static_plot())
@@ -315,6 +343,7 @@ djpr_plot_server <- function(id,
         })
       }
 
+      # Create server-side logic for download button -----
       output$download_data <- downloadHandler(
         filename = function() {
           paste0(id, "_data.csv")

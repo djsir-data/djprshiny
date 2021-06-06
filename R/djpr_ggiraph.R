@@ -63,7 +63,6 @@
 #'   geom_point()
 #'
 #' djpr_girafe(p, 5, 6)
-#'
 #' @details
 #' `djpr_girafe()` should be used within `renderGirafe({})`, in place of
 #' `ggiraph::girafe()`, within the `server` component of a Shiny app. **NOTE**
@@ -75,7 +74,6 @@
 djpr_girafe <- function(ggobj,
                         height,
                         width) {
-
   p <- ggobj
   p$labels$title <- NULL
   p$labels$subtitle <- NULL
@@ -86,7 +84,7 @@ djpr_girafe <- function(ggobj,
 
   ggiraph::girafe(
     ggobj = p,
-    width_svg =  width,
+    width_svg = width,
     height_svg = height,
     options = list(
       ggiraph::opts_toolbar(saveaspng = FALSE),
@@ -141,4 +139,44 @@ ggiraph_js <- function(col_widths = c(2, 8, 2)) {
                                 });
                             ')
   )
+}
+
+#' Return width / height in inches for ggiraph::girafe() objects
+#' @rdname calc_girafe_size
+#' @param width_percent Percentage of the standard plotting area that
+#' should be taken up by the object
+#' @param height_percent Height of the object as percentage of standard
+#' @param window_width Width of the row in which the object will be
+#' placed. Given by `plt_change()$width`
+#' @param dpi Dots per inch of browser. Given by `plt_change()$dpi`
+#' @param max_width Maximum width of object in pixels
+#' @param window_height Height of the  browser window. Given by
+#' `plt_change()$height`
+#' @param perc_of_height The height of the object as a percentage
+#' of the browser window height
+#' @param min_px The minimum height of the object in pixels
+
+calc_girafe_width <- function(width_percent,
+                              window_width,
+                              dpi,
+                              max_width = 1140) {
+  min(c(
+    max_width,
+    window_width
+  )) *
+    (width_percent / 100) /
+    dpi
+}
+
+#' @rdname calc_girafe_size
+calc_girafe_height <- function(height_percent,
+                               window_height,
+                               dpi,
+                               perc_of_height = 40,
+                               min_px = 200) {
+  max(c(
+    window_height * (perc_of_height / 100),
+    min_px
+  )) * (height_percent / 100) /
+    dpi
 }

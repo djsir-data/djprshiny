@@ -26,11 +26,11 @@ djpr_page <- function(title,
 
   # https://stackoverflow.com/a/50991648/10677884
   logo_panel <- if (!is.null(logo)) {
-    tabPanel(title = "",
-    htmltools::tags$script(HTML("var header = $('.navbar > .container-fluid');
+    tabPanel(
+      title = "",
+      htmltools::tags$script(HTML("var header = $('.navbar > .container-fluid');
 header.append('<div style=\"float:right\"><img src=", logo, " alt=\"alt\" style=", logo_style, "></div>');
-    console.log(header)")
-    )
+    console.log(header)"))
     )
   } else {
     tabPanel(title = "")
@@ -52,6 +52,10 @@ header.append('<div style=\"float:right\"><img src=", logo, " alt=\"alt\" style=
         ".leaflet .legend {
                  line-height: 16px;
                  font-size: 12px;
+        }
+
+        .leaflet-container {
+                 background: #ffffff;
         }
         "
       )
