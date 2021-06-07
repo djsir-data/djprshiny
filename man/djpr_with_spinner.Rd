@@ -20,6 +20,11 @@ djpr_with_spinner(
 
 \item{colour}{Hex code for spinner}
 
+\item{size}{Numeric; Size relative to default (1 = default)}
+
+\item{hide.ui}{Logical. When \code{TRUE}, spinner is shown over a blank space;
+when \code{FALSE}, spinner is shown over previously output UI.}
+
 \item{...}{arguments passed to \code{shinycssloaders::withSpinner()}}
 }
 \description{

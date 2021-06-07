@@ -67,26 +67,33 @@ library(shiny)
 library(ggplot2)
 
 ui <- djpr_page(
-  djpr_plot_ui("plot")
+  title = "My dashboard",
+  djpr_tab_panel(
+    title = "First tab",
+    djpr_plot_ui("plot")
+  )
 )
 
-plot_function <- function(data = economics) {
+plot_function <- function(data = economics,
+                          title = "This is a title",
+                          subtitle = "This is a subtitle",
+                          caption = "This data comes from the ggplot2 package") {
   data \%>\%
     ggplot(aes(x = date, y = unemploy)) +
     geom_line() +
     labs(
-      title = "This is a title",
-      subtitle = "This is a subtitle",
-      caption = "This data comes from the ggplot2 package"
+      title = title,
+      subtitle = subtitle,
+      caption = caption
     ) +
-    theme_minimal(base_size = 16)
+    theme_minimal(base_size = 14)
 }
 
 server <- function(input, output, session) {
   djpr_plot_server("plot",
     plot_function,
     date_slider = TRUE,
-    data = economics,
+    data = ggplot2::economics,
     plt_change = reactive(input$plt_change)
   )
 }

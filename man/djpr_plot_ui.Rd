@@ -34,9 +34,10 @@ example.
 library(shiny)
 library(ggplot2)
 
-ui <- fluidPage(
-  ggiraph_js(),
-  centred_row(
+ui <- djpr_page(
+  title = "My dashboard",
+  djpr_tab_panel(
+    title = "First tab",
     djpr_plot_ui("plot")
   )
 )

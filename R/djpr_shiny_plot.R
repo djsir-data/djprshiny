@@ -17,9 +17,10 @@
 #' library(shiny)
 #' library(ggplot2)
 #'
-#' ui <- fluidPage(
-#'   ggiraph_js(),
-#'   centred_row(
+#' ui <- djpr_page(
+#'   title = "My dashboard",
+#'   djpr_tab_panel(
+#'     title = "First tab",
 #'     djpr_plot_ui("plot")
 #'   )
 #' )
@@ -127,26 +128,33 @@ djpr_plot_ui <- function(id,
 #' library(ggplot2)
 #'
 #' ui <- djpr_page(
-#'   djpr_plot_ui("plot")
+#'   title = "My dashboard",
+#'   djpr_tab_panel(
+#'     title = "First tab",
+#'     djpr_plot_ui("plot")
+#'   )
 #' )
 #'
-#' plot_function <- function(data = economics) {
+#' plot_function <- function(data = economics,
+#'                           title = "This is a title",
+#'                           subtitle = "This is a subtitle",
+#'                           caption = "This data comes from the ggplot2 package") {
 #'   data %>%
 #'     ggplot(aes(x = date, y = unemploy)) +
 #'     geom_line() +
 #'     labs(
-#'       title = "This is a title",
-#'       subtitle = "This is a subtitle",
-#'       caption = "This data comes from the ggplot2 package"
+#'       title = title,
+#'       subtitle = subtitle,
+#'       caption = caption
 #'     ) +
-#'     theme_minimal(base_size = 16)
+#'     theme_minimal(base_size = 14)
 #' }
 #'
 #' server <- function(input, output, session) {
 #'   djpr_plot_server("plot",
 #'     plot_function,
 #'     date_slider = TRUE,
-#'     data = economics,
+#'     data = ggplot2::economics,
 #'     plt_change = reactive(input$plt_change)
 #'   )
 #' }
@@ -203,14 +211,16 @@ djpr_plot_server <- function(id,
       # (eg `selected_input = input$focus_sa4`) as reactives
       plot_args <- reactive({
         req(plot_data())
-        lapply(list(data = plot_data(),
-                                 ...), function(x)
-                                   if (is.reactive(x)) {
-                                     x()
-                                   } else {
-                                     x
-                                   }
-        )
+        lapply(list(
+          data = plot_data(),
+          ...
+        ), function(x) {
+          if (is.reactive(x)) {
+            x()
+          } else {
+            x
+          }
+        })
       })
 
       # Construct static plot -----
@@ -220,13 +230,14 @@ djpr_plot_server <- function(id,
         req(plot_args())
 
         do.call(plot_function,
-                args = plot_args()
-                ) +
+          args = plot_args()
+        ) +
           theme(text = element_text(family = "Roboto"))
-
-      })   %>%
-        shiny::bindCache(plot_data(),
-                         plot_args())
+      }) %>%
+        shiny::bindCache(
+          plot_data(),
+          plot_args()
+        )
 
 
       # Create date slider UI ------
@@ -305,18 +316,18 @@ djpr_plot_server <- function(id,
 
       girafe_width <- reactive({
         calc_girafe_width(
-        width_percent = width_percent,
-        window_width = window_size$width,
-        dpi = window_size$dpi
-      )
+          width_percent = width_percent,
+          window_width = window_size$width,
+          dpi = window_size$dpi
+        )
       })
 
       girafe_height <- reactive({
         calc_girafe_height(
-        height_percent = height_percent,
-        window_height = window_size$height,
-        dpi = window_size$dpi
-      )
+          height_percent = height_percent,
+          window_height = window_size$height,
+          dpi = window_size$dpi
+        )
       })
 
       # Render plot as ggiraph::girafe object (interactive htmlwidget) -----

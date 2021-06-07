@@ -5,6 +5,9 @@
 #' @param ui_element An element such as `plotOutput()`
 #' @param type See \url{https://daattali.com/shiny/shinycssloaders-demo}
 #' @param colour Hex code for spinner
+#' @param size Numeric; Size relative to default (1 = default)
+#' @param hide.ui Logical. When `TRUE`, spinner is shown over a blank space;
+#' when `FALSE`, spinner is shown over previously output UI.
 #' @param ... arguments passed to `shinycssloaders::withSpinner()`
 #' @details Use within UI script
 #' @examples

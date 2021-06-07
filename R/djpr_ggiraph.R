@@ -1,12 +1,12 @@
-#' Ensure ggiraph object resizes with browser window
+#' Render ggiraph::girafe() object in a Shiny app and resize appropriately
+#' with the browser window
 #'
 #' As a Shiny window  (html container) is resized,
 #' ggplot2 objects (rendered using plotOutput())
 #' change their widths while retaining their height. By default,
-#' ggiraph::girafeOutput() objects don't resize in the same way. This code,
-#' when added to a `fluidPage()` or similar, makes the browser width and
-#' height available so that the ggiraph object can scale correctly.
-#'
+#' ggiraph::girafeOutput() objects don't resize in the same way - they maintain
+#' their aspect ratio. These functions render these objects in a way that
+#' resizes with the browser window.
 #'
 #' @source https://stackoverflow.com/questions/65267602/can-a-ggiraph-interactive-plot-be-the-size-of-the-window-in-r-shiny
 #' and https://stackoverflow.com/questions/45191999/ggiraph-plot-doesnt-resize-to-fit-the-page and
@@ -17,37 +17,67 @@
 #' library(ggiraph)
 #' library(ggplot2)
 #'
-#' ui <- fluidPage(
-#'   ggiraph_js(),
-#'   fluidRow(
+#' ui <- djpr_page(
+#'   title = "Dashboard title",
+#'   djpr_tab_panel(
+#'     title = "Panel title",
+#'     "Some text",
 #'     "This is a ggplot2 object",
 #'     plotOutput("plot1",
 #'       width = "100%"
 #'     ),
-#'     "This is a ggiraph object",
-#'     girafeOutput("plot2",
-#'       width = "100%",
-#'       height = "400px"
-#'     ),
-#'     "Blergh"
+#'     "This is a standard ggiraph object",
+#'     girafeOutput("plot2"),
+#'     "This is a ggiraph object that resizes with the window",
+#'     girafeOutput("plot3")
 #'   )
 #' )
 #'
 #' server <- function(input, output, session) {
-#'   output$plot1 <- renderPlot({
+#'
+#'   # First, we create a plot we can re-use:
+#'   static_plot <- reactive({
 #'     ggplot(mtcars, aes(x = wt, y = mpg)) +
 #'       geom_point()
 #'   })
 #'
+#'   # This code generates a standard static ggplot
+#'   output$plot1 <- renderPlot({
+#'     static_plot()
+#'   })
+#'
+#'   # This code generates a standard ggiraph that doesn't re-size as we want
+#'
 #'   output$plot2 <- renderGirafe({
+#'     ggiraph::girafe(ggobj = static_plot())
+#'   })
+#'
+#'   # This code generates a ggiraph that resizes with the browser window
+#'   output$plot3 <- renderGirafe({
+#'     req(input$plt_change)
 #'     p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
-#'       geom_point_interactive(aes(tooltip = cyl))
+#'       ggiraph::geom_point_interactive(aes(tooltip = cyl))
 #'
 #'
-#'     djpr_girafe(p, input = input)
+#'     plt_change <- reactive(input$plt_change)
+#'     plot_width <- calc_girafe_width(
+#'       width_percent = 100,
+#'       window_width = plt_change()$width,
+#'       dpi = plt_change()$dpi
+#'     )
+#'
+#'     plot_height <- calc_girafe_height(
+#'       height_percent = 100,
+#'       window_height = plt_change()$height,
+#'       dpi = plt_change()$dpi
+#'     )
+#'
+#'     djpr_girafe(p,
+#'       width = plot_width,
+#'       height = plot_height
+#'     )
 #'   })
 #' }
-#'
 #' shinyApp(ui, server)
 #' }
 #' @export
@@ -72,8 +102,8 @@
 #' `fluidPage(ggiraph_js())`.
 #'
 djpr_girafe <- function(ggobj,
-                        height,
-                        width) {
+                        height = 5,
+                        width = 6) {
   p <- ggobj
   p$labels$title <- NULL
   p$labels$subtitle <- NULL
@@ -155,6 +185,7 @@ ggiraph_js <- function(col_widths = c(2, 8, 2)) {
 #' @param perc_of_height The height of the object as a percentage
 #' of the browser window height
 #' @param min_px The minimum height of the object in pixels
+#' @export
 
 calc_girafe_width <- function(width_percent,
                               window_width,
@@ -168,6 +199,7 @@ calc_girafe_width <- function(width_percent,
     dpi
 }
 
+#' @export
 #' @rdname calc_girafe_size
 calc_girafe_height <- function(height_percent,
                                window_height,
