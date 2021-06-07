@@ -143,3 +143,5 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
+
+# profvis::profvis(runApp(shinyApp(ui, server)))

@@ -23,12 +23,10 @@
 #'   h1("Another heading")
 #' )
 #'
-#' ui <- fluidPage(
-#'   djpr_page(
+#' ui <- djpr_page(
 #'     title = "Example",
 #'     example_panel
 #'   )
-#' )
 #'
 #' server <- function(input, output, session) {
 #'

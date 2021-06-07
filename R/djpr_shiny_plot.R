@@ -174,6 +174,9 @@ djpr_plot_server <- function(id,
                              width_percent = 100,
                              height_percent = 100,
                              ...) {
+
+  data$id <- id
+
   moduleServer(
     id,
     function(input, output, session) {
@@ -202,7 +205,6 @@ djpr_plot_server <- function(id,
               )
             )
         }
-
         data
       })
 
@@ -210,9 +212,8 @@ djpr_plot_server <- function(id,
       # Need to pass reactive arguments in ...
       # (eg `selected_input = input$focus_sa4`) as reactives
       plot_args <- reactive({
-        req(plot_data())
+        # req(plot_data())
         lapply(list(
-          data = plot_data(),
           ...
         ), function(x) {
           if (is.reactive(x)) {
@@ -227,10 +228,13 @@ djpr_plot_server <- function(id,
       # Static plot is a ggplot2 object created by the plot_function()
       # It is not re-rendered on resizing the browser
       static_plot <- reactive({
-        req(plot_args())
+        req(plot_args(), plot_data())
+
+        args_with_data <- c(list(data = plot_data()),
+                            plot_args())
 
         do.call(plot_function,
-          args = plot_args()
+          args = args_with_data
         ) +
           theme(text = element_text(family = "Roboto"))
       }) %>%
@@ -238,7 +242,6 @@ djpr_plot_server <- function(id,
           plot_data(),
           plot_args()
         )
-
 
       # Create date slider UI ------
       output$date_slider <- renderUI({
@@ -319,7 +322,9 @@ djpr_plot_server <- function(id,
           width_percent = width_percent,
           window_width = window_size$width,
           dpi = window_size$dpi
-        )
+        ) %>%
+          # Round to reduce recalculations for small changes
+          round(0)
       })
 
       girafe_height <- reactive({
@@ -327,7 +332,9 @@ djpr_plot_server <- function(id,
           height_percent = height_percent,
           window_height = window_size$height,
           dpi = window_size$dpi
-        )
+        ) %>%
+          # Round to reduce recalculations for small changes
+          round(1)
       })
 
       # Render plot as ggiraph::girafe object (interactive htmlwidget) -----
