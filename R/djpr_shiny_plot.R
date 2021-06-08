@@ -174,7 +174,6 @@ djpr_plot_server <- function(id,
                              width_percent = 100,
                              height_percent = 100,
                              ...) {
-
   data$id <- id
 
   moduleServer(
@@ -212,7 +211,6 @@ djpr_plot_server <- function(id,
       # Need to pass reactive arguments in ...
       # (eg `selected_input = input$focus_sa4`) as reactives
       plot_args <- reactive({
-        # req(plot_data())
         lapply(list(
           ...
         ), function(x) {
@@ -230,8 +228,10 @@ djpr_plot_server <- function(id,
       static_plot <- reactive({
         req(plot_args(), plot_data())
 
-        args_with_data <- c(list(data = plot_data()),
-                            plot_args())
+        args_with_data <- c(
+          list(data = plot_data()),
+          plot_args()
+        )
 
         do.call(plot_function,
           args = args_with_data
@@ -288,54 +288,61 @@ djpr_plot_server <- function(id,
       # Extract title, subtitle, and caption as HTML ----
       output$title <- renderText({
         extract_labs(static_plot(), "title")
-      })
+      }) %>%
+        shiny::bindCache(static_plot())
 
       output$subtitle <- renderText({
         extract_labs(static_plot(), "subtitle")
-      })
+      }) %>%
+        shiny::bindCache(static_plot())
 
       output$caption <- renderText({
         extract_labs(static_plot(), "caption")
-      })
+      }) %>%
+        shiny::bindCache(static_plot())
 
       window_size <- reactiveValues(
         width = 1140,
-        dpi = 72,
         height = 400
       )
 
       # Capture changes in browser size -----
+
       observeEvent(plt_change()$width, {
-        window_size$width <- plt_change()$width
+        # Round down to nearest 100 pixels; prevent small resizing
+        window_size$width <- floor(plt_change()$width / 100) * 100
       })
 
       observeEvent(plt_change()$height, {
-        window_size$height <- plt_change()$height
-      })
-
-      observeEvent(plt_change()$dpi, {
-        window_size$dpi <- plt_change()$dpi
+        # Round down to nearest 100 pixels; prevent small resizing
+        window_size$height <- floor(plt_change()$height / 100) * 100
       })
 
       girafe_width <- reactive({
         calc_girafe_width(
           width_percent = width_percent,
           window_width = window_size$width,
-          dpi = window_size$dpi
-        ) %>%
-          # Round to reduce recalculations for small changes
-          round(0)
-      })
+          dpi = plt_change()$dpi
+        )
+      }) %>%
+        shiny::bindCache(
+          window_size$width,
+          plt_change()$dpi,
+          width_percent
+        )
 
       girafe_height <- reactive({
         calc_girafe_height(
           height_percent = height_percent,
           window_height = window_size$height,
-          dpi = window_size$dpi
-        ) %>%
-          # Round to reduce recalculations for small changes
-          round(1)
-      })
+          dpi = plt_change()$dpi
+        )
+      }) %>%
+        shiny::bindCache(
+          window_size$height,
+          plt_change()$dpi,
+          width_percent
+        )
 
       # Render plot as ggiraph::girafe object (interactive htmlwidget) -----
       output$plot <- ggiraph::renderGirafe({

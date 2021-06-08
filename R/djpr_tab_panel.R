@@ -24,9 +24,9 @@
 #' )
 #'
 #' ui <- djpr_page(
-#'     title = "Example",
-#'     example_panel
-#'   )
+#'   title = "Example",
+#'   example_panel
+#' )
 #'
 #' server <- function(input, output, session) {
 #'
