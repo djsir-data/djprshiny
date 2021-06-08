@@ -24,7 +24,7 @@ djpr_page <- function(title,
                       logo = NULL,
                       logo_style = "float:right;width:83px;height:20px;padding-top:0px;") {
 
-  # https://stackoverflow.com/a/50991648/10677884
+  # Add logo to navbar: https://stackoverflow.com/a/50991648/10677884
   logo_panel <- if (!is.null(logo)) {
     tabPanel(
       title = "",
@@ -69,7 +69,15 @@ header.append('<div style=\"float:right\"><img src=", logo, " alt=\"alt\" style=
       collapsible = TRUE,
       ...,
       # Add logo
-      logo_panel
+      logo_panel,
+      # Ensure user is returned to top of page on clicking navbar
+      # https://stackoverflow.com/a/44713073/10677884
+      tags$script(" $(document).ready(function () {
+         $('#navbarpage a[data-toggle=\"tab\"]').on('click', function (e) {
+          window.scrollTo(0, 0)
+               });
+
+               });")
     )
   )
 }

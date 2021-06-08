@@ -90,7 +90,7 @@ ui <- djpr_page(
     title = "Nothing to see here",
     # logo = "spp_data_logo.png",
     "Blank tab",
-    "foobar",
+    paste0(rep("lorem ipsum ", 10000), collapse = "|"),
     br()
   )
 )
