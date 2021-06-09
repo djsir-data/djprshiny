@@ -176,6 +176,9 @@ djpr_plot_server <- function(id,
                              ...) {
   data$id <- id
 
+  djpr_girafe_mem <- memoise::memoise(djpr_girafe,
+                                      cache = getShinyOption("cache"))
+
   moduleServer(
     id,
     function(input, output, session) {
@@ -357,7 +360,7 @@ djpr_plot_server <- function(id,
             girafe_width(),
             girafe_height())
 
-        djpr_girafe(
+        djpr_girafe_mem(
           ggobj = static_plot(),
           width = girafe_width(),
           height = girafe_height()
