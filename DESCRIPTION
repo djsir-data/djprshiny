@@ -1,6 +1,6 @@
 Package: djprshiny
 Title: Common Functions For DJPR Shiny Apps
-Version: 0.0.3.900
+Version: 0.0.3.901
 Authors@R: 
     c(
     person(given = "Matt",
@@ -19,18 +19,18 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Imports: 
-    bslib,
+    bslib (>= 0.2.5.1),
     djprdashdata (>= 0.0.0.9000),
     djprtheme (>= 0.0.2),
     dplyr (>= 1.0.5),
-    ggiraph (>= 0.7.9),
-    ggplot2,
-    ggrepel,
-    htmltools,
-    memoise,
-    patchwork,
+    ggiraph (>= 0.7.10),
+    ggplot2 (>= 3.3.3),
+    ggrepel (>= 0.9.1),
+    htmltools (>= 0.5.1.1),
+    memoise (>= 2.0.0),
+    patchwork (>= 1.1.1),
     purrr,
-    rlang,
+    rlang (>= 0.4.11),
     shiny (>= 1.6.0),
     shinycssloaders,
     shinyWidgets (>= 0.6.0),

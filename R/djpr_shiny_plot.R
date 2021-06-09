@@ -207,6 +207,11 @@ djpr_plot_server <- function(id,
         data
       })
 
+      # Create a subset of plot data to use for caching ----
+      first_col <- reactive({
+        plot_data()[[1]]
+      })
+
       # Evaluate arguments to plot function ----
       # Need to pass reactive arguments in ...
       # (eg `selected_input = input$focus_sa4`) as reactives
@@ -239,7 +244,7 @@ djpr_plot_server <- function(id,
           theme(text = element_text(family = "Roboto"))
       }) %>%
         shiny::bindCache(
-          plot_data(),
+          first_col(),
           plot_args()
         )
 
@@ -319,6 +324,7 @@ djpr_plot_server <- function(id,
       })
 
       girafe_width <- reactive({
+        req(window_size, plt_change())
         calc_girafe_width(
           width_percent = width_percent,
           window_width = window_size$width,
@@ -326,12 +332,13 @@ djpr_plot_server <- function(id,
         )
       }) %>%
         shiny::bindCache(
-          window_size$width,
+          plt_change()$width,
           plt_change()$dpi,
           width_percent
         )
 
       girafe_height <- reactive({
+        req(window_size, plt_change())
         calc_girafe_height(
           height_percent = height_percent,
           window_height = window_size$height,
@@ -339,14 +346,16 @@ djpr_plot_server <- function(id,
         )
       }) %>%
         shiny::bindCache(
-          window_size$height,
+          plt_change()$height,
           plt_change()$dpi,
-          width_percent
+          height_percent
         )
 
       # Render plot as ggiraph::girafe object (interactive htmlwidget) -----
       output$plot <- ggiraph::renderGirafe({
-        req(static_plot())
+        req(static_plot(),
+            girafe_width(),
+            girafe_height())
 
         djpr_girafe(
           ggobj = static_plot(),
@@ -355,9 +364,10 @@ djpr_plot_server <- function(id,
         )
       }) %>%
         shiny::bindCache(
-          static_plot(),
-          girafe_width(),
-          girafe_height()
+          first_col(),
+          plot_args(),
+          plt_change()$width,
+          plt_change()$height
         )
 
       # Create download button UI -----
