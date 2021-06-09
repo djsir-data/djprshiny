@@ -30,6 +30,7 @@ Imports:
     memoise (>= 2.0.0),
     patchwork (>= 1.1.1),
     purrr,
+    showtext,
     rlang (>= 0.4.11),
     shiny (>= 1.6.0),
     shinycssloaders,
