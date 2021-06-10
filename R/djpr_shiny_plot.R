@@ -174,7 +174,7 @@ djpr_plot_server <- function(id,
                              width_percent = 100,
                              height_percent = 100,
                              ...) {
-  data$id <- id
+  # data$id <- id
 
   djpr_girafe_mem <- memoise::memoise(djpr_girafe,
                                       cache = getShinyOption("cache"))
