@@ -13,7 +13,7 @@ djpr_ts_linechart(
   label_num = round(.data$value, 1),
   y_labels = ggplot2::waiver(),
   hline = NULL,
-  title = ""
+  n_x_breaks = 5
 )
 }
 \arguments{
@@ -47,7 +47,8 @@ on the chart. Default is \code{round(value, 1)}. Ignored if \code{label} is \cod
 be drawn at the data value given. eg. if \code{hline} = \code{0}, a \code{geom_hline()}
 will be added at y = 0.}
 
-\item{title}{Plot title}
+\item{n_x_breaks}{Number of 'pretty' breaks on the x (date) axis.
+Passed to \code{scales::breaks_pretty()}.}
 }
 \value{
 A ggplot2 object

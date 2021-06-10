@@ -23,7 +23,8 @@
 #' @param hline Numeric. If non-`NULL` (the default), a horizontal line will
 #' be drawn at the data value given. eg. if `hline` = `0`, a `geom_hline()`
 #' will be added at y = 0.
-#' @param title Plot title
+#' @param n_x_breaks Number of 'pretty' breaks on the x (date) axis.
+#' Passed to `scales::breaks_pretty()`.
 #' @return A ggplot2 object
 #' @details If a column called 'tooltip' is present, it will be used as the
 #' ggiraph tooltip; if not, one will be created.
@@ -55,9 +56,16 @@ djpr_ts_linechart <- function(data,
                               label_num = round(.data$value, 1),
                               y_labels = ggplot2::waiver(),
                               hline = NULL,
-                              title = "") {
+                              n_x_breaks = 5) {
+
+  date_limits <- c(min(data$date),
+                   max(data$date))
+
+  x_breaks <- djprtheme::breaks_right(limits = date_limits,
+                                      b_breaks = n_x_breaks)
+
   max_date <- data %>%
-    dplyr::filter(date == max(.data$date))
+    dplyr::filter(date == date_limits[2])
 
   if (is.null(data[["tooltip"]])) {
     data <- data %>%
@@ -141,17 +149,16 @@ djpr_ts_linechart <- function(data,
         size = 14 / .pt
       ) +
       scale_x_date(
-        expand = expansion( # mult = c(0, 0.08)
-          add = c(0, days_in_data * 0.18)
+        expand = expansion(
+          mult = c(0, 0.18)
         ),
+        breaks = x_breaks,
         date_labels = "%b\n%Y"
       ) +
       scale_y_continuous(
         expand = expansion(mult = 0.1),
         labels = y_labels
-      ) +
-      # theme(plot.margin = unit(c(0.5, 0.1, 0.1, 0.01), "lines")) +
-      NULL
+      )
   }
 
   p <- p +
@@ -160,11 +167,6 @@ djpr_ts_linechart <- function(data,
       colour = "white",
       alpha = 0.01
     )
-
-  if (title != "") {
-    p <- p +
-      labs(title = title)
-  }
 
   p
 }
