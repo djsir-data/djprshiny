@@ -248,7 +248,8 @@ djpr_plot_server <- function(id,
       }) %>%
         shiny::bindCache(
           first_col(),
-          plot_args()
+          plot_args(),
+          deparse(substitute(plot_function))
         )
 
       # Create date slider UI ------
@@ -317,13 +318,13 @@ djpr_plot_server <- function(id,
       # Capture changes in browser size -----
 
       observeEvent(plt_change()$width, {
-        # Round down to nearest 100 pixels; prevent small resizing
-        window_size$width <- floor(plt_change()$width / 100) * 100
+        # Round down to nearest 50 pixels; prevent small resizing
+        window_size$width <- floor(plt_change()$width / 50) * 50
       })
 
       observeEvent(plt_change()$height, {
-        # Round down to nearest 100 pixels; prevent small resizing
-        window_size$height <- floor(plt_change()$height / 100) * 100
+        # Round down to nearest 50 pixels; prevent small resizing
+        window_size$height <- floor(plt_change()$height / 50) * 50
       })
 
       girafe_width <- reactive({
