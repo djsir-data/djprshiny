@@ -174,7 +174,6 @@ djpr_plot_server <- function(id,
                              width_percent = 100,
                              height_percent = 100,
                              ...) {
-  # data$id <- id
 
   djpr_girafe_mem <- memoise::memoise(djpr_girafe,
                                       cache = getShinyOption("cache"))
@@ -247,9 +246,9 @@ djpr_plot_server <- function(id,
           theme(text = element_text(family = "Roboto"))
       }) %>%
         shiny::bindCache(
+          id,
           first_col(),
-          plot_args(),
-          deparse(substitute(plot_function))
+          plot_args()
         )
 
       # Create date slider UI ------
@@ -371,7 +370,8 @@ djpr_plot_server <- function(id,
           first_col(),
           plot_args(),
           plt_change()$width,
-          plt_change()$height
+          plt_change()$height,
+          id
         )
 
       # Create download button UI -----
