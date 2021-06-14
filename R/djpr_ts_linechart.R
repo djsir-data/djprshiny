@@ -57,12 +57,15 @@ djpr_ts_linechart <- function(data,
                               y_labels = ggplot2::waiver(),
                               hline = NULL,
                               n_x_breaks = 5) {
+  date_limits <- c(
+    min(data$date),
+    max(data$date)
+  )
 
-  date_limits <- c(min(data$date),
-                   max(data$date))
-
-  x_breaks <- djprtheme::breaks_right(limits = date_limits,
-                                      b_breaks = n_x_breaks)
+  x_breaks <- djprtheme::breaks_right(
+    limits = date_limits,
+    b_breaks = n_x_breaks
+  )
 
   max_date <- data %>%
     dplyr::filter(date == date_limits[2])

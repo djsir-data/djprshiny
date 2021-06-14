@@ -174,9 +174,9 @@ djpr_plot_server <- function(id,
                              width_percent = 100,
                              height_percent = 100,
                              ...) {
-
   djpr_girafe_mem <- memoise::memoise(djpr_girafe,
-                                      cache = getShinyOption("cache"))
+    cache = getShinyOption("cache")
+  )
 
   moduleServer(
     id,
@@ -328,6 +328,7 @@ djpr_plot_server <- function(id,
 
       girafe_width <- reactive({
         req(window_size, plt_change())
+        # print(window_size$width)
         calc_girafe_width(
           width_percent = width_percent,
           window_width = window_size$width,
@@ -356,9 +357,11 @@ djpr_plot_server <- function(id,
 
       # Render plot as ggiraph::girafe object (interactive htmlwidget) -----
       output$plot <- ggiraph::renderGirafe({
-        req(static_plot(),
-            girafe_width(),
-            girafe_height())
+        req(
+          static_plot(),
+          girafe_width(),
+          girafe_height()
+        )
 
         djpr_girafe_mem(
           ggobj = static_plot(),
