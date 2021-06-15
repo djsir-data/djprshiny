@@ -9,12 +9,20 @@
 toc_header <- function() {
   tagList(
     tags$head(
-      tags$link(
-        rel = "stylesheet",
-        href = "https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"
-      ),
-      tags$script(src = "https://cdn.rawgit.com/afel
-d/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"),
+
+      # CSS for TOC
+      includeCSS(system.file("www", "bootstrap-toc.min.css", package = "djprshiny")),
+      # tags$link(
+      #   rel = "stylesheet",
+      #   href = "https://afeld.github.io/bootstrap-toc/dist/bootstrap-toc.min.css"
+      # ),
+
+      # JS for TOC
+      includeScript(system.file("www", "bootstrap-toc.min.js", package = "djprshiny")),
+      # tags$script(
+      #   src = "https://afeld.github.io/bootstrap-toc/dist/bootstrap-toc.min.js"
+      #   ),
+
       tags$style(HTML(".sticky-top {
     top: 100px; /* height of header */
 }"))
