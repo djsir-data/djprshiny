@@ -156,15 +156,17 @@ ggiraph_js <- function(col_widths = c(2, 8, 2)) {
     tags$script('$(document).on("shiny:connected", function(e) {
                                     var w = document.getElementById("girafe_container").offsetWidth;
                                     var h = window.innerHeight;
-                                    var d =  document.getElementById("ppitest").offsetWidth;
-                                    var obj = {width: w, height: h, dpi: d};
+                                    var d = document.getElementById("ppitest").offsetWidth;
+                                    var b = window.innerWidth;
+                                    var obj = {width: w, height: h, dpi: d, browser_width: b};
                                     Shiny.onInputChange("plt_change", obj);
                                 });
                                 $(window).resize(function(e) {
                                     var w = document.getElementById("girafe_container").offsetWidth;
                                     var h = $(this).height();
                                     var d =  document.getElementById("ppitest").offsetWidth;
-                                    var obj = {width: w, height: h, dpi: d};
+                                    var b = window.innerWidth;
+                                    var obj = {width: w, height: h, dpi: d, browser_width: b};
                                     Shiny.onInputChange("plt_change", obj);
                                 });
                             ')

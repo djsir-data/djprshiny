@@ -328,7 +328,15 @@ djpr_plot_server <- function(id,
 
       girafe_width <- reactive({
         req(window_size, plt_change())
-        # print(window_size$width)
+
+        # When the window is narrow, the column width ( plt_change()$width )
+        # will equal the full browser width ( plt_change()$browser_width). In
+        # that case, we want the plot to fill the whole width of the column
+        # regardless of the supplied width_percent.
+        if (plt_change()$width == plt_change()$browser_width) {
+          width_percent <- 100
+        }
+
         calc_girafe_width(
           width_percent = width_percent,
           window_width = window_size$width,
