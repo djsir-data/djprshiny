@@ -333,7 +333,7 @@ djpr_plot_server <- function(id,
         # will equal the full browser width ( plt_change()$browser_width). In
         # that case, we want the plot to fill the whole column.
         if (plt_change()$width == plt_change()$browser_width) {
-          width_percent <- min(95, width_percent * 1.95)
+          width_percent <- min(95, width_percent * 1.9)
         }
 
         calc_girafe_width(
