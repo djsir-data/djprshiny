@@ -13,7 +13,7 @@
 #' element of vector defines width of main content.
 #' @param logo Filename for logo, which will be placed at RHS of navbar.
 #' File should be included in the `www` folder of the Shiny app. If `NULL`,
-#' no logo is displated.
+#' no logo is displayed. Default is included with this package.
 #' @param logo_style CSS to style the logo.
 #'
 #' @export
@@ -21,7 +21,7 @@
 djpr_page <- function(title,
                       ...,
                       col_widths = c(2, 8, 2),
-                      logo = NULL,
+                      logo = "djprshiny/spp_data_logo.png",
                       logo_style = "float:right;width:83px;height:20px;padding-top:0px;") {
 
   # Add logo to navbar: https://stackoverflow.com/a/50991648/10677884

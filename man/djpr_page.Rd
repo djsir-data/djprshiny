@@ -8,7 +8,7 @@ djpr_page(
   title,
   ...,
   col_widths = c(2, 8, 2),
-  logo = NULL,
+  logo = "djprshiny/spp_data_logo.png",
   logo_style = "float:right;width:83px;height:20px;padding-top:0px;"
 )
 }
@@ -23,7 +23,7 @@ element of vector defines width of main content.}
 
 \item{logo}{Filename for logo, which will be placed at RHS of navbar.
 File should be included in the \code{www} folder of the Shiny app. If \code{NULL},
-no logo is displated.}
+no logo is displayed. Default is included with this package.}
 
 \item{logo_style}{CSS to style the logo.}
 }
