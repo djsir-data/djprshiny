@@ -38,8 +38,7 @@ resizes with the browser window.
 }
 \details{
 \code{djpr_girafe()} should be used within \code{renderGirafe({})}, in place of
-\code{ggiraph::girafe()}, within the \code{server} component of a Shiny app. \strong{NOTE}
-that \code{djpr_girafe()} is memoised on package load - see \code{zzz.R}.
+\code{ggiraph::girafe()}, within the \code{server} component of a Shiny app.
 
 \code{ggiraph_js()} should be called within the Shiny UI, as in
 \code{fluidPage(ggiraph_js())}.

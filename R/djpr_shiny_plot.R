@@ -174,9 +174,6 @@ djpr_plot_server <- function(id,
                              width_percent = 100,
                              height_percent = 100,
                              ...) {
-  djpr_girafe_mem <- memoise::memoise(djpr_girafe,
-    cache = getShinyOption("cache")
-  )
 
   moduleServer(
     id,
@@ -317,8 +314,8 @@ djpr_plot_server <- function(id,
       # Capture changes in browser size -----
 
       observeEvent(plt_change()$width, {
-        # Round down to nearest 50 pixels; prevent small resizing
-        window_size$width <- floor(plt_change()$width / 50) * 50
+        # Round down to nearest 25 pixels; prevent small resizing
+        window_size$width <- floor(plt_change()$width / 25) * 25
       })
 
       observeEvent(plt_change()$height, {
@@ -370,6 +367,8 @@ djpr_plot_server <- function(id,
           girafe_height()
         )
 
+        # Uses version of djprshiny::djpr_girafe() that is memoised on
+        # package load using memoise::memoise() - see zzz.R
         djpr_girafe_mem(
           ggobj = static_plot(),
           width = girafe_width(),

@@ -95,8 +95,7 @@
 #' djpr_girafe(p, 5, 6)
 #' @details
 #' `djpr_girafe()` should be used within `renderGirafe({})`, in place of
-#' `ggiraph::girafe()`, within the `server` component of a Shiny app. **NOTE**
-#' that `djpr_girafe()` is memoised on package load - see `zzz.R`.
+#' `ggiraph::girafe()`, within the `server` component of a Shiny app.
 #'
 #' `ggiraph_js()` should be called within the Shiny UI, as in
 #' `fluidPage(ggiraph_js())`.
