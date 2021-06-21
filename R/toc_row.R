@@ -9,6 +9,8 @@
 #' @param page_id An ID that uniquely identifies the page on which the TOC row
 #' will be placed. Can be any string without spaces, such as "indicators" or
 #' "regional-unemployment.
+#' @param page_title Title of the page. Can include spaces. Used for the
+#' title of the table of contents.
 #' @param toc_space Numeric. Minimum is 1, maximum is 10. Proportion of the
 #' width of the page that should be given to the table of contents, where
 #' the total width of the page = 12. Default is `3`.
@@ -22,6 +24,7 @@
 
 toc_row <- function(...,
                     page_id,
+                    page_title = "",
                     toc_space = 2,
                     right_space = toc_space,
                     max_width_px = 1140) {
@@ -43,12 +46,15 @@ toc_row <- function(...,
       width = toc_space,
       htmltools::br(),
       htmltools::br(),
+      span(page_title,
+           class = "sticky-top",
+           style = "top: 75px; text-decoration: underline"),
+      br(),
       htmltools::tags$nav(
         id = gsub("#", "", toc_id),
         class = "sticky-top"
       ),
       htmltools::tags$script(
-        #                         $scope: $(document.getElementById("', page_id, '").querySelectorAll("h1, h2, h3, h4"))
         paste0('$(function() {
                         var navSelector = "', toc_id, '";
                         var $myNav = $(navSelector);

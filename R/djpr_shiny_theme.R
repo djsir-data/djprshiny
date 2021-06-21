@@ -41,23 +41,23 @@ djpr_shiny_theme <- function(...) {
   ) %>%
     bslib::bs_add_variables(
       "navbar-padding-y" = "spacer / 2",
-      "navbar-brand-font-size" = "1rem",
       "font-family-sans-serif" = '"Roboto", "Helvetica Neue", "Arial", "sans-serif", "sans"'
     ) %>%
     # Hacky way to add spacing around brand:
     # https://stackoverflow.com/questions/60980409/separate-the-title-from-the-tabpanels-in-navbarpage
-    bslib::bs_add_rules(
+    bslib::bs_add_rules(c(
       "
 
       .navbar-brand {
-        font-weight: 500;
-        font-size: 1rem;
+        font-weight: 400;
+        font-size: 0.75rem;
+        line-height: 100%;
         font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans';
       }
 
       .navbar-nav {
-        font-weight: 400;
-        font-size: 0.875rem;
+        font-weight: 500;
+        font-size: 0.925rem;
       }
 
       .navbar.navbar-default {
@@ -69,14 +69,24 @@ djpr_shiny_theme <- function(...) {
         color: #1F1547
       }
 
-      .navbar.navbar-default ul.nav.navbar-nav>li.active>a {
-        color: #1F1547
+      .navbar.navbar-default ul.nav.navbar-nav>li>a {
+        color: #1F1547;
       }
+
+      .navbar.navbar-default ul.nav.navbar-nav>li.active>a {
+        color: #1F1547;
+        text-decoration: underline;
+      }
+
+      .navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
+        color: #2A6FA2 !important;
+        text-decoration: underline !important;
+        }
 
       .nav {
         font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans';
       }
 
       "
-    )
+    ))
 }

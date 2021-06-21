@@ -24,7 +24,7 @@ djpr_plot_title <- function(...,
     style = paste0(
       "font-size: ",
       rel_font_size,
-      "%; font-weight: bold; line-height: 1.2; margin-top: 12px; margin-bottom: 1px;"
+      "%; font-weight: bold; line-height: 1.2; margin-top: 24px; margin-bottom: 1px;"
     )
   )
 }

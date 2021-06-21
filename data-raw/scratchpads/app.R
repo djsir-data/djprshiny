@@ -56,12 +56,11 @@ title_ui <- function(id) {
 }
 
 ui <- djpr_page(
-  title = "Some title",
+  title = shiny::HTML("DJPR Jobs<br>Dashboard"),
   logo = "spp_data_logo.png",
   djpr_tab_panel(
     h1("This is an h1"),
     title = "Overview",
-    br(),
     h2("h2 number 1"),
     focus_box(
       "Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur.",
@@ -90,7 +89,7 @@ ui <- djpr_page(
     # djpr_plot_ui("dual_plots")
   ),
   djpr_tab_panel(
-    title = "Nothing to see here",
+    title = "This is the second tab",
     # logo = "spp_data_logo.png",
     "Blank tab",
     paste0(rep("lorem ipsum ", 10000), collapse = "|"),

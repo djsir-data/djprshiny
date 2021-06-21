@@ -8,6 +8,7 @@ content, and right space}
 toc_row(
   ...,
   page_id,
+  page_title = "",
   toc_space = 2,
   right_space = toc_space,
   max_width_px = 1140
@@ -19,6 +20,9 @@ toc_row(
 \item{page_id}{An ID that uniquely identifies the page on which the TOC row
 will be placed. Can be any string without spaces, such as "indicators" or
 "regional-unemployment.}
+
+\item{page_title}{Title of the page. Can include spaces. Used for the
+title of the table of contents.}
 
 \item{toc_space}{Numeric. Minimum is 1, maximum is 10. Proportion of the
 width of the page that should be given to the table of contents, where

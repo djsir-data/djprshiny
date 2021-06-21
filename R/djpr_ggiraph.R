@@ -86,6 +86,8 @@
 #' @param ggobj A ggplot2 object
 #' @param height height in inches
 #' @param width width in inches
+#' @param ... Additional options;
+#' passed to `options` argument of `ggiraph::girafe`.
 #' @return A `ggiraph::girafe()` object
 #' @examples
 #' library(ggplot2)
@@ -102,7 +104,8 @@
 #'
 djpr_girafe <- function(ggobj,
                         height = 5,
-                        width = 6) {
+                        width = 6,
+                        ...) {
   p <- ggobj
   p$labels$title <- NULL
   p$labels$subtitle <- NULL
@@ -123,7 +126,8 @@ djpr_girafe <- function(ggobj,
         delay_mouseover = 100,
         opacity = 0.9,
         css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif; line-height: 100%;"
-      )
+      ),
+      ...
     ),
     fonts = list(sans = c("Roboto"))
   )

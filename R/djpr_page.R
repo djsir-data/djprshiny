@@ -21,7 +21,7 @@
 djpr_page <- function(title,
                       ...,
                       col_widths = c(2, 8, 2),
-                      logo = "djprshiny/spp_data_logo.png",
+                      logo = file.path("djprshiny", "spp_data_logo.png"),
                       logo_style = "float:right;width:83px;height:20px;padding-top:0px;") {
 
   # Add logo to navbar: https://stackoverflow.com/a/50991648/10677884
@@ -42,10 +42,15 @@ header.append('<div style=\"float:right\"><img src=", logo, " alt=\"alt\" style=
     # shinyWidgets::chooseSliderSkin("Flat",
     #                                color = "#2A6FA2"
     # ),
+    # htmltools::tags$link(
+    #   href = "https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700,700italic",
+    #   rel = "stylesheet",
+    #   type = "text/css"
+    # ),
     htmltools::tags$link(
-      href = "https://fonts.googleapis.com/css?family=Roboto:300,300italic,400,500,600,700,700italic",
       rel = "stylesheet",
-      type = "text/css"
+      type = "text/css",
+      href = "djprshiny/fonts/css/roboto.css"
     ),
     htmltools::tags$head(
       htmltools::tags$style(

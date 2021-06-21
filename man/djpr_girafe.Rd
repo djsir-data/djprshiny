@@ -11,7 +11,7 @@ and https://stackoverflow.com/questions/45191999/ggiraph-plot-doesnt-resize-to-f
 https://stackoverflow.com/questions/36995142/get-the-size-of-the-window-in-shiny
 }
 \usage{
-djpr_girafe(ggobj, height = 5, width = 6)
+djpr_girafe(ggobj, height = 5, width = 6, ...)
 
 ggiraph_js(col_widths = c(2, 8, 2))
 }
@@ -21,6 +21,9 @@ ggiraph_js(col_widths = c(2, 8, 2))
 \item{height}{height in inches}
 
 \item{width}{width in inches}
+
+\item{...}{Additional options;
+passed to \code{options} argument of \code{ggiraph::girafe}.}
 
 \item{col_widths}{numeric vector of length 3; elements correspond to
 Bootstrap widths of 3 columns. Must sum to 12.}

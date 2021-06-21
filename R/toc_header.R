@@ -25,7 +25,8 @@ toc_header <- function() {
 
       tags$style(HTML(".sticky-top {
     top: 100px; /* height of header */
-}"))
+      }
+"))
     ),
     tags$body(
       `data-spy` = "scroll",

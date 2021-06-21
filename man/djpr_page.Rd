@@ -8,7 +8,7 @@ djpr_page(
   title,
   ...,
   col_widths = c(2, 8, 2),
-  logo = "djprshiny/spp_data_logo.png",
+  logo = file.path("djprshiny", "spp_data_logo.png"),
   logo_style = "float:right;width:83px;height:20px;padding-top:0px;"
 )
 }
