@@ -24,7 +24,7 @@ toc_header <- function() {
       #   ),
 
       tags$style(HTML(".sticky-top {
-    top: 100px; /* height of header */
+    top: 110px; /* height of header */
       }
 "))
     ),
