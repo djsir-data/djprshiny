@@ -47,6 +47,9 @@ djpr_shiny_theme <- function(...) {
     # https://stackoverflow.com/questions/60980409/separate-the-title-from-the-tabpanels-in-navbarpage
     bslib::bs_add_rules(c(
       "
+      .shiny-input-checkboxgroup .checkbox-inline {
+        font-size: 0.75rem;
+      }
 
       .navbar-brand {
         font-weight: 400;

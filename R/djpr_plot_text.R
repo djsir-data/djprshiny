@@ -19,12 +19,12 @@
 #' @export
 
 djpr_plot_title <- function(...,
-                            rel_font_size = 150) {
+                            rel_font_size = 129) {
   htmltools::h3(...,
     style = paste0(
       "font-size: ",
       rel_font_size,
-      "%; font-weight: bold; line-height: 1.2; margin-top: 24px; margin-bottom: 1px;"
+      "%; font-weight: bold; line-height: 1.2; margin-top: 14px; margin-bottom: 1px;"
     )
   )
 }
