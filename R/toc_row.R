@@ -46,7 +46,7 @@ toc_row <- function(...,
       width = toc_space,
       span(page_title,
            class = "sticky-top",
-           style = "top: 75px; text-decoration: underline; display: block"),
+           style = "top: 75px; text-decoration: underline; text-underline-offset: 0.3em; display: block"),
       htmltools::tags$nav(
         id = gsub("#", "", toc_id),
         class = "sticky-top"

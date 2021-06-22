@@ -51,6 +51,7 @@ djpr_shiny_theme <- function(...) {
         font-size: 0.75rem;
       }
 
+
       .navbar-brand {
         font-weight: 400;
         font-size: 0.75rem;
@@ -79,10 +80,13 @@ djpr_shiny_theme <- function(...) {
       .navbar.navbar-default ul.nav.navbar-nav>li.active>a {
         color: #1F1547;
         text-decoration: underline;
+        text-underline-offset: 0.3em;
+
       }
 
       .navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
         text-decoration: underline !important;
+        text-underline-offset: 0.3em;
         }
 
       .nav {
