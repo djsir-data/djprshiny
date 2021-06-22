@@ -56,7 +56,7 @@ djpr_shiny_theme <- function(...) {
       }
 
       .navbar-nav {
-        font-weight: 500;
+        font-weight: 400;
         font-size: 0.925rem;
       }
 
@@ -79,7 +79,6 @@ djpr_shiny_theme <- function(...) {
       }
 
       .navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
-        color: #2A6FA2 !important;
         text-decoration: underline !important;
         }
 

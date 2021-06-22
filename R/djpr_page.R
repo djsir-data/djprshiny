@@ -72,6 +72,7 @@ header.append('<div style=\"float:right\"><img src=", logo, " alt=\"alt\" style=
       lang = "en",
       position = "fixed-top",
       collapsible = TRUE,
+      windowTitle = gsub("<br>", " ", title),
       ...,
       # Add logo
       logo_panel,
