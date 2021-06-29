@@ -414,6 +414,8 @@ djpr_plot_server <- function(id,
         content = function(file) {
           req(static_plot())
           plot <- static_plot()
+          plot <- djprtheme::gg_font_change(plot, font = "Arial")
+          plot <- plot + theme(text = element_text(family = "Arial"))
 
           djprtheme::djpr_save_pptx(
             destination = file,
