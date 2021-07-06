@@ -13,7 +13,8 @@ djpr_ts_linechart(
   label_num = round(.data$value, 1),
   y_labels = ggplot2::waiver(),
   hline = NULL,
-  n_x_breaks = 5
+  n_x_breaks = 5,
+  x_expand_mult = c(0, 0.18)
 )
 }
 \arguments{
@@ -49,6 +50,9 @@ will be added at y = 0.}
 
 \item{n_x_breaks}{Number of 'pretty' breaks on the x (date) axis.
 Passed to \code{scales::breaks_pretty()}.}
+
+\item{x_expand_mult}{Length one or two numeric vector of padding to be added
+to the horizontal axis; passed to the \code{expand} argument of \code{scale_x_date}}
 }
 \value{
 A ggplot2 object

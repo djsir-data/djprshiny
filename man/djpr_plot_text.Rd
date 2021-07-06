@@ -8,7 +8,7 @@
 Creates container
 Currently implemented via inline CSS.}
 \usage{
-djpr_plot_title(..., rel_font_size = 150)
+djpr_plot_title(..., rel_font_size = 129)
 
 djpr_plot_subtitle(..., rel_font_size = 100)
 

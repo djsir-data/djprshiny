@@ -25,6 +25,8 @@
 #' will be added at y = 0.
 #' @param n_x_breaks Number of 'pretty' breaks on the x (date) axis.
 #' Passed to `scales::breaks_pretty()`.
+#' @param x_expand_mult Length one or two numeric vector of padding to be added
+#' to the horizontal axis; passed to the `expand` argument of `scale_x_date`
 #' @return A ggplot2 object
 #' @details If a column called 'tooltip' is present, it will be used as the
 #' ggiraph tooltip; if not, one will be created.
@@ -56,7 +58,8 @@ djpr_ts_linechart <- function(data,
                               label_num = round(.data$value, 1),
                               y_labels = ggplot2::waiver(),
                               hline = NULL,
-                              n_x_breaks = 5) {
+                              n_x_breaks = 5,
+                              x_expand_mult = c(0, 0.18)) {
   date_limits <- c(
     min(data$date),
     max(data$date)
@@ -153,7 +156,7 @@ djpr_ts_linechart <- function(data,
       ) +
       scale_x_date(
         expand = expansion(
-          mult = c(0, 0.18)
+          mult = x_expand_mult
         ),
         breaks = x_breaks,
         date_labels = "%b\n%Y"

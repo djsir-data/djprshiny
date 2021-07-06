@@ -1,6 +1,6 @@
 Package: djprshiny
 Title: Common Functions For DJPR Shiny Apps
-Version: 0.0.3.906
+Version: 0.0.3.905
 Authors@R: 
     c(
     person(given = "Matt",
@@ -21,7 +21,7 @@ RoxygenNote: 7.1.1
 Imports: 
     bslib (>= 0.2.5.1),
     djprdashdata (>= 0.0.0.9000),
-    djprtheme (>= 0.0.2),
+    djprtheme (>= 0.0.2.902),
     dplyr (>= 1.0.5),
     ggiraph (>= 0.7.10),
     ggplot2 (>= 3.3.3),
@@ -38,7 +38,8 @@ Imports:
     stringr,
     tibble
 Suggests: 
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    vdiffr (>= 1.0.0)
 Config/testthat/edition: 3
 Remotes: 
     djpr-data/djprtheme,
