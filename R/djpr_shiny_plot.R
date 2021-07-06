@@ -85,7 +85,8 @@ djpr_plot_ui <- function(id,
         6,
         uiOutput(NS(id, "check_box"))
       )
-    )
+    ),
+    br()
   )
 }
 
