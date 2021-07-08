@@ -404,7 +404,8 @@ djpr_plot_server <- function(id,
 
           utils::write.csv(
             x = data,
-            file = file
+            file = file,
+            row.names = FALSE
           )
         }
       )
