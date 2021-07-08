@@ -400,6 +400,7 @@ djpr_plot_server <- function(id,
         content = function(file) {
           req(static_plot())
           data <- djprtheme::get_plot_data(static_plot())
+          data <- dplyr::select(data, -.data$tooltip)
 
           utils::write.csv(
             x = data,
