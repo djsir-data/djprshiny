@@ -4,7 +4,8 @@
 library(gfonts)
 font_dir <- "inst/www/fonts"
 if (!dir.exists(font_dir)) dir.create(font_dir, recursive = T)
-download_font("roboto", output_dir = font_dir)
-
+# download_font("roboto", output_dir = font_dir)
+# download_font("roboto-slab", output_dir = font_dir)
 
 # setup_font("roboto", font_dir)
+# setup_font("roboto-slab", font_dir)

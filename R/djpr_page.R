@@ -52,6 +52,11 @@ header.append('<div style=\"float:right\"><img src=", logo, " alt=\"alt\" style=
       type = "text/css",
       href = "djprshiny/fonts/css/roboto.css"
     ),
+    htmltools::tags$link(
+      rel = "stylesheet",
+      type = "text/css",
+      href = "djprshiny/fonts/css/roboto-slab.css"
+    ),
     htmltools::tags$head(
       htmltools::tags$style(
         ".leaflet .legend {

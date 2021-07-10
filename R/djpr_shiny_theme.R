@@ -55,6 +55,10 @@ djpr_shiny_theme <- function(...) {
         color: #1F1547;
       }
 
+      .ReactTable .rt-table {
+        color: #1F1547;
+      }
+
       .navbar-brand {
         font-weight: 400;
         font-size: 0.75rem;
