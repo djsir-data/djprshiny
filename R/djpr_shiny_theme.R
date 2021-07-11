@@ -73,7 +73,7 @@ djpr_shiny_theme <- function(...) {
 
       .navbar.navbar-default {
         border-bottom-color: rgba(0, 0, 0, 0.1);
-        box-shadow: 0 0 transparent,0 0 transparent,1px 3px 6px #00000010;
+        box-shadow: 0 0 transparent,0 0 transparent,1px 2px 4px #00000010;
       }
 
       .navbar.navbar-default .navbar-brand {
@@ -87,13 +87,13 @@ djpr_shiny_theme <- function(...) {
       .navbar.navbar-default ul.nav.navbar-nav>li.active>a {
         color: #1F1547;
         text-decoration: underline;
-        text-underline-offset: 0.3em;
+        text-underline-offset: 0.5em;
 
       }
 
       .navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
         text-decoration: underline !important;
-        text-underline-offset: 0.3em;
+        text-underline-offset: 0.5em;
         }
 
       .nav {
