@@ -3,6 +3,7 @@
 * set font to Arial before downloading chart with djpr_plot_server
 * x_expand_mult argument added to djpr_ts_linechart()
 * tooltip column excluded from downloaded data
+* use djprtheme::remove_labs() to remove labels from plots in djpr_girafe()
 
 # djprshiny 0.0.2.900
 * modifications to plot_server to enable nested modules

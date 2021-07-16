@@ -29,7 +29,7 @@ passed to \code{options} argument of \code{ggiraph::girafe}.}
 Bootstrap widths of 3 columns. Must sum to 12.}
 }
 \value{
-A \code{ggiraph::girafe()} object
+A \code{ggiraph::girafe()} object.
 }
 \description{
 As a Shiny window  (html container) is resized,
@@ -40,6 +40,9 @@ their aspect ratio. These functions render these objects in a way that
 resizes with the browser window.
 }
 \details{
+Note that the title, subtitle, and caption are removed from \code{ggobj} using
+\code{djprtheme::remove_labs()}.
+
 \code{djpr_girafe()} should be used within \code{renderGirafe({})}, in place of
 \code{ggiraph::girafe()}, within the \code{server} component of a Shiny app.
 
@@ -117,7 +120,8 @@ shinyApp(ui, server)
 }
 library(ggplot2)
 p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
-  geom_point()
+  geom_point() +
+  labs(title = "Title will be removed in girafe plot")
 
 djpr_girafe(p, 5, 6)
 }

@@ -88,14 +88,18 @@
 #' @param width width in inches
 #' @param ... Additional options;
 #' passed to `options` argument of `ggiraph::girafe`.
-#' @return A `ggiraph::girafe()` object
+#' @return A `ggiraph::girafe()` object.
 #' @examples
 #' library(ggplot2)
 #' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
-#'   geom_point()
+#'   geom_point() +
+#'   labs(title = "Title will be removed in girafe plot")
 #'
 #' djpr_girafe(p, 5, 6)
 #' @details
+#' Note that the title, subtitle, and caption are removed from `ggobj` using
+#' `djprtheme::remove_labs()`.
+#'
 #' `djpr_girafe()` should be used within `renderGirafe({})`, in place of
 #' `ggiraph::girafe()`, within the `server` component of a Shiny app.
 #'
@@ -107,12 +111,7 @@ djpr_girafe <- function(ggobj,
                         width = 6,
                         ...) {
   p <- ggobj
-  p$labels$title <- NULL
-  p$labels$subtitle <- NULL
-  p$labels$caption <- NULL
-  p$patches$annotation$title <- NULL
-  p$patches$annotation$subtitle <- NULL
-  p$patches$annotation$caption <- NULL
+  p <- djprtheme::remove_labs(p)
 
   ggiraph::girafe(
     ggobj = p,
