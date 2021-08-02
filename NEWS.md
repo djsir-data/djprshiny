@@ -6,6 +6,8 @@
 * use djprtheme::remove_labs() to remove labels from plots in djpr_girafe()
 * ensure 'tooltip' column is only removed where it exists, when saving chart data
 using download button
+* add group_var argument to djpr_ts_linechart
+* ensure function is included as a cache key within djpr_plot_server
 
 # djprshiny 0.0.2.900
 * modifications to plot_server to enable nested modules

@@ -246,7 +246,8 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args()
+          plot_args(),
+          plot_function
         )
 
       # Create date slider UI ------

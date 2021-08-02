@@ -39,14 +39,6 @@ header.append('<div style=\"float:right\"><img src=", logo, " alt=\"alt\" style=
   shiny::fluidPage(
     theme = djpr_shiny_theme(),
     ggiraph_js(col_widths = col_widths),
-    # shinyWidgets::chooseSliderSkin("Flat",
-    #                                color = "#2A6FA2"
-    # ),
-    # htmltools::tags$link(
-    #   href = "https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700,700italic",
-    #   rel = "stylesheet",
-    #   type = "text/css"
-    # ),
     htmltools::tags$link(
       rel = "stylesheet",
       type = "text/css",
