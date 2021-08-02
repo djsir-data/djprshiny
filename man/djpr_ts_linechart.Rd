@@ -8,6 +8,7 @@ djpr_ts_linechart(
   data,
   y_var = .data$value,
   col_var = .data$series,
+  group_var = col_var,
   dot = TRUE,
   label = TRUE,
   label_num = round(.data$value, 1),
@@ -31,6 +32,9 @@ defauly is \code{value}.}
 
 \item{col_var}{Variable in \code{data} to map to the colour aesthetic;
 default is \code{series}.}
+
+\item{group_var}{Variable in \code{data} to map to the group aesthetic;
+default is whatever is supplied to \code{col_var}}
 
 \item{dot}{Logical; \code{TRUE} by default. When \code{TRUE}, a filled dot will be shown on the
 most recent data point.}
@@ -66,16 +70,13 @@ ggiraph tooltip; if not, one will be created.
 }
 \examples{
 \dontrun{
-library(tidyverse)
-library(readabs)
+library(dplyr)
+library(ggplot2)
 
-data <- readabs::read_abs("6202.0", "5")
+data <- ggplot2::economics_long
 
 data <- data \%>\%
-  dplyr::filter(
-    grepl("Employment to population ratio", series),
-    series_type == "Seasonally Adjusted"
-  )
+  dplyr::rename(series = variable)
 
 djpr_ts_linechart(data = data)
 }
