@@ -19,7 +19,7 @@
 #' @param label Logical; `TRUE` by default. When `TRUE`, a text label will be
 #' added to the right of the most recent data point.
 #' @param label_num Variable name (or expression) defining the label to be placed
-#' on the chart. Default is `round(value, 1)`. Ignored if `label` is `FALSE`.
+#' on the chart. Default is `round2(value, 1)`. Ignored if `label` is `FALSE`.
 #' @param y_labels Supplied to the `labels` argument of
 #' `ggplot2::scale_y_continuous()`
 #' @param hline Numeric. If non-`NULL` (the default), a horizontal line will
@@ -55,7 +55,7 @@ djpr_ts_linechart <- function(data,
                               group_var = col_var,
                               dot = TRUE,
                               label = TRUE,
-                              label_num = round(.data$value, 1),
+                              label_num = round2(.data$value, 1),
                               y_labels = ggplot2::waiver(),
                               hline = NULL,
                               n_x_breaks = 5,
@@ -83,7 +83,7 @@ djpr_ts_linechart <- function(data,
           "%b %Y"
         ),
         "\n",
-        round(.data$value, 1)
+        round2(.data$value, 1)
       ))
   }
 

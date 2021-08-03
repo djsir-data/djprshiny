@@ -11,7 +11,7 @@ djpr_ts_linechart(
   group_var = col_var,
   dot = TRUE,
   label = TRUE,
-  label_num = round(.data$value, 1),
+  label_num = round2(.data$value, 1),
   y_labels = ggplot2::waiver(),
   hline = NULL,
   n_x_breaks = 5,
@@ -43,7 +43,7 @@ most recent data point.}
 added to the right of the most recent data point.}
 
 \item{label_num}{Variable name (or expression) defining the label to be placed
-on the chart. Default is \code{round(value, 1)}. Ignored if \code{label} is \code{FALSE}.}
+on the chart. Default is \code{round2(value, 1)}. Ignored if \code{label} is \code{FALSE}.}
 
 \item{y_labels}{Supplied to the \code{labels} argument of
 \code{ggplot2::scale_y_continuous()}}
