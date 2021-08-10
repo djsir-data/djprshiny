@@ -405,6 +405,7 @@ djpr_plot_server <- function(id,
       # Create server-side logic for download button -----
       output$download_data <- downloadHandler(
         filename = function() {
+          req(static_plot_data())
           paste0(id, "_data.csv")
         },
         content = function(file) {
