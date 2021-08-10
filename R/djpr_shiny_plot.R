@@ -208,9 +208,9 @@ djpr_plot_server <- function(id,
       })
 
       # Create a subset of plot data to use for caching ----
-      first_col <- reactive({
-        plot_data()[[1]]
-      })
+      # first_col <- reactive({
+      #   plot_data()[[1]]
+      # })
 
       # Evaluate arguments to plot function ----
       # Need to pass reactive arguments in ...
@@ -373,10 +373,11 @@ djpr_plot_server <- function(id,
         )
       }) %>%
         shiny::bindCache(
-          first_col(),
-          plot_args(),
+          # first_col(),
+          # plot_args(),
           plt_change()$width,
           plt_change()$height,
+          static_plot(),
           id
         )
 
