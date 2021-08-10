@@ -242,13 +242,22 @@ djpr_plot_server <- function(id,
           args = args_with_data
         ) +
           theme(text = element_text(family = "Roboto"))
-      }) %>%
-        shiny::bindCache(
-          id,
-          first_col(),
-          plot_args(),
-          plot_function
-        )
+      })
+      # Don't cache static_plot() as this breaks data download
+
+      # Extract data from static plot ----
+      static_plot_data <- reactive({
+        req(static_plot())
+
+        plot <- static_plot()
+        data <- djprtheme::get_plot_data(plot)
+
+        if ("tooltip" %in% names(data)) {
+          data <- dplyr::select(data, -.data$tooltip)
+        }
+
+        data
+      })
 
       # Create date slider UI ------
       output$date_slider <- renderUI({
@@ -399,12 +408,9 @@ djpr_plot_server <- function(id,
           paste0(id, "_data.csv")
         },
         content = function(file) {
-          req(static_plot())
-          data <- djprtheme::get_plot_data(static_plot())
+          req(static_plot_data())
 
-          if ("tooltip" %in% names(data)) {
-            data <- dplyr::select(data, -.data$tooltip)
-          }
+          data <- static_plot_data()
 
           utils::write.csv(
             x = data,

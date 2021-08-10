@@ -19,3 +19,11 @@ test_that("djpr_ts_linechart() works with manual expansion", {
 
   vdiffr::expect_doppelganger("time series chart with more x space", p_exp)
 })
+
+test_that("djprtheme::get_plot_data() gets data from djpr_ts_linechart() plot", {
+  p <- djpr_ts_linechart(df)
+
+  p_data <- djprtheme::get_plot_data(p)
+
+  expect_s3_class(p_data, "data.frame")
+})

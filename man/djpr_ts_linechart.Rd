@@ -8,7 +8,7 @@ djpr_ts_linechart(
   data,
   y_var = .data$value,
   col_var = .data$series,
-  group_var = col_var,
+  group_var = .data$series,
   dot = TRUE,
   label = TRUE,
   label_num = round2(.data$value, 1),

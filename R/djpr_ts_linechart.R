@@ -52,7 +52,7 @@
 djpr_ts_linechart <- function(data,
                               y_var = .data$value,
                               col_var = .data$series,
-                              group_var = col_var,
+                              group_var = NULL,
                               dot = TRUE,
                               label = TRUE,
                               label_num = round2(.data$value, 1),
@@ -87,13 +87,22 @@ djpr_ts_linechart <- function(data,
       ))
   }
 
-  p <- data %>%
-    ggplot(aes(
-      x = .data$date,
-      y = {{ y_var }},
-      col = {{ col_var }},
-      group = {{ group_var }}
-    ))
+  if (is.null(group_var)) {
+    p <- data %>%
+      ggplot(aes(
+        x = .data$date,
+        y = {{ y_var }},
+        col = {{ col_var }}
+      ))
+  } else {
+    p <- data %>%
+      ggplot(aes(
+        x = .data$date,
+        y = {{ y_var }},
+        col = {{ col_var }},
+        group = {{ group_var }}
+      ))
+  }
 
   if (!is.null(hline)) {
     p <- p +
