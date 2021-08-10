@@ -245,20 +245,6 @@ djpr_plot_server <- function(id,
       })
       # Don't cache static_plot() as this breaks data download
 
-      # Extract data from static plot ----
-      static_plot_data <- reactive({
-        req(static_plot())
-
-        plot <- static_plot()
-        data <- djprtheme::get_plot_data(plot)
-
-        if ("tooltip" %in% names(data)) {
-          data <- dplyr::select(data, -.data$tooltip)
-        }
-
-        data
-      })
-
       # Create date slider UI ------
       output$date_slider <- renderUI({
         if (date_slider == TRUE) {
@@ -397,26 +383,33 @@ djpr_plot_server <- function(id,
       # Create download button UI -----
       if (download_button) {
         output$download_dropdown <- renderUI({
-          req(static_plot_data())
+          req(static_plot(), session$ns)
           download_dropdown(session$ns)
         })
       }
 
       # Create server-side logic for download button -----
       output$download_data <- downloadHandler(
-        filename = function() {
-          req(static_plot_data())
-          paste0(id, "_data.csv")
-        },
+
+        filename = paste0(id, "_data.csv"),
+
         content = function(file) {
-          req(static_plot_data())
+          req(static_plot())
+
+          plot <- static_plot()
+          data <- djprtheme::get_plot_data(plot)
+
+          if ("tooltip" %in% names(data)) {
+            data <- dplyr::select(data, -.data$tooltip)
+          }
 
           utils::write.csv(
-            x = static_plot_data(),
+            x = data,
             file = file,
             row.names = FALSE
           )
         },
+
         contentType = "text/csv"
       )
 
