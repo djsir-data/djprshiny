@@ -397,7 +397,7 @@ djpr_plot_server <- function(id,
       # Create download button UI -----
       if (download_button) {
         output$download_dropdown <- renderUI({
-          req(static_plot())
+          req(static_plot_data())
           download_dropdown(session$ns)
         })
       }
@@ -411,14 +411,13 @@ djpr_plot_server <- function(id,
         content = function(file) {
           req(static_plot_data())
 
-          data <- static_plot_data()
-
           utils::write.csv(
-            x = data,
+            x = static_plot_data(),
             file = file,
             row.names = FALSE
           )
-        }
+        },
+        contentType = "text/csv"
       )
 
       output$download_plot <- downloadHandler(
