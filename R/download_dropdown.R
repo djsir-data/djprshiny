@@ -4,12 +4,11 @@
 #' a Shiny module.
 #'
 #' @export
-#' @param session_ns Value should be `session$ns`. This is supplied rather than
-#' an `id` directly, as it enables nesting Shiny modules that generate UI.
+#' @param id Shiny module id
 #' @param ... arguments passed to `shinyWidgets::dropdownButton()`
 #'
 
-download_dropdown <- function(session_ns, ...) {
+download_ui <- function(id, ...) {
   shinyWidgets::dropdownButton(
     circle = FALSE,
     tooltip = FALSE,
@@ -17,13 +16,13 @@ download_dropdown <- function(session_ns, ...) {
     status = "default bg-white",
     inline = TRUE,
     icon = shiny::icon("arrow-circle-down"),
-    shiny::downloadButton(session_ns("download_data"),
+    shiny::downloadButton(NS(id, "download_data"),
       "Download data",
       style = "font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
       class = "bg-white",
       icon = shiny::icon("arrow-circle-down")
     ),
-    shiny::downloadButton(session_ns("download_plot"),
+    shiny::downloadButton(NS(id, "download_plot"),
       "Download plot",
       style = "font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
       class = "bg-white",
@@ -33,3 +32,52 @@ download_dropdown <- function(session_ns, ...) {
     ...
   )
 }
+
+#' Server side of download_ui Shiny module
+#' @param id Module id
+#' @param plot A ggplot2 object
+#' @param plot_name Character vector, to be used in the filename of the
+#' saved data/plot
+download_server <- function(id, plot, plot_name = "plot") {
+  moduleServer(id, function(input, output, session) {
+    output$download_data <- downloadHandler(
+
+      filename = paste0(plot_name, "_data.csv"),
+
+      content = function(file) {
+        req(plot)
+
+        data <- djprtheme::get_plot_data(plot)
+
+        if ("tooltip" %in% names(data)) {
+          data <- dplyr::select(data, -.data$tooltip)
+        }
+
+        utils::write.csv(
+          x = data,
+          file = file,
+          row.names = FALSE
+        )
+      },
+
+      contentType = "text/csv"
+    )
+
+    output$download_plot <- downloadHandler(
+      filename = function() {
+        paste0(plot_name, "_plot.pptx")
+      },
+      content = function(file) {
+        plot <- djprtheme::gg_font_change(plot, font = "Arial")
+        plot <- plot + theme(text = element_text(family = "Arial"))
+
+        djprtheme::djpr_save_pptx(
+          destination = file,
+          plot = plot
+        )
+      }
+    )
+
+  })
+}
+

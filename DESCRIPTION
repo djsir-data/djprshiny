@@ -1,6 +1,6 @@
 Package: djprshiny
 Title: Common Functions For DJPR Shiny Apps
-Version: 0.0.3.918
+Version: 0.0.4.900
 Authors@R: 
     c(
     person(given = "Matt",
@@ -28,9 +28,7 @@ Imports:
     ggrepel (>= 0.9.1),
     htmltools (>= 0.5.1.1),
     memoise (>= 2.0.0),
-    patchwork (>= 1.1.1),
     purrr,
-    showtext,
     rlang (>= 0.4.11),
     shiny (>= 1.6.0),
     shinycssloaders,
@@ -39,7 +37,9 @@ Imports:
     tibble
 Suggests: 
     testthat (>= 3.0.0),
-    vdiffr (>= 1.0.0)
+    vdiffr (>= 1.0.0),
+    showtext,
+    patchwork
 Config/testthat/edition: 3
 Remotes: 
     djpr-data/djprtheme,

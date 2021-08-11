@@ -72,7 +72,8 @@ djpr_plot_ui <- function(id,
       ),
       column(5,
         br(),
-        uiOutput(NS(id, "download_dropdown")),
+        # download_ui(NS(id, "download_dropdown")),
+        uiOutput(NS(id, "dl_button")),
         align = "right"
       )
     ),
@@ -208,9 +209,9 @@ djpr_plot_server <- function(id,
       })
 
       # Create a subset of plot data to use for caching ----
-      # first_col <- reactive({
-      #   plot_data()[[1]]
-      # })
+      first_col <- reactive({
+        plot_data()[[1]]
+      })
 
       # Evaluate arguments to plot function ----
       # Need to pass reactive arguments in ...
@@ -242,8 +243,13 @@ djpr_plot_server <- function(id,
           args = args_with_data
         ) +
           theme(text = element_text(family = "Roboto"))
-      })
-      # Don't cache static_plot() as this breaks data download
+      }) %>%
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args(),
+          plot_function
+        )
 
       # Create date slider UI ------
       output$date_slider <- renderUI({
@@ -373,63 +379,21 @@ djpr_plot_server <- function(id,
         )
       }) %>%
         shiny::bindCache(
-          # first_col(),
-          # plot_args(),
+          first_col(),
+          plot_args(),
           plt_change()$width,
           plt_change()$height,
-          static_plot(),
+          # static_plot(),
           id
         )
 
-      # Create download button UI -----
       if (download_button) {
-        output$download_dropdown <- renderUI({
-          req(static_plot(), session$ns)
-          download_dropdown(session$ns)
+        output$dl_button <- renderUI({
+          download_ui(session$ns("download_dropdown"))
         })
       }
 
-      # Create server-side logic for download button -----
-      output$download_data <- downloadHandler(
-
-        filename = paste0(id, "_data.csv"),
-
-        content = function(file) {
-          req(static_plot())
-
-          plot <- static_plot()
-          data <- djprtheme::get_plot_data(plot)
-
-          if ("tooltip" %in% names(data)) {
-            data <- dplyr::select(data, -.data$tooltip)
-          }
-
-          utils::write.csv(
-            x = data,
-            file = file,
-            row.names = FALSE
-          )
-        },
-
-        contentType = "text/csv"
-      )
-
-      output$download_plot <- downloadHandler(
-        filename = function() {
-          paste0(id, "_plot.pptx")
-        },
-        content = function(file) {
-          req(static_plot())
-          plot <- static_plot()
-          plot <- djprtheme::gg_font_change(plot, font = "Arial")
-          plot <- plot + theme(text = element_text(family = "Arial"))
-
-          djprtheme::djpr_save_pptx(
-            destination = file,
-            plot = plot
-          )
-        }
-      )
+      download_server("download_dropdown", static_plot(), plot_name = id)
     }
   )
 }
