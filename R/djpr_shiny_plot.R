@@ -393,7 +393,7 @@ djpr_plot_server <- function(id,
         })
       }
 
-      download_server("download_dropdown", static_plot())
+      download_server("download_dropdown", static_plot(), plot_name = id)
     }
   )
 }

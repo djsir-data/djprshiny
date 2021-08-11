@@ -36,11 +36,11 @@ download_ui <- function(id, ...) {
 #' Server side of download_ui Shiny module
 #' @param id Module id
 #' @param plot A ggplot2 object
-download_server <- function(id, plot) {
+download_server <- function(id, plot, plot_name = "plot") {
   moduleServer(id, function(input, output, session) {
     output$download_data <- downloadHandler(
 
-      filename = paste0(id, "_data.csv"),
+      filename = paste0(plot_name, "_data.csv"),
 
       content = function(file) {
         req(plot)
@@ -63,7 +63,7 @@ download_server <- function(id, plot) {
 
     output$download_plot <- downloadHandler(
       filename = function() {
-        paste0(id, "_plot.pptx")
+        paste0(plot_name, "_plot.pptx")
       },
       content = function(file) {
         plot <- djprtheme::gg_font_change(plot, font = "Arial")
