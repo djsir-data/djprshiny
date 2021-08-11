@@ -243,13 +243,13 @@ djpr_plot_server <- function(id,
           args = args_with_data
         ) +
           theme(text = element_text(family = "Roboto"))
-      }) #%>%
-        # shiny::bindCache(
-        #   id,
-        #   first_col(),
-        #   plot_args(),
-        #   plot_function
-        # )
+      }) %>%
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args(),
+          plot_function
+        )
 
       # Create date slider UI ------
       output$date_slider <- renderUI({
