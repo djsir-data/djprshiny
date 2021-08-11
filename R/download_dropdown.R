@@ -36,6 +36,8 @@ download_ui <- function(id, ...) {
 #' Server side of download_ui Shiny module
 #' @param id Module id
 #' @param plot A ggplot2 object
+#' @param plot_name Character vector, to be used in the filename of the
+#' saved data/plot
 download_server <- function(id, plot, plot_name = "plot") {
   moduleServer(id, function(input, output, session) {
     output$download_data <- downloadHandler(

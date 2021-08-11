@@ -4,12 +4,15 @@
 \alias{download_server}
 \title{Server side of download_ui Shiny module}
 \usage{
-download_server(id, plot)
+download_server(id, plot, plot_name = "plot")
 }
 \arguments{
 \item{id}{Module id}
 
 \item{plot}{A ggplot2 object}
+
+\item{plot_name}{Character vector, to be used in the filename of the
+saved data/plot}
 }
 \description{
 Server side of download_ui Shiny module
