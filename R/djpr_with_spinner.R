@@ -20,7 +20,7 @@ djpr_with_spinner <- function(ui_element,
                               type = 8,
                               colour = "#2A6FA2",
                               size = 0.8,
-                              hide.ui = FALSE,
+                              hide.ui = TRUE,
                               ...) {
   shinycssloaders::withSpinner(
     ui_element = ui_element,
