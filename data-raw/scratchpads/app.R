@@ -73,7 +73,7 @@ ui <- djpr_page(
         ),
         column(
           6,
-          djpr_plot_ui("dual_plots", interactive = FALSE) %>% djpr_with_spinner()
+          djpr_plot_ui("dual_plots") %>% djpr_with_spinner()
         )
       )
     ),

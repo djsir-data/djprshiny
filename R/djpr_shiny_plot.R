@@ -4,9 +4,6 @@
 #' Takes as input a function to create a ggplot2 or ggirafe object
 #' @param id a Shiny `outputId` specific to the individual plot.
 #' @param height Height of container
-#' @param interactive logical; `TRUE` by default. When `TRUE`, plot will be
-#' rendered as an interactive `ggiraph` object; when `FALSE` a static ggplot
-#' will be rendered.
 #' @return A `shiny.tag` object creating a plot environment, with
 #' labels (title, subtitle, caption) as HTML text, a download button,
 #' and optional input controls.
@@ -56,27 +53,13 @@
 #' }
 #'
 djpr_plot_ui <- function(id,
-                         height = "400px",
-                         interactive = TRUE) {
-
-  if (interactive) {
-    plot_ui <- div(
-      ggiraph::girafeOutput(NS(id, "plot"),
-                            width = "100%",
-                            height = height
-      )
-    )
-  } else {
-    plot_ui <- div(
-      plotOutput(NS(id, "static_plot"))
-    )
-  }
+                         height = "400px") {
 
   tagList(
     textOutput(NS(id, "title"), container = djpr_plot_title),
     textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
-    plot_ui %>%
-      djpr_with_spinner(),
+    uiOutput(NS(id, "plot")) %>%
+      djpr_with_spinner(proxy.height = height),
     fluidRow(
       column(
         7,
@@ -85,7 +68,6 @@ djpr_plot_ui <- function(id,
       ),
       column(5,
         br(),
-        # download_ui(NS(id, "download_dropdown")),
         uiOutput(NS(id, "dl_button")),
         align = "right"
       )
@@ -268,12 +250,6 @@ djpr_plot_server <- function(id,
           plot_function
         )
 
-      if (!interactive) {
-        output$static_plot <- renderPlot({
-          djprtheme::remove_labs(static_plot())
-        })
-      }
-
       # Create date slider UI ------
       output$date_slider <- renderUI({
         if (date_slider == TRUE) {
@@ -332,12 +308,13 @@ djpr_plot_server <- function(id,
       }) %>%
         shiny::bindCache(static_plot())
 
+
+      # Capture changes in browser size -----
+
       window_size <- reactiveValues(
         width = 1140,
         height = 400
       )
-
-      # Capture changes in browser size -----
 
       observeEvent(plt_change()$width, {
         # Round down to nearest 25 pixels; prevent small resizing
@@ -386,8 +363,19 @@ djpr_plot_server <- function(id,
         )
 
       # Render plot as ggiraph::girafe object (interactive htmlwidget) -----
-      if (interactive) {
-      output$plot <- ggiraph::renderGirafe({
+      rendered_static <- reactive({
+        output$static_plot <- renderPlot({
+        djprtheme::remove_labs(static_plot())
+      })
+
+        plotOutput(NS(id, 'static_plot'),
+                   # width = paste0(width_percent, "%"),
+                   height = paste0(400 * (height_percent / 100), "px"))
+      })
+
+
+      rendered_girafe <- reactive({
+        output$girafe_plot <- ggiraph::renderGirafe({
         req(
           static_plot(),
           girafe_width(),
@@ -407,10 +395,19 @@ djpr_plot_server <- function(id,
           plot_args(),
           plt_change()$width,
           plt_change()$height,
-          # static_plot(),
           id
         )
-      }
+
+        ggiraph::girafeOutput(NS(id, 'girafe_plot'))
+    })
+
+      output$plot <- renderUI({
+        if (interactive) {
+          rendered_girafe()
+        } else {
+        rendered_static()
+        }
+      })
 
       if (download_button) {
         output$dl_button <- renderUI({
