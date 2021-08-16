@@ -58,8 +58,9 @@ djpr_plot_ui <- function(id,
   tagList(
     textOutput(NS(id, "title"), container = djpr_plot_title),
     textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
-    uiOutput(NS(id, "plot")) %>%
-      djpr_with_spinner(proxy.height = height),
+    uiOutput(NS(id, "plot"), height = height) %>%
+      djpr_with_spinner(proxy.height = height,
+                        hide.ui = TRUE),
     fluidRow(
       column(
         7,
@@ -364,9 +365,13 @@ djpr_plot_server <- function(id,
 
       # Render plot as ggiraph::girafe object (interactive htmlwidget) -----
       rendered_static <- reactive({
-        output$static_plot <- renderPlot({
-        djprtheme::remove_labs(static_plot())
-      })
+        output$static_plot <- renderPlot(
+          expr = {
+            djprtheme::remove_labs(static_plot())
+            },
+          width = "auto",
+          height = "auto"
+      )
 
         plotOutput(NS(id, 'static_plot'),
                    # width = paste0(width_percent, "%"),
@@ -398,14 +403,16 @@ djpr_plot_server <- function(id,
           id
         )
 
-        ggiraph::girafeOutput(NS(id, 'girafe_plot'))
+        ggiraph::girafeOutput(NS(id, 'girafe_plot'),
+                              width = "100%",
+                              height = girafe_height() * plt_change()$dpi)
     })
 
       output$plot <- renderUI({
         if (interactive) {
           rendered_girafe()
         } else {
-        rendered_static()
+          rendered_static()
         }
       })
 

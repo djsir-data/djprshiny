@@ -69,11 +69,11 @@ ui <- djpr_page(
       fluidRow(
         column(
           6,
-          djpr_plot_ui("plot1") %>% djpr_with_spinner()
+          djpr_plot_ui("plot1")
         ),
         column(
           6,
-          djpr_plot_ui("dual_plots") %>% djpr_with_spinner()
+          djpr_plot_ui("dual_plots")
         )
       )
     ),
