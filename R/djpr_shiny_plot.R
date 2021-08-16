@@ -4,6 +4,9 @@
 #' Takes as input a function to create a ggplot2 or ggirafe object
 #' @param id a Shiny `outputId` specific to the individual plot.
 #' @param height Height of container
+#' @param interactive logical; `TRUE` by default. When `TRUE`, plot will be
+#' rendered as an interactive `ggiraph` object; when `FALSE` a static ggplot
+#' will be rendered.
 #' @return A `shiny.tag` object creating a plot environment, with
 #' labels (title, subtitle, caption) as HTML text, a download button,
 #' and optional input controls.
@@ -53,17 +56,27 @@
 #' }
 #'
 djpr_plot_ui <- function(id,
-                         height = "400px") {
+                         height = "400px",
+                         interactive = TRUE) {
+
+  if (interactive) {
+    plot_ui <- div(
+      ggiraph::girafeOutput(NS(id, "plot"),
+                            width = "100%",
+                            height = height
+      )
+    )
+  } else {
+    plot_ui <- div(
+      plotOutput(NS(id, "static_plot"))
+    )
+  }
+
   tagList(
     textOutput(NS(id, "title"), container = djpr_plot_title),
     textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
-    div(
-      ggiraph::girafeOutput(NS(id, "plot"),
-        width = "100%",
-        height = height
-      ) %>%
-        djpr_with_spinner()
-    ),
+    plot_ui %>%
+      djpr_with_spinner(),
     fluidRow(
       column(
         7,
@@ -119,6 +132,9 @@ djpr_plot_ui <- function(id,
 #' this reactive is created by `ggiraph_js()` which is called by
 #' `djpr_tab_panel()`. `djpr_plot_server()` should only be called in apps that
 #' feature a `djpr_tab_panel()`.
+#' @param interactive logical; `TRUE` by default. When `TRUE`, plot will be
+#' rendered as an interactive `ggiraph` object; when `FALSE` a static ggplot
+#' will be rendered.
 #' @param ... arguments passed to `plot_function`
 #' @import shiny
 #' @importFrom rlang .data .env
@@ -175,6 +191,7 @@ djpr_plot_server <- function(id,
                              download_button = TRUE,
                              width_percent = 100,
                              height_percent = 100,
+                             interactive = TRUE,
                              ...) {
 
   moduleServer(
@@ -250,6 +267,12 @@ djpr_plot_server <- function(id,
           plot_args(),
           plot_function
         )
+
+      if (!interactive) {
+        output$static_plot <- renderPlot({
+          djprtheme::remove_labs(static_plot())
+        })
+      }
 
       # Create date slider UI ------
       output$date_slider <- renderUI({
@@ -363,6 +386,7 @@ djpr_plot_server <- function(id,
         )
 
       # Render plot as ggiraph::girafe object (interactive htmlwidget) -----
+      if (interactive) {
       output$plot <- ggiraph::renderGirafe({
         req(
           static_plot(),
@@ -386,6 +410,7 @@ djpr_plot_server <- function(id,
           # static_plot(),
           id
         )
+      }
 
       if (download_button) {
         output$dl_button <- renderUI({

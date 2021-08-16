@@ -16,6 +16,7 @@ djpr_plot_server(
   download_button = TRUE,
   width_percent = 100,
   height_percent = 100,
+  interactive = TRUE,
   ...
 )
 }
@@ -54,6 +55,10 @@ button is displayed.}
 \item{width_percent}{Width of plot object, as a percentage of the standard}
 
 \item{height_percent}{Height of plot object, as a percentage of the standard}
+
+\item{interactive}{logical; \code{TRUE} by default. When \code{TRUE}, plot will be
+rendered as an interactive \code{ggiraph} object; when \code{FALSE} a static ggplot
+will be rendered.}
 
 \item{...}{arguments passed to \code{plot_function}}
 }

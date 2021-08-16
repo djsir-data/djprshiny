@@ -26,7 +26,7 @@ econ_plot <- function(data,
 
 dual_plots <- function(data = ggplot2::economics,
                        second_var = "uempmed",
-                       title = "something") {
+                       title = "Non-interactive plot") {
   plot1 <- ggplot(data, aes(x = date, y = unemploy)) +
     geom_line() +
     theme_djpr() +
@@ -73,7 +73,7 @@ ui <- djpr_page(
         ),
         column(
           6,
-          djpr_plot_ui("dual_plots") %>% djpr_with_spinner()
+          djpr_plot_ui("dual_plots", interactive = FALSE) %>% djpr_with_spinner()
         )
       )
     ),
@@ -150,7 +150,8 @@ server <- function(input, output, session) {
     data = ggplot2::economics,
     second_var = "uempmed",
     title = reactive(input$user_title),
-    plt_change = reactive(input$plt_change)
+    plt_change = reactive(input$plt_change),
+    interactive = FALSE,
   )
 }
 

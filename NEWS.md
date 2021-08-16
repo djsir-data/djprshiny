@@ -1,4 +1,7 @@
-# djprshiny 0.0.4.x
+# djprshiny 0.0.5
+* New `interactive` argument to djpr_plot_server()
+
+# djprshiny 0.0.4
 * Download button now fully modularised
 
 # djprshiny 0.0.3
