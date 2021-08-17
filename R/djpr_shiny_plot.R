@@ -54,13 +54,14 @@
 #'
 djpr_plot_ui <- function(id,
                          height = "400px") {
-
   tagList(
     textOutput(NS(id, "title"), container = djpr_plot_title),
     textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
     uiOutput(NS(id, "plot"), height = height) %>%
-      djpr_with_spinner(proxy.height = height,
-                        hide.ui = TRUE),
+      djpr_with_spinner(
+        proxy.height = height,
+        hide.ui = TRUE
+      ),
     fluidRow(
       column(
         7,
@@ -176,7 +177,6 @@ djpr_plot_server <- function(id,
                              height_percent = 100,
                              interactive = TRUE,
                              ...) {
-
   moduleServer(
     id,
     function(input, output, session) {
@@ -343,10 +343,10 @@ djpr_plot_server <- function(id,
         )
 
       girafe_height <- calc_girafe_height(
-          height_percent = height_percent,
-          base_height = 400,
-          dpi = 72
-        )
+        height_percent = height_percent,
+        base_height = 400,
+        dpi = 72
+      )
 
       # Render plot ------
 
@@ -370,13 +370,14 @@ djpr_plot_server <- function(id,
             }
 
             p
-            },
+          },
           width = "auto",
           height = "auto"
-      )
+        )
 
-        plotOutput(NS(id, 'static_plot'),
-                   height = paste0(400 * (height_percent / 100), "px"))
+        plotOutput(NS(id, "static_plot"),
+          height = paste0(400 * (height_percent / 100), "px")
+        )
       }) %>%
         shiny::bindCache(
           first_col(),
@@ -389,24 +390,25 @@ djpr_plot_server <- function(id,
       # Render girafe object -------
       rendered_girafe <- reactive({
         output$girafe_plot <- ggiraph::renderGirafe({
-        req(
-          static_plot(),
-          girafe_width()
-        )
+          req(
+            static_plot(),
+            girafe_width()
+          )
 
-        # Uses version of djprshiny::djpr_girafe() that is memoised on
-        # package load using memoise::memoise() - see zzz.R
-        djpr_girafe_mem(
-          ggobj = static_plot(),
-          width = girafe_width(),
-          height = girafe_height
-        )
-      })
+          # Uses version of djprshiny::djpr_girafe() that is memoised on
+          # package load using memoise::memoise() - see zzz.R
+          djpr_girafe_mem(
+            ggobj = static_plot(),
+            width = girafe_width(),
+            height = girafe_height
+          )
+        })
 
-        ggiraph::girafeOutput(NS(id, 'girafe_plot'),
-                              width = "100%",
-                              height = girafe_height * 72)
-    }) %>%
+        ggiraph::girafeOutput(NS(id, "girafe_plot"),
+          width = "100%",
+          height = girafe_height * 72
+        )
+      }) %>%
         shiny::bindCache(
           first_col(),
           plot_args(),

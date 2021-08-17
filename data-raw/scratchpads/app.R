@@ -98,7 +98,6 @@ ui <- djpr_page(
 )
 
 server <- function(input, output, session) {
-
   djpr_plot_server("plot1",
     plot_function = econ_plot,
     width_percent = 45,
@@ -128,20 +127,20 @@ server <- function(input, output, session) {
   )
 
   djpr_plot_server("plot3",
-                   plot_function = econ_plot,
-                   date_slider = TRUE,
-                   check_box_options = c(
-                     "pce",
-                     "pop",
-                     "psavert",
-                     "uempmed",
-                     "unemploy"
-                   ),
-                   check_box_var = variable,
-                   data = ggplot2::economics_long %>%
-                     mutate(series = variable) %>%
-                     filter(date >= as.Date("1990-01-01")),
-                   plt_change = reactive(input$plt_change)
+    plot_function = econ_plot,
+    date_slider = TRUE,
+    check_box_options = c(
+      "pce",
+      "pop",
+      "psavert",
+      "uempmed",
+      "unemploy"
+    ),
+    check_box_var = variable,
+    data = ggplot2::economics_long %>%
+      mutate(series = variable) %>%
+      filter(date >= as.Date("1990-01-01")),
+    plt_change = reactive(input$plt_change)
   )
 
   djpr_plot_server("dual_plots",
