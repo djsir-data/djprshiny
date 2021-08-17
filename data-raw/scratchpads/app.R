@@ -113,7 +113,8 @@ server <- function(input, output, session) {
     data = ggplot2::economics_long %>%
       mutate(series = variable) %>%
       filter(date >= as.Date("1990-01-01")),
-    plt_change = reactive(input$plt_change)
+    plt_change = reactive(input$plt_change),
+    height_percent = 150
   )
 
   djpr_plot_server("plot2",
@@ -140,7 +141,8 @@ server <- function(input, output, session) {
     data = ggplot2::economics_long %>%
       mutate(series = variable) %>%
       filter(date >= as.Date("1990-01-01")),
-    plt_change = reactive(input$plt_change)
+    plt_change = reactive(input$plt_change),
+    interactive = F
   )
 
   djpr_plot_server("dual_plots",

@@ -352,6 +352,8 @@ djpr_plot_server <- function(id,
 
       # Render static plot -----
       rendered_static <- reactive({
+        req(static_plot())
+
         output$static_plot <- renderPlot(
           expr = {
             p <- static_plot()
@@ -373,18 +375,19 @@ djpr_plot_server <- function(id,
           },
           width = "auto",
           height = "auto"
-        )
-
-        plotOutput(NS(id, "static_plot"),
-          height = paste0(400 * (height_percent / 100), "px")
-        )
-      }) %>%
+        ) %>%
         shiny::bindCache(
           first_col(),
           plot_args(),
           plt_change()$width,
           id
         )
+
+        plotOutput(NS(id, "static_plot"),
+                   width = "100%",
+                   height = paste0(400 * (height_percent / 100), "px")
+        )
+      })
 
 
       # Render girafe object -------
@@ -402,19 +405,19 @@ djpr_plot_server <- function(id,
             width = girafe_width(),
             height = girafe_height
           )
-        })
+        }) %>%
+          shiny::bindCache(
+            first_col(),
+            plot_args(),
+            plt_change()$width,
+            id
+          )
 
         ggiraph::girafeOutput(NS(id, "girafe_plot"),
           width = "100%",
-          height = girafe_height * 72
+          height = paste0(girafe_height * 72, "px")
         )
-      }) %>%
-        shiny::bindCache(
-          first_col(),
-          plot_args(),
-          plt_change()$width,
-          id
-        )
+      })
 
       # Render plot ----
       # If interactive, this is a ggiraph object; if not a ggplot2 object
