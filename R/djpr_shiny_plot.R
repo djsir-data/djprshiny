@@ -54,13 +54,14 @@
 #'
 djpr_plot_ui <- function(id,
                          height = "400px") {
-
   tagList(
     textOutput(NS(id, "title"), container = djpr_plot_title),
     textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
     uiOutput(NS(id, "plot"), height = height) %>%
-      djpr_with_spinner(proxy.height = height,
-                        hide.ui = TRUE),
+      djpr_with_spinner(
+        proxy.height = height,
+        hide.ui = TRUE
+      ),
     fluidRow(
       column(
         7,
@@ -176,7 +177,6 @@ djpr_plot_server <- function(id,
                              height_percent = 100,
                              interactive = TRUE,
                              ...) {
-
   moduleServer(
     id,
     function(input, output, session) {
@@ -313,18 +313,12 @@ djpr_plot_server <- function(id,
       # Capture changes in browser size -----
 
       window_size <- reactiveValues(
-        width = 1140,
-        height = 400
+        width = 1140
       )
 
       observeEvent(plt_change()$width, {
         # Round down to nearest 25 pixels; prevent small resizing
         window_size$width <- floor(plt_change()$width / 25) * 25
-      })
-
-      observeEvent(plt_change()$height, {
-        # Round down to nearest 50 pixels; prevent small resizing
-        window_size$height <- floor(plt_change()$height / 50) * 50
       })
 
       girafe_width <- reactive({
@@ -340,33 +334,26 @@ djpr_plot_server <- function(id,
         calc_girafe_width(
           width_percent = width_percent,
           window_width = window_size$width,
-          dpi = plt_change()$dpi
+          dpi = 72
         )
       }) %>%
         shiny::bindCache(
           plt_change()$width,
-          plt_change()$dpi,
           width_percent
         )
 
-      girafe_height <- reactive({
-        req(window_size, plt_change())
-        calc_girafe_height(
-          height_percent = height_percent,
-          window_height = window_size$height,
-          dpi = plt_change()$dpi
-        )
-      }) %>%
-        shiny::bindCache(
-          plt_change()$height,
-          plt_change()$dpi,
-          height_percent
-        )
+      girafe_height <- calc_girafe_height(
+        height_percent = height_percent,
+        base_height = 400,
+        dpi = 72
+      )
 
       # Render plot ------
 
       # Render static plot -----
       rendered_static <- reactive({
+        req(static_plot())
+
         output$static_plot <- renderPlot(
           expr = {
             p <- static_plot()
@@ -385,52 +372,52 @@ djpr_plot_server <- function(id,
             }
 
             p
-            },
+          },
           width = "auto",
           height = "auto"
-      )
-
-        plotOutput(NS(id, 'static_plot'),
-                   height = paste0(400 * (height_percent / 100), "px"))
-      }) %>%
+        ) %>%
         shiny::bindCache(
           first_col(),
           plot_args(),
           plt_change()$width,
-          plt_change()$height,
           id
         )
+
+        plotOutput(NS(id, "static_plot"),
+                   width = "100%",
+                   height = paste0(400 * (height_percent / 100), "px")
+        )
+      })
 
 
       # Render girafe object -------
       rendered_girafe <- reactive({
         output$girafe_plot <- ggiraph::renderGirafe({
-        req(
-          static_plot(),
-          girafe_width(),
-          girafe_height()
-        )
+          req(
+            static_plot(),
+            girafe_width()
+          )
 
-        # Uses version of djprshiny::djpr_girafe() that is memoised on
-        # package load using memoise::memoise() - see zzz.R
-        djpr_girafe_mem(
-          ggobj = static_plot(),
-          width = girafe_width(),
-          height = girafe_height()
+          # Uses version of djprshiny::djpr_girafe() that is memoised on
+          # package load using memoise::memoise() - see zzz.R
+          djpr_girafe_mem(
+            ggobj = static_plot(),
+            width = girafe_width(),
+            height = girafe_height
+          )
+        }) %>%
+          shiny::bindCache(
+            first_col(),
+            plot_args(),
+            plt_change()$width,
+            id
+          )
+
+        ggiraph::girafeOutput(NS(id, "girafe_plot"),
+          width = "100%",
+          height = paste0(girafe_height * 72, "px")
         )
       })
-
-        ggiraph::girafeOutput(NS(id, 'girafe_plot'),
-                              width = "100%",
-                              height = girafe_height() * plt_change()$dpi)
-    }) %>%
-        shiny::bindCache(
-          first_col(),
-          plot_args(),
-          plt_change()$width,
-          plt_change()$height,
-          id
-        )
 
       # Render plot ----
       # If interactive, this is a ggiraph object; if not a ggplot2 object

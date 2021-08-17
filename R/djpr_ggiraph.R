@@ -11,75 +11,6 @@
 #' @source https://stackoverflow.com/questions/65267602/can-a-ggiraph-interactive-plot-be-the-size-of-the-window-in-r-shiny
 #' and https://stackoverflow.com/questions/45191999/ggiraph-plot-doesnt-resize-to-fit-the-page and
 #' https://stackoverflow.com/questions/36995142/get-the-size-of-the-window-in-shiny
-#' @examples
-#' \dontrun{
-#' library(shiny)
-#' library(ggiraph)
-#' library(ggplot2)
-#'
-#' ui <- djpr_page(
-#'   title = "Dashboard title",
-#'   djpr_tab_panel(
-#'     title = "Panel title",
-#'     "Some text",
-#'     "This is a ggplot2 object",
-#'     plotOutput("plot1",
-#'       width = "100%"
-#'     ),
-#'     "This is a standard ggiraph object",
-#'     girafeOutput("plot2"),
-#'     "This is a ggiraph object that resizes with the window",
-#'     girafeOutput("plot3")
-#'   )
-#' )
-#'
-#' server <- function(input, output, session) {
-#'
-#'   # First, we create a plot we can re-use:
-#'   static_plot <- reactive({
-#'     ggplot(mtcars, aes(x = wt, y = mpg)) +
-#'       geom_point()
-#'   })
-#'
-#'   # This code generates a standard static ggplot
-#'   output$plot1 <- renderPlot({
-#'     static_plot()
-#'   })
-#'
-#'   # This code generates a standard ggiraph that doesn't re-size as we want
-#'
-#'   output$plot2 <- renderGirafe({
-#'     ggiraph::girafe(ggobj = static_plot())
-#'   })
-#'
-#'   # This code generates a ggiraph that resizes with the browser window
-#'   output$plot3 <- renderGirafe({
-#'     req(input$plt_change)
-#'     p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
-#'       ggiraph::geom_point_interactive(aes(tooltip = cyl))
-#'
-#'
-#'     plt_change <- reactive(input$plt_change)
-#'     plot_width <- calc_girafe_width(
-#'       width_percent = 100,
-#'       window_width = plt_change()$width,
-#'       dpi = plt_change()$dpi
-#'     )
-#'
-#'     plot_height <- calc_girafe_height(
-#'       height_percent = 100,
-#'       window_height = plt_change()$height,
-#'       dpi = plt_change()$dpi
-#'     )
-#'
-#'     djpr_girafe(p,
-#'       width = plot_width,
-#'       height = plot_height
-#'     )
-#'   })
-#' }
-#' shinyApp(ui, server)
-#' }
 #' @export
 #' @keywords internal
 #' @rdname djpr_girafe
@@ -158,42 +89,32 @@ ggiraph_js <- function(col_widths = c(2, 8, 2)) {
     tags$script('$(document).on("shiny:connected", function(e) {
                                     var w = document.getElementById("girafe_container").offsetWidth;
                                     var h = window.innerHeight;
-                                    var d = document.getElementById("ppitest").offsetWidth;
                                     var b = window.innerWidth;
-                                    var obj = {width: w, height: h, dpi: d, browser_width: b};
+                                    var obj = {width: w, height: h, browser_width: b};
                                     Shiny.onInputChange("plt_change", obj);
                                 });
                                 $(window).resize(function(e) {
                                     var w = document.getElementById("girafe_container").offsetWidth;
                                     var h = $(this).height();
-                                    var d =  document.getElementById("ppitest").offsetWidth;
                                     var b = window.innerWidth;
-                                    var obj = {width: w, height: h, dpi: d, browser_width: b};
+                                    var obj = {width: w, height: h, browser_width: b};
                                     Shiny.onInputChange("plt_change", obj);
                                 });
                             ')
   )
 }
 
-#' Return width / height in inches for ggiraph::girafe() objects
-#' @rdname calc_girafe_size
+#' Return width in inches for ggiraph::girafe() objects
 #' @param width_percent Percentage of the standard plotting area that
 #' should be taken up by the object
-#' @param height_percent Height of the object as percentage of standard
 #' @param window_width Width of the row in which the object will be
 #' placed. Given by `plt_change()$width`
-#' @param dpi Dots per inch of browser. Given by `plt_change()$dpi`
+#' @param dpi Dots per inch
 #' @param max_width Maximum width of object in pixels
-#' @param window_height Height of the  browser window. Given by
-#' `plt_change()$height`
-#' @param perc_of_height The height of the object as a percentage
-#' of the browser window height
-#' @param min_px The minimum height of the object in pixels
 #' @export
-
 calc_girafe_width <- function(width_percent,
                               window_width,
-                              dpi,
+                              dpi = 72,
                               max_width = 1140) {
   min(c(
     max_width,
@@ -203,16 +124,13 @@ calc_girafe_width <- function(width_percent,
     dpi
 }
 
+#' Calculate the height of a ggiraph object
+#' @param height_percent Height of object, as percentage of base_height
+#' @param base_height Pixels; default 400
+#' @param dpi DPI; default 72
 #' @export
-#' @rdname calc_girafe_size
 calc_girafe_height <- function(height_percent,
-                               window_height,
-                               dpi,
-                               perc_of_height = 40,
-                               min_px = 200) {
-  max(c(
-    window_height * (perc_of_height / 100),
-    min_px
-  )) * (height_percent / 100) /
-    dpi
+                               base_height = 400,
+                               dpi = 72) {
+  (height_percent / 100) * base_height / dpi
 }

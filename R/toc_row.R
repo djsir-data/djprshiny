@@ -45,8 +45,9 @@ toc_row <- function(...,
     shiny::column(
       width = toc_space,
       span(page_title,
-           class = "sticky-top",
-           style = "top: 85px; text-decoration: underline; text-underline-offset: 0.3em; display: block"),
+        class = "sticky-top",
+        style = "top: 85px; text-decoration: underline; text-underline-offset: 0.3em; display: block"
+      ),
       htmltools::tags$nav(
         id = gsub("#", "", toc_id),
         class = "sticky-top"

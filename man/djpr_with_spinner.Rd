@@ -9,7 +9,7 @@ djpr_with_spinner(
   type = 8,
   colour = "#2A6FA2",
   size = 0.8,
-  hide.ui = FALSE,
+  hide.ui = TRUE,
   ...
 )
 }

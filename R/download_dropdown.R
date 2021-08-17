@@ -41,9 +41,7 @@ download_ui <- function(id, ...) {
 download_server <- function(id, plot, plot_name = "plot") {
   moduleServer(id, function(input, output, session) {
     output$download_data <- downloadHandler(
-
       filename = paste0(plot_name, "_data.csv"),
-
       content = function(file) {
         req(plot)
 
@@ -59,7 +57,6 @@ download_server <- function(id, plot, plot_name = "plot") {
           row.names = FALSE
         )
       },
-
       contentType = "text/csv"
     )
 
@@ -77,7 +74,5 @@ download_server <- function(id, plot, plot_name = "plot") {
         )
       }
     )
-
   })
 }
-
