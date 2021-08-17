@@ -363,22 +363,46 @@ djpr_plot_server <- function(id,
           height_percent
         )
 
-      # Render plot as ggiraph::girafe object (interactive htmlwidget) -----
+      # Render plot ------
+
+      # Render static plot -----
       rendered_static <- reactive({
         output$static_plot <- renderPlot(
           expr = {
-            djprtheme::remove_labs(static_plot())
+            p <- static_plot()
+            p <- p %>%
+              djprtheme::gg_font_change("Roboto")
+
+            p <- p %>%
+              djprtheme::remove_labs()
+
+            if (inherits(p, "patchwork")) {
+              p <- p &
+                theme(text = element_text(family = "Roboto"))
+            } else {
+              p <- p +
+                theme(text = element_text(family = "Roboto"))
+            }
+
+            p
             },
           width = "auto",
           height = "auto"
       )
 
         plotOutput(NS(id, 'static_plot'),
-                   # width = paste0(width_percent, "%"),
                    height = paste0(400 * (height_percent / 100), "px"))
-      })
+      }) %>%
+        shiny::bindCache(
+          first_col(),
+          plot_args(),
+          plt_change()$width,
+          plt_change()$height,
+          id
+        )
 
 
+      # Render girafe object -------
       rendered_girafe <- reactive({
         output$girafe_plot <- ggiraph::renderGirafe({
         req(
@@ -394,7 +418,12 @@ djpr_plot_server <- function(id,
           width = girafe_width(),
           height = girafe_height()
         )
-      }) %>%
+      })
+
+        ggiraph::girafeOutput(NS(id, 'girafe_plot'),
+                              width = "100%",
+                              height = girafe_height() * plt_change()$dpi)
+    }) %>%
         shiny::bindCache(
           first_col(),
           plot_args(),
@@ -403,11 +432,8 @@ djpr_plot_server <- function(id,
           id
         )
 
-        ggiraph::girafeOutput(NS(id, 'girafe_plot'),
-                              width = "100%",
-                              height = girafe_height() * plt_change()$dpi)
-    })
-
+      # Render plot ----
+      # If interactive, this is a ggiraph object; if not a ggplot2 object
       output$plot <- renderUI({
         if (interactive) {
           rendered_girafe()
