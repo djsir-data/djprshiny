@@ -2,18 +2,9 @@
 % Please edit documentation in R/djpr_ggiraph.R
 \name{calc_girafe_width}
 \alias{calc_girafe_width}
-\alias{calc_girafe_height}
-\title{Return width / height in inches for ggiraph::girafe() objects}
+\title{Return width in inches for ggiraph::girafe() objects}
 \usage{
 calc_girafe_width(width_percent, window_width, dpi, max_width = 1140)
-
-calc_girafe_height(
-  height_percent,
-  window_height,
-  dpi,
-  perc_of_height = 40,
-  min_px = 200
-)
 }
 \arguments{
 \item{width_percent}{Percentage of the standard plotting area that
@@ -25,17 +16,7 @@ placed. Given by \code{plt_change()$width}}
 \item{dpi}{Dots per inch of browser. Given by \code{plt_change()$dpi}}
 
 \item{max_width}{Maximum width of object in pixels}
-
-\item{height_percent}{Height of the object as percentage of standard}
-
-\item{window_height}{Height of the  browser window. Given by
-\code{plt_change()$height}}
-
-\item{perc_of_height}{The height of the object as a percentage
-of the browser window height}
-
-\item{min_px}{The minimum height of the object in pixels}
 }
 \description{
-Return width / height in inches for ggiraph::girafe() objects
+Return width in inches for ggiraph::girafe() objects
 }
