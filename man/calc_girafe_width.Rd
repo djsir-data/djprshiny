@@ -4,7 +4,7 @@
 \alias{calc_girafe_width}
 \title{Return width in inches for ggiraph::girafe() objects}
 \usage{
-calc_girafe_width(width_percent, window_width, dpi, max_width = 1140)
+calc_girafe_width(width_percent, window_width, dpi = 72, max_width = 1140)
 }
 \arguments{
 \item{width_percent}{Percentage of the standard plotting area that
@@ -13,7 +13,7 @@ should be taken up by the object}
 \item{window_width}{Width of the row in which the object will be
 placed. Given by \code{plt_change()$width}}
 
-\item{dpi}{Dots per inch of browser. Given by \code{plt_change()$dpi}}
+\item{dpi}{Dots per inch}
 
 \item{max_width}{Maximum width of object in pixels}
 }
