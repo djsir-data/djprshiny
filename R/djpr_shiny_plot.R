@@ -54,16 +54,13 @@
 #'
 djpr_plot_ui <- function(id,
                          height = "400px") {
+
   tagList(
     textOutput(NS(id, "title"), container = djpr_plot_title),
     textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
-    div(
-      ggiraph::girafeOutput(NS(id, "plot"),
-        width = "100%",
-        height = height
-      ) %>%
-        djpr_with_spinner()
-    ),
+    uiOutput(NS(id, "plot"), height = height) %>%
+      djpr_with_spinner(proxy.height = height,
+                        hide.ui = TRUE),
     fluidRow(
       column(
         7,
@@ -72,7 +69,6 @@ djpr_plot_ui <- function(id,
       ),
       column(5,
         br(),
-        # download_ui(NS(id, "download_dropdown")),
         uiOutput(NS(id, "dl_button")),
         align = "right"
       )
@@ -119,6 +115,9 @@ djpr_plot_ui <- function(id,
 #' this reactive is created by `ggiraph_js()` which is called by
 #' `djpr_tab_panel()`. `djpr_plot_server()` should only be called in apps that
 #' feature a `djpr_tab_panel()`.
+#' @param interactive logical; `TRUE` by default. When `TRUE`, plot will be
+#' rendered as an interactive `ggiraph` object; when `FALSE` a static ggplot
+#' will be rendered.
 #' @param ... arguments passed to `plot_function`
 #' @import shiny
 #' @importFrom rlang .data .env
@@ -175,6 +174,7 @@ djpr_plot_server <- function(id,
                              download_button = TRUE,
                              width_percent = 100,
                              height_percent = 100,
+                             interactive = TRUE,
                              ...) {
 
   moduleServer(
@@ -309,12 +309,13 @@ djpr_plot_server <- function(id,
       }) %>%
         shiny::bindCache(static_plot())
 
+
+      # Capture changes in browser size -----
+
       window_size <- reactiveValues(
         width = 1140,
         height = 400
       )
-
-      # Capture changes in browser size -----
 
       observeEvent(plt_change()$width, {
         # Round down to nearest 25 pixels; prevent small resizing
@@ -362,8 +363,48 @@ djpr_plot_server <- function(id,
           height_percent
         )
 
-      # Render plot as ggiraph::girafe object (interactive htmlwidget) -----
-      output$plot <- ggiraph::renderGirafe({
+      # Render plot ------
+
+      # Render static plot -----
+      rendered_static <- reactive({
+        output$static_plot <- renderPlot(
+          expr = {
+            p <- static_plot()
+            p <- p %>%
+              djprtheme::gg_font_change("Roboto")
+
+            p <- p %>%
+              djprtheme::remove_labs()
+
+            if (inherits(p, "patchwork")) {
+              p <- p &
+                theme(text = element_text(family = "Roboto"))
+            } else {
+              p <- p +
+                theme(text = element_text(family = "Roboto"))
+            }
+
+            p
+            },
+          width = "auto",
+          height = "auto"
+      )
+
+        plotOutput(NS(id, 'static_plot'),
+                   height = paste0(400 * (height_percent / 100), "px"))
+      }) %>%
+        shiny::bindCache(
+          first_col(),
+          plot_args(),
+          plt_change()$width,
+          plt_change()$height,
+          id
+        )
+
+
+      # Render girafe object -------
+      rendered_girafe <- reactive({
+        output$girafe_plot <- ggiraph::renderGirafe({
         req(
           static_plot(),
           girafe_width(),
@@ -377,15 +418,29 @@ djpr_plot_server <- function(id,
           width = girafe_width(),
           height = girafe_height()
         )
-      }) %>%
+      })
+
+        ggiraph::girafeOutput(NS(id, 'girafe_plot'),
+                              width = "100%",
+                              height = girafe_height() * plt_change()$dpi)
+    }) %>%
         shiny::bindCache(
           first_col(),
           plot_args(),
           plt_change()$width,
           plt_change()$height,
-          # static_plot(),
           id
         )
+
+      # Render plot ----
+      # If interactive, this is a ggiraph object; if not a ggplot2 object
+      output$plot <- renderUI({
+        if (interactive) {
+          rendered_girafe()
+        } else {
+          rendered_static()
+        }
+      })
 
       if (download_button) {
         output$dl_button <- renderUI({
