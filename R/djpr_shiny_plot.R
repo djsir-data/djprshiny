@@ -53,11 +53,23 @@
 #' }
 #'
 djpr_plot_ui <- function(id,
-                         height = "400px") {
+                         height = "400px",
+                         interactive = TRUE) {
+
+  if (interactive) {
+    plot_ui <- ggiraph::girafeOutput(NS(id, "plot"),
+                            width = "100%",
+                            height = height
+      )
+  } else {
+    plot_ui <- plotOutput(NS(id, "plot"),
+                 height = height)
+  }
+
   tagList(
     textOutput(NS(id, "title"), container = djpr_plot_title),
     textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle),
-    uiOutput(NS(id, "plot"), height = height) %>%
+    plot_ui %>%
       djpr_with_spinner(
         proxy.height = height,
         hide.ui = TRUE
@@ -313,11 +325,9 @@ djpr_plot_server <- function(id,
 
       # Render static plot -----
       if (!interactive) {
-        rendered_static <- reactive({
-          req(static_plot())
 
-          output$static_plot <- renderPlot(
-            expr = {
+          output$plot <- renderPlot({
+            req(static_plot())
               p <- static_plot()
               p <- p %>%
                 djprtheme::gg_font_change("Roboto")
@@ -334,21 +344,12 @@ djpr_plot_server <- function(id,
               }
 
               p
-            },
-            width = "auto",
-            height = "auto"
-          ) %>%
+            }) %>%
           shiny::bindCache(
             first_col(),
             plot_args(),
             id
           )
-
-          plotOutput(NS(id, "static_plot"),
-                     width = "100%",
-                     height = paste0(400 * (height_percent / 100), "px")
-          )
-        })
       }
 
       # Render girafe object -------
@@ -391,8 +392,7 @@ djpr_plot_server <- function(id,
           dpi = 72
         )
 
-        rendered_girafe <- reactive({
-          output$girafe_plot <- ggiraph::renderGirafe({
+          output$plot <- ggiraph::renderGirafe({
             req(
               static_plot(),
               girafe_width()
@@ -412,23 +412,7 @@ djpr_plot_server <- function(id,
               plt_change()$width,
               id
             )
-
-          ggiraph::girafeOutput(NS(id, "girafe_plot"),
-            width = "100%",
-            height = paste0(girafe_height * 72, "px")
-          )
-        })
       }
-
-      # Render plot ----
-      # If interactive, this is a ggiraph object; if not a ggplot2 object
-      output$plot <- renderUI({
-        if (interactive) {
-          rendered_girafe()
-        } else {
-          rendered_static()
-        }
-      })
 
       if (download_button) {
         output$dl_button <- renderUI({

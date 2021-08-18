@@ -73,7 +73,7 @@ ui <- djpr_page(
         ),
         column(
           6,
-          djpr_plot_ui("dual_plots")
+          djpr_plot_ui("dual_plots", interactive = F)
         )
       )
     ),
@@ -84,7 +84,7 @@ ui <- djpr_page(
     djpr_plot_ui("plot2"),
     br(),
     h2("h2 number 3"),
-    djpr_plot_ui("plot3"),
+    djpr_plot_ui("plot3", interactive = F),
     br()
     # djpr_plot_ui("dual_plots")
   ),
