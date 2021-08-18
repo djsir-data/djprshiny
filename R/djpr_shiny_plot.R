@@ -309,9 +309,6 @@ djpr_plot_server <- function(id,
       }) %>%
         shiny::bindCache(static_plot())
 
-
-
-
       # Render plot ------
 
       # Render static plot -----
@@ -358,7 +355,6 @@ djpr_plot_server <- function(id,
       if (interactive) {
 
         # Capture changes in browser size -----
-
         window_size <- reactiveValues(
           width = 1140
         )
@@ -438,9 +434,12 @@ djpr_plot_server <- function(id,
         output$dl_button <- renderUI({
           download_ui(session$ns("download_dropdown"))
         })
+
+        download_server(id = "download_dropdown",
+                        plot = static_plot(),
+                        plot_name = id)
       }
 
-      download_server("download_dropdown", static_plot(), plot_name = id)
     }
   )
 }
