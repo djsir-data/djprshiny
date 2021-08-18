@@ -1,6 +1,6 @@
 Package: djprshiny
 Title: Common Functions For DJPR Shiny Apps
-Version: 0.0.5.901
+Version: 0.0.5.902
 Authors@R: 
     c(
     person(given = "Matt",
@@ -34,7 +34,8 @@ Imports:
     shinycssloaders,
     shinyWidgets (>= 0.6.0),
     stringr,
-    tibble
+    tibble,
+    cachem
 Suggests: 
     testthat (>= 3.0.0),
     vdiffr (>= 1.0.0),

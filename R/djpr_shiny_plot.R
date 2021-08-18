@@ -309,115 +309,116 @@ djpr_plot_server <- function(id,
       }) %>%
         shiny::bindCache(static_plot())
 
-
-      # Capture changes in browser size -----
-
-      window_size <- reactiveValues(
-        width = 1140
-      )
-
-      observeEvent(plt_change()$width, {
-        # Round down to nearest 25 pixels; prevent small resizing
-        window_size$width <- floor(plt_change()$width / 25) * 25
-      })
-
-      girafe_width <- reactive({
-        req(window_size, plt_change())
-
-        # When the window is narrow, the column width ( plt_change()$width )
-        # will equal the full browser width ( plt_change()$browser_width). In
-        # that case, we want the plot to fill the whole column.
-        if (plt_change()$width == plt_change()$browser_width) {
-          width_percent <- min(95, width_percent * 1.9)
-        }
-
-        calc_girafe_width(
-          width_percent = width_percent,
-          window_width = window_size$width,
-          dpi = 72
-        )
-      }) %>%
-        shiny::bindCache(
-          plt_change()$width,
-          width_percent
-        )
-
-      girafe_height <- calc_girafe_height(
-        height_percent = height_percent,
-        base_height = 400,
-        dpi = 72
-      )
-
       # Render plot ------
 
       # Render static plot -----
-      rendered_static <- reactive({
-        req(static_plot())
+      if (!interactive) {
+        rendered_static <- reactive({
+          req(static_plot())
 
-        output$static_plot <- renderPlot(
-          expr = {
-            p <- static_plot()
-            p <- p %>%
-              djprtheme::gg_font_change("Roboto")
+          output$static_plot <- renderPlot(
+            expr = {
+              p <- static_plot()
+              p <- p %>%
+                djprtheme::gg_font_change("Roboto")
 
-            p <- p %>%
-              djprtheme::remove_labs()
+              p <- p %>%
+                djprtheme::remove_labs()
 
-            if (inherits(p, "patchwork")) {
-              p <- p &
-                theme(text = element_text(family = "Roboto"))
-            } else {
-              p <- p +
-                theme(text = element_text(family = "Roboto"))
-            }
+              if (inherits(p, "patchwork")) {
+                p <- p &
+                  theme(text = element_text(family = "Roboto"))
+              } else {
+                p <- p +
+                  theme(text = element_text(family = "Roboto"))
+              }
 
-            p
-          },
-          width = "auto",
-          height = "auto"
-        ) %>%
-        shiny::bindCache(
-          first_col(),
-          plot_args(),
-          plt_change()$width,
-          id
-        )
-
-        plotOutput(NS(id, "static_plot"),
-                   width = "100%",
-                   height = paste0(400 * (height_percent / 100), "px")
-        )
-      })
-
-
-      # Render girafe object -------
-      rendered_girafe <- reactive({
-        output$girafe_plot <- ggiraph::renderGirafe({
-          req(
-            static_plot(),
-            girafe_width()
-          )
-
-          # Uses version of djprshiny::djpr_girafe() that is memoised on
-          # package load using memoise::memoise() - see zzz.R
-          djpr_girafe_mem(
-            ggobj = static_plot(),
-            width = girafe_width(),
-            height = girafe_height
-          )
-        }) %>%
+              p
+            },
+            width = "auto",
+            height = "auto"
+          ) %>%
           shiny::bindCache(
             first_col(),
             plot_args(),
-            plt_change()$width,
             id
           )
 
-        ggiraph::girafeOutput(NS(id, "girafe_plot"),
-          width = "100%",
-          height = paste0(girafe_height * 72, "px")
+          plotOutput(NS(id, "static_plot"),
+                     width = "100%",
+                     height = paste0(400 * (height_percent / 100), "px")
+          )
+        })
+      }
+
+      # Render girafe object -------
+      if (interactive) {
+
+        # Capture changes in browser size -----
+        window_size <- reactiveValues(
+          width = 1140
         )
-      })
+
+        observeEvent(plt_change()$width, {
+          # Round down to nearest 25 pixels; prevent small resizing
+          window_size$width <- floor(plt_change()$width / 25) * 25
+        })
+
+        girafe_width <- reactive({
+          req(window_size, plt_change())
+
+          # When the window is narrow, the column width ( plt_change()$width )
+          # will equal the full browser width ( plt_change()$browser_width). In
+          # that case, we want the plot to fill the whole column.
+          if (plt_change()$width == plt_change()$browser_width) {
+            width_percent <- min(95, width_percent * 1.9)
+          }
+
+          calc_girafe_width(
+            width_percent = width_percent,
+            window_width = window_size$width,
+            dpi = 72
+          )
+        }) %>%
+          shiny::bindCache(
+            plt_change()$width,
+            width_percent
+          )
+
+        girafe_height <- calc_girafe_height(
+          height_percent = height_percent,
+          base_height = 400,
+          dpi = 72
+        )
+
+        rendered_girafe <- reactive({
+          output$girafe_plot <- ggiraph::renderGirafe({
+            req(
+              static_plot(),
+              girafe_width()
+            )
+
+            # Uses version of djprshiny::djpr_girafe() that is memoised on
+            # package load using memoise::memoise() - see zzz.R
+            djpr_girafe_mem(
+              ggobj = static_plot(),
+              width = girafe_width(),
+              height = girafe_height
+            )
+          }) %>%
+            shiny::bindCache(
+              first_col(),
+              plot_args(),
+              plt_change()$width,
+              id
+            )
+
+          ggiraph::girafeOutput(NS(id, "girafe_plot"),
+            width = "100%",
+            height = paste0(girafe_height * 72, "px")
+          )
+        })
+      }
 
       # Render plot ----
       # If interactive, this is a ggiraph object; if not a ggplot2 object
@@ -433,9 +434,12 @@ djpr_plot_server <- function(id,
         output$dl_button <- renderUI({
           download_ui(session$ns("download_dropdown"))
         })
+
+        download_server(id = "download_dropdown",
+                        plot = static_plot(),
+                        plot_name = id)
       }
 
-      download_server("download_dropdown", static_plot(), plot_name = id)
     }
   )
 }
