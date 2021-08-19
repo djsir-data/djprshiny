@@ -14,7 +14,7 @@
 djpr_shiny_theme <- function(...) {
   bslib::bs_theme(
     bootswatch = "litera",
-    version = "4",
+    version = "5",
     primary = "#2A6FA2",
     secondary = "#d9d9d6",
     success = "#62BB46",
@@ -53,6 +53,20 @@ djpr_shiny_theme <- function(...) {
 
       h1, h2, h3 {
         color: #1F1547;
+      }
+
+      .irs--shiny .irs-bar {
+        border-top: 0px solid #2A6FA2 !important;
+        border-bottom: 0px solid #2A6FA2 !important;
+        background: #2A6FA2 !important;
+      }
+
+      .irs-to {
+        background-color: #2A6FA2 !important;
+      }
+
+      .irs-from {
+        background-color: #2A6FA2 !important;
       }
 
       .ReactTable .rt-table {
