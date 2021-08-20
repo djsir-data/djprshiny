@@ -12,6 +12,7 @@ djpr_plot_server(
   date_slider = TRUE,
   date_slider_value_min = NULL,
   check_box_options = NULL,
+  check_box_selected = check_box_options,
   check_box_var = series,
   download_button = TRUE,
   width_percent = 100,
@@ -45,6 +46,9 @@ argument overrides the minimum value.}
 
 \item{check_box_options}{A character vector containing values to include
 in a check box. \code{NULL} by default, which suppresses the check box.}
+
+\item{check_box_selected}{A character vector containing values of the check
+box that should be selected by default.}
 
 \item{check_box_var}{name of column in \code{data} that contains the levels
 included in \code{check_box_options}. \code{series} by default.}

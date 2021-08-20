@@ -12,6 +12,8 @@ djpr_plot_ui(id, height = "400px", interactive = TRUE)
 \item{id}{a Shiny \code{outputId} specific to the individual plot.}
 
 \item{height}{Height of container}
+
+\item{interactive}{Logical; \code{TRUE} by default.}
 }
 \value{
 A \code{shiny.tag} object creating a plot environment, with

@@ -4,6 +4,7 @@
 #' Takes as input a function to create a ggplot2 or ggirafe object
 #' @param id a Shiny `outputId` specific to the individual plot.
 #' @param height Height of container
+#' @param interactive Logical; `TRUE` by default.
 #' @return A `shiny.tag` object creating a plot environment, with
 #' labels (title, subtitle, caption) as HTML text, a download button,
 #' and optional input controls.
