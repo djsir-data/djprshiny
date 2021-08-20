@@ -83,7 +83,7 @@ djpr_plot_ui <- function(id,
       ),
       column(5,
         br(),
-        uiOutput(NS(id, "dl_button")),
+        download_ui(NS(id, "download_dropdown")),
         align = "right"
       )
     ),
@@ -300,7 +300,7 @@ djpr_plot_server <- function(id,
         if (!is.null(check_box_options)) {
           req(data)
           shinyWidgets::awesomeCheckboxGroup(
-            session$ns("checkboxes"),
+            NS(id, "checkboxes"),
             label = "",
             choices = check_box_options,
             selected = check_box_selected,
@@ -419,10 +419,6 @@ djpr_plot_server <- function(id,
       }
 
       if (download_button) {
-        output$dl_button <- renderUI({
-          download_ui(session$ns("download_dropdown"))
-        })
-
         download_server(id = "download_dropdown",
                         plot = static_plot(),
                         plot_name = id)

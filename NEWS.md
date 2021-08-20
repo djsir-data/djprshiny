@@ -1,6 +1,7 @@
 # djprshiny 0.0.5.*
 * Plot in djpr_plot_server() does not resize when browser height changes
 * Added check_box_selected arg to djpr_plot_server()
+* Render download button on UI side
 
 # djprshiny 0.0.5
 * New `interactive` argument to djpr_plot_server()
