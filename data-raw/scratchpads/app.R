@@ -109,6 +109,8 @@ server <- function(input, output, session) {
       "uempmed",
       "unemploy"
     ),
+    check_box_selected = c("pce",
+                           "pop"),
     check_box_var = variable,
     data = ggplot2::economics_long %>%
       mutate(series = variable) %>%

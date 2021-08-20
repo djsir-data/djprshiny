@@ -117,6 +117,8 @@ djpr_plot_ui <- function(id,
 #' argument overrides the minimum value.
 #' @param check_box_options A character vector containing values to include
 #' in a check box. `NULL` by default, which suppresses the check box.
+#' @param check_box_selected A character vector containing values of the check
+#' box that should be selected by default.
 #' @param check_box_var name of column in `data` that contains the levels
 #' included in `check_box_options`. `series` by default.
 #' @param download_button logical; `TRUE` by default. When `TRUE`, a download
@@ -183,6 +185,7 @@ djpr_plot_server <- function(id,
                              date_slider = TRUE,
                              date_slider_value_min = NULL,
                              check_box_options = NULL,
+                             check_box_selected = check_box_options,
                              check_box_var = series,
                              download_button = TRUE,
                              width_percent = 100,
@@ -299,7 +302,7 @@ djpr_plot_server <- function(id,
             session$ns("checkboxes"),
             label = "",
             choices = check_box_options,
-            selected = check_box_options,
+            selected = check_box_selected,
             inline = TRUE
           )
         }
