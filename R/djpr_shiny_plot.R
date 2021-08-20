@@ -56,15 +56,15 @@
 djpr_plot_ui <- function(id,
                          height = "400px",
                          interactive = TRUE) {
-
   if (interactive) {
     plot_ui <- ggiraph::girafeOutput(NS(id, "plot"),
-                            width = "100%",
-                            height = height
-      )
+      width = "100%",
+      height = height
+    )
   } else {
     plot_ui <- plotOutput(NS(id, "plot"),
-                 height = height)
+      height = height
+    )
   }
 
   tagList(
@@ -293,7 +293,13 @@ djpr_plot_server <- function(id,
             ticks = FALSE
           )
         }
-      })
+      }) %>%
+        bindCache(
+          min(data$date),
+          max(data$date),
+          id,
+          date_slider_value_min
+        )
 
       # Create check box UI -----
       output$check_box <- renderUI({
@@ -307,7 +313,12 @@ djpr_plot_server <- function(id,
             inline = TRUE
           )
         }
-      })
+      }) %>%
+        bindCache(
+          id,
+          check_box_options,
+          check_box_selected
+        )
 
       # Extract title, subtitle, and caption as HTML ----
       output$title <- renderText({
@@ -329,26 +340,25 @@ djpr_plot_server <- function(id,
 
       # Render static plot -----
       if (!interactive) {
+        output$plot <- renderPlot({
+          req(static_plot())
+          p <- static_plot()
+          p <- p %>%
+            djprtheme::gg_font_change("Roboto")
 
-          output$plot <- renderPlot({
-            req(static_plot())
-              p <- static_plot()
-              p <- p %>%
-                djprtheme::gg_font_change("Roboto")
+          p <- p %>%
+            djprtheme::remove_labs()
 
-              p <- p %>%
-                djprtheme::remove_labs()
+          if (inherits(p, "patchwork")) {
+            p <- p &
+              theme(text = element_text(family = "Roboto"))
+          } else {
+            p <- p +
+              theme(text = element_text(family = "Roboto"))
+          }
 
-              if (inherits(p, "patchwork")) {
-                p <- p &
-                  theme(text = element_text(family = "Roboto"))
-              } else {
-                p <- p +
-                  theme(text = element_text(family = "Roboto"))
-              }
-
-              p
-            }) %>%
+          p
+        }) %>%
           shiny::bindCache(
             first_col(),
             plot_args(),
@@ -396,34 +406,35 @@ djpr_plot_server <- function(id,
           dpi = 72
         )
 
-          output$plot <- ggiraph::renderGirafe({
-            req(
-              static_plot(),
-              girafe_width()
-            )
+        output$plot <- ggiraph::renderGirafe({
+          req(
+            static_plot(),
+            girafe_width()
+          )
 
-            # Uses version of djprshiny::djpr_girafe() that is memoised on
-            # package load using memoise::memoise() - see zzz.R
-            djpr_girafe_mem(
-              ggobj = static_plot(),
-              width = girafe_width(),
-              height = girafe_height
-            )
-          }) %>%
-            shiny::bindCache(
-              first_col(),
-              plot_args(),
-              plt_change()$width,
-              id
-            )
+          # Uses version of djprshiny::djpr_girafe() that is memoised on
+          # package load using memoise::memoise() - see zzz.R
+          djpr_girafe_mem(
+            ggobj = static_plot(),
+            width = girafe_width(),
+            height = girafe_height
+          )
+        }) %>%
+          shiny::bindCache(
+            first_col(),
+            plot_args(),
+            plt_change()$width,
+            id
+          )
       }
 
       if (download_button) {
-        download_server(id = "download_dropdown",
-                        plot = static_plot(),
-                        plot_name = id)
+        download_server(
+          id = "download_dropdown",
+          plot = static_plot(),
+          plot_name = id
+        )
       }
-
     }
   )
 }

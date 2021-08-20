@@ -101,7 +101,7 @@ server <- function(input, output, session) {
   djpr_plot_server("plot1",
     plot_function = econ_plot,
     width_percent = 45,
-    date_slider = TRUE,
+    date_slider = T,
     check_box_options = c(
       "pce",
       "pop",
@@ -109,8 +109,10 @@ server <- function(input, output, session) {
       "uempmed",
       "unemploy"
     ),
-    check_box_selected = c("pce",
-                           "pop"),
+    check_box_selected = c(
+      "pce",
+      "pop"
+    ),
     check_box_var = variable,
     data = ggplot2::economics_long %>%
       mutate(series = variable) %>%
@@ -125,6 +127,7 @@ server <- function(input, output, session) {
       rename(value = unemploy) %>%
       mutate(series = "Unemployment"),
     width_percent = 100,
+    date_slider = F,
     plt_change = reactive(input$plt_change),
     height_percent = 100
   )
