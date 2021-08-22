@@ -271,8 +271,7 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args(),
-          plot_function
+          plot_args()
         )
 
       # Create date slider UI ------
@@ -315,17 +314,23 @@ djpr_plot_server <- function(id,
       output$title <- renderText({
         extract_labs(static_plot(), "title")
       }) %>%
-        shiny::bindCache(static_plot())
+        shiny::bindCache(          id,
+                                   first_col(),
+                                   plot_args())
 
       output$subtitle <- renderText({
         extract_labs(static_plot(), "subtitle")
       }) %>%
-        shiny::bindCache(static_plot())
+        shiny::bindCache(          id,
+                                   first_col(),
+                                   plot_args())
 
       output$caption <- renderText({
         extract_labs(static_plot(), "caption")
       }) %>%
-        shiny::bindCache(static_plot())
+        shiny::bindCache(          id,
+                                   first_col(),
+                                   plot_args())
 
       # Render plot ------
 
@@ -414,7 +419,7 @@ djpr_plot_server <- function(id,
           shiny::bindCache(
             first_col(),
             plot_args(),
-            plt_change()$width,
+            girafe_width(),
             id
           )
       }
