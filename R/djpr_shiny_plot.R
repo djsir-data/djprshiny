@@ -345,12 +345,15 @@ djpr_plot_server <- function(id,
           p <- p %>%
             djprtheme::remove_labs()
 
+          theme_mod <- theme(text = element_text(family = "Roboto",
+                                                 size = 14))
+
           if (inherits(p, "patchwork")) {
             p <- p &
-              theme(text = element_text(family = "Roboto"))
+              theme_mod
           } else {
             p <- p +
-              theme(text = element_text(family = "Roboto"))
+              theme_mod
           }
 
           p
