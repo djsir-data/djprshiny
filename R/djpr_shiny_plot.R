@@ -90,7 +90,15 @@ djpr_plot_ui <- function(id,
     fluidRow(
       column(
         6,
-        uiOutput(NS(id, "date_slider"))
+        sliderInput(NS(id, "dates"),
+                    label = "",
+                    min = as.Date("1978-01-01"),
+                    max = Sys.Date(),
+                    value = c(as.Date("1978-01-01"),
+                              Sys.Date()),
+                    timeFormat = "%b %Y",
+                    ticks = FALSE
+        )
       ),
       column(
         6,
@@ -268,38 +276,21 @@ djpr_plot_server <- function(id,
         )
 
       # Create date slider UI ------
-      output$date_slider <- renderUI({
-        if (date_slider == TRUE) {
-          req(data)
+      observe({
+        default_min <- ifelse(is.null(date_slider_value_min),
+                              min(data$date),
+                              date_slider_value_min) %>%
+          as.Date(origin = as.Date("1970-01-01"))
 
-          if (is.null(date_slider_value_min)) {
-            date_values <- c(
-              min(data$date),
-              max(data$date)
-            )
-          } else {
-            date_values <- c(
-              date_slider_value_min,
-              max(data$date)
-            )
-          }
-
-          sliderInput(session$ns("dates"),
-            label = "",
-            min = min(data$date),
-            max = max(data$date),
-            value = date_values,
-            timeFormat = "%b %Y",
-            ticks = FALSE
-          )
-        }
-      }) %>%
-        bindCache(
-          min(data$date),
-          max(data$date),
-          id,
-          date_slider_value_min
-        )
+        shiny::updateSliderInput(session,
+                                 "dates",
+                                 value = c(default_min,
+                                           max(data$date)),
+                                 min = min(data$date),
+                                 max = max(data$date),
+                                 timeFormat = "%b %Y"
+                                 )
+      })
 
       # Create check box UI -----
       output$check_box <- renderUI({

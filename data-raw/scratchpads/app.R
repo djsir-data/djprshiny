@@ -155,6 +155,7 @@ server <- function(input, output, session) {
     width_percent = 45,
     data = ggplot2::economics,
     second_var = "uempmed",
+    date_slider_value_min = as.Date("2010-01-01"),
     title = reactive(input$user_title),
     plt_change = reactive(input$plt_change),
     interactive = FALSE,
