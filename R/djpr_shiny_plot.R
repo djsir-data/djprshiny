@@ -90,7 +90,18 @@ djpr_plot_ui <- function(id,
     fluidRow(
       column(
         6,
-        uiOutput(NS(id, "date_slider"))
+        id = NS(id, "date_slider_col"),
+        sliderInput(NS(id, "dates"),
+          label = "",
+          min = as.Date("1978-01-01"),
+          max = Sys.Date(),
+          value = c(
+            as.Date("1978-01-01"),
+            Sys.Date()
+          ),
+          timeFormat = "%b %Y",
+          ticks = FALSE
+        )
       ),
       column(
         6,
@@ -263,43 +274,32 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args(),
-          plot_function
+          plot_args()
         )
 
       # Create date slider UI ------
-      output$date_slider <- renderUI({
-        if (date_slider == TRUE) {
-          req(data)
+      if (date_slider) {
+        observe({
+          default_min <- ifelse(is.null(date_slider_value_min),
+            min(data$date),
+            date_slider_value_min
+          ) %>%
+            as.Date(origin = as.Date("1970-01-01"))
 
-          if (is.null(date_slider_value_min)) {
-            date_values <- c(
-              min(data$date),
+          shiny::updateSliderInput(session,
+            "dates",
+            value = c(
+              default_min,
               max(data$date)
-            )
-          } else {
-            date_values <- c(
-              date_slider_value_min,
-              max(data$date)
-            )
-          }
-
-          sliderInput(session$ns("dates"),
-            label = "",
+            ),
             min = min(data$date),
             max = max(data$date),
-            value = date_values,
-            timeFormat = "%b %Y",
-            ticks = FALSE
+            timeFormat = "%b %Y"
           )
-        }
-      }) %>%
-        bindCache(
-          min(data$date),
-          max(data$date),
-          id,
-          date_slider_value_min
-        )
+        })
+      } else {
+        removeUI(selector = paste0("#", NS(id, "date_slider_col")))
+      }
 
       # Create check box UI -----
       output$check_box <- renderUI({
@@ -324,17 +324,29 @@ djpr_plot_server <- function(id,
       output$title <- renderText({
         extract_labs(static_plot(), "title")
       }) %>%
-        shiny::bindCache(static_plot())
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args()
+        )
 
       output$subtitle <- renderText({
         extract_labs(static_plot(), "subtitle")
       }) %>%
-        shiny::bindCache(static_plot())
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args()
+        )
 
       output$caption <- renderText({
         extract_labs(static_plot(), "caption")
       }) %>%
-        shiny::bindCache(static_plot())
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args()
+        )
 
       # Render plot ------
 
@@ -349,12 +361,17 @@ djpr_plot_server <- function(id,
           p <- p %>%
             djprtheme::remove_labs()
 
+          theme_mod <- theme(text = element_text(
+            family = "Roboto",
+            size = 14
+          ))
+
           if (inherits(p, "patchwork")) {
             p <- p &
-              theme(text = element_text(family = "Roboto"))
+              theme_mod
           } else {
             p <- p +
-              theme(text = element_text(family = "Roboto"))
+              theme_mod
           }
 
           p
@@ -423,7 +440,7 @@ djpr_plot_server <- function(id,
           shiny::bindCache(
             first_col(),
             plot_args(),
-            plt_change()$width,
+            girafe_width(),
             id
           )
       }
