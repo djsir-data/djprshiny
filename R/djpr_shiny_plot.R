@@ -268,8 +268,7 @@ djpr_plot_server <- function(id,
 
         do.call(plot_function,
           args = args_with_data
-        ) +
-          theme(text = element_text(family = "Roboto"))
+        )
       }) %>%
         shiny::bindCache(
           id,
@@ -290,8 +289,7 @@ djpr_plot_server <- function(id,
 
       # Create date slider UI ------
       if (date_slider) {
-        observe({
-          default_min <- ifelse(is.null(date_slider_value_min),
+          min_slider_date <- ifelse(is.null(date_slider_value_min),
             min(data$date),
             date_slider_value_min
           ) %>%
@@ -300,14 +298,13 @@ djpr_plot_server <- function(id,
           shiny::updateSliderInput(session,
             "dates",
             value = c(
-              default_min,
+              min_slider_date,
               max(data$date)
             ),
             min = min(data$date),
             max = max(data$date),
             timeFormat = "%b %Y"
           )
-        })
       } else {
         removeUI(selector = paste0("#", NS(id, "date_slider_col")))
       }
@@ -365,8 +362,7 @@ djpr_plot_server <- function(id,
       if (!interactive) {
         output$plot <- renderPlot({
           req(static_plot_nolabs())
-          p <- static_plot_nolabs()
-          p <- p %>%
+          p <- static_plot_nolabs() %>%
             djprtheme::gg_font_change("Roboto")
 
 
@@ -402,28 +398,38 @@ djpr_plot_server <- function(id,
 
         observeEvent(plt_change()$width, {
           # Round down to nearest 25 pixels; prevent small resizing
-          window_size$width <- floor(plt_change()$width / 25) * 25
+          window_size$width <- floor(plt_change()$width / 50) * 50
         })
 
-        girafe_width <- reactive({
-          req(window_size, plt_change())
-
+        width_perc <- reactive({
           # When the window is narrow, the column width ( plt_change()$width )
           # will equal the full browser width ( plt_change()$browser_width). In
           # that case, we want the plot to fill the whole column.
+          req(plt_change())
           if (plt_change()$width == plt_change()$browser_width) {
-            width_percent <- min(95, width_percent * 1.9)
+            min(95, width_percent * 1.9)
+          } else {
+            width_percent
           }
+        }) %>%
+          shiny::bindCache(
+            plt_change()$width,
+            plt_change()$browser_width,
+            width_percent
+          )
+
+        girafe_width <- reactive({
+          req(window_size$width, width_perc())
 
           calc_girafe_width(
-            width_percent = width_percent,
+            width_percent = width_perc(),
             window_width = window_size$width,
             dpi = 72
           )
         }) %>%
           shiny::bindCache(
-            plt_change()$width,
-            width_percent
+            window_size$width,
+            width_perc()
           )
 
         girafe_height <- calc_girafe_height(

@@ -15,7 +15,6 @@ download_ui <- function(id, ...) {
     size = "sm",
     status = "default bg-white",
     inline = TRUE,
-    icon = shiny::icon("arrow-circle-down"),
     shiny::downloadButton(NS(id, "download_data"),
       "Download data",
       style = "font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
