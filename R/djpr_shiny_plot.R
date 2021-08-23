@@ -214,8 +214,9 @@ djpr_plot_server <- function(id,
         if (date_slider == TRUE) {
           req(input$dates)
 
-          selected_dates <- c(input$dates[1],
-                              input$dates[2])
+          selected_dates <- c(date_floor(input$dates[1]),
+                              date_ceiling(input$dates[2])
+          )
 
           data <- data[
             data$date >= selected_dates[1] &
