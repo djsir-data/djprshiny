@@ -99,6 +99,7 @@ djpr_plot_ui <- function(id,
             as.Date("1978-01-01"),
             Sys.Date()
           ),
+          dragRange = FALSE,
           timeFormat = "%b %Y",
           ticks = FALSE
         )
@@ -213,9 +214,12 @@ djpr_plot_server <- function(id,
         if (date_slider == TRUE) {
           req(input$dates)
 
+          selected_dates <- c(input$dates[1],
+                              input$dates[2])
+
           data <- data[
-            data$date >= input$dates[1] &
-              data$date <= input$dates[2],
+            data$date >= selected_dates[1] &
+              data$date <= selected_dates[2],
           ]
         }
 
@@ -283,8 +287,8 @@ djpr_plot_server <- function(id,
         )
 
       static_plot_nolabs <- reactive({
-        req(static_plot())
-        djprtheme::remove_labs(static_plot())
+        req(static_plot()) %>%
+          djprtheme::remove_labs()
       }) %>%
         shiny::bindCache(
           id,

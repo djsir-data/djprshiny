@@ -42,9 +42,9 @@ download_server <- function(id, plot, plot_name = "plot") {
     output$download_data <- downloadHandler(
       filename = paste0(plot_name, "_data.csv"),
       content = function(file) {
-        req(plot)
 
-        data <- djprtheme::get_plot_data(plot)
+        data <- req(plot) %>%
+          djprtheme::get_plot_data()
 
         if ("tooltip" %in% names(data)) {
           data <- data[names(data) != "tooltip"]
