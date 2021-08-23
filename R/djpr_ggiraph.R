@@ -42,7 +42,6 @@ djpr_girafe <- function(ggobj,
                         width = 6,
                         ...) {
   p <- ggobj
-  p <- djprtheme::remove_labs(p)
 
   ggiraph::girafe(
     ggobj = p,

@@ -277,6 +277,17 @@ djpr_plot_server <- function(id,
           plot_args()
         )
 
+      static_plot_nolabs <- reactive({
+        req(static_plot())
+        static_plot() %>%
+          djprtheme::remove_labs()
+      }) %>%
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args()
+        )
+
       # Create date slider UI ------
       if (date_slider) {
         observe({
@@ -350,16 +361,14 @@ djpr_plot_server <- function(id,
 
       # Render plot ------
 
-      # Render static plot -----
+      # Render non-interactive plot -----
       if (!interactive) {
         output$plot <- renderPlot({
-          req(static_plot())
-          p <- static_plot()
+          req(static_plot_nolabs())
+          p <- static_plot_nolabs()
           p <- p %>%
             djprtheme::gg_font_change("Roboto")
 
-          p <- p %>%
-            djprtheme::remove_labs()
 
           theme_mod <- theme(text = element_text(
             family = "Roboto",
@@ -425,14 +434,14 @@ djpr_plot_server <- function(id,
 
         output$plot <- ggiraph::renderGirafe({
           req(
-            static_plot(),
+            static_plot_nolabs(),
             girafe_width()
           )
 
           # Uses version of djprshiny::djpr_girafe() that is memoised on
           # package load using memoise::memoise() - see zzz.R
           djpr_girafe_mem(
-            ggobj = static_plot(),
+            ggobj = static_plot_nolabs(),
             width = girafe_width(),
             height = girafe_height
           )
