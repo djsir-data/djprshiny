@@ -70,8 +70,7 @@ djpr_ts_linechart <- function(data,
     n_breaks = n_x_breaks
   )
 
-  max_date <- data %>%
-    dplyr::filter(date == date_limits[2])
+  max_date <- data[data$date == max(data$date), ]
 
   if (is.null(data[["tooltip"]])) {
     data <- data %>%

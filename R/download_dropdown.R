@@ -47,7 +47,7 @@ download_server <- function(id, plot, plot_name = "plot") {
         data <- djprtheme::get_plot_data(plot)
 
         if ("tooltip" %in% names(data)) {
-          data <- dplyr::select(data, -.data$tooltip)
+          data <- data[names(data) != "tooltip"]
         }
 
         utils::write.csv(

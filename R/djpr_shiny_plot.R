@@ -212,9 +212,11 @@ djpr_plot_server <- function(id,
       plot_data <- reactive({
         if (date_slider == TRUE) {
           req(input$dates)
-          data <- data %>%
-            dplyr::filter(.data$date >= input$dates[1] &
-              .data$date <= input$dates[2])
+
+          data <- data[
+            data$date >= input$dates[1] &
+              data$date <= input$dates[2],
+          ]
         }
 
         if (!is.null(check_box_options)) {
@@ -237,7 +239,11 @@ djpr_plot_server <- function(id,
 
       # Create a subset of plot data to use for caching ----
       first_col <- reactive({
-        plot_data()[[1]]
+        if ("date" %in% names(data)) {
+          plot_data()[["date"]]
+        } else {
+          plot_data()[[1]]
+        }
       })
 
       # Evaluate arguments to plot function ----
@@ -278,8 +284,7 @@ djpr_plot_server <- function(id,
 
       static_plot_nolabs <- reactive({
         req(static_plot())
-        static_plot() %>%
-          djprtheme::remove_labs()
+        djprtheme::remove_labs(static_plot())
       }) %>%
         shiny::bindCache(
           id,

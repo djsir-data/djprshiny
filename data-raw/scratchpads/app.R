@@ -7,6 +7,14 @@ library(dplyr)
 library(djprtheme)
 library(patchwork)
 
+linechart_plot <- function(
+  data = ggplot2::economics_long %>%
+    dplyr::rename(series = variable)
+) {
+  djpr_ts_linechart(data) #+
+    # facet_wrap(~series, scales = "free_y")
+}
+
 econ_plot <- function(data,
                       title = "A title",
                       subtitle = "A very long subtitle lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum",
@@ -85,8 +93,8 @@ ui <- djpr_page(
     br(),
     h2("h2 number 3"),
     djpr_plot_ui("plot3", interactive = F),
-    br()
-    # djpr_plot_ui("dual_plots")
+    br(),
+    djpr_plot_ui("ts_linechart")
   ),
   djpr_tab_panel(
     title = "This is the second tab",
@@ -98,6 +106,13 @@ ui <- djpr_page(
 )
 
 server <- function(input, output, session) {
+
+  djpr_plot_server("ts_linechart",
+                   linechart_plot,
+                   plt_change = reactive(input$plt_change),
+                   data = ggplot2::economics_long %>%
+                     dplyr::rename(series = variable))
+
   djpr_plot_server("plot1",
     plot_function = econ_plot,
     width_percent = 45,
