@@ -92,13 +92,15 @@ djpr_plot_ui <- function(id,
         6,
         id = NS(id, "date_slider_col"),
         sliderInput(NS(id, "dates"),
-                    label = "",
-                    min = as.Date("1978-01-01"),
-                    max = Sys.Date(),
-                    value = c(as.Date("1978-01-01"),
-                              Sys.Date()),
-                    timeFormat = "%b %Y",
-                    ticks = FALSE
+          label = "",
+          min = as.Date("1978-01-01"),
+          max = Sys.Date(),
+          value = c(
+            as.Date("1978-01-01"),
+            Sys.Date()
+          ),
+          timeFormat = "%b %Y",
+          ticks = FALSE
         )
       ),
       column(
@@ -277,21 +279,24 @@ djpr_plot_server <- function(id,
 
       # Create date slider UI ------
       if (date_slider) {
-      observe({
-        default_min <- ifelse(is.null(date_slider_value_min),
-                              min(data$date),
-                              date_slider_value_min) %>%
-          as.Date(origin = as.Date("1970-01-01"))
+        observe({
+          default_min <- ifelse(is.null(date_slider_value_min),
+            min(data$date),
+            date_slider_value_min
+          ) %>%
+            as.Date(origin = as.Date("1970-01-01"))
 
-        shiny::updateSliderInput(session,
-                                 "dates",
-                                 value = c(default_min,
-                                           max(data$date)),
-                                 min = min(data$date),
-                                 max = max(data$date),
-                                 timeFormat = "%b %Y"
-                                 )
-      })
+          shiny::updateSliderInput(session,
+            "dates",
+            value = c(
+              default_min,
+              max(data$date)
+            ),
+            min = min(data$date),
+            max = max(data$date),
+            timeFormat = "%b %Y"
+          )
+        })
       } else {
         removeUI(selector = paste0("#", NS(id, "date_slider_col")))
       }
@@ -319,23 +324,29 @@ djpr_plot_server <- function(id,
       output$title <- renderText({
         extract_labs(static_plot(), "title")
       }) %>%
-        shiny::bindCache(          id,
-                                   first_col(),
-                                   plot_args())
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args()
+        )
 
       output$subtitle <- renderText({
         extract_labs(static_plot(), "subtitle")
       }) %>%
-        shiny::bindCache(          id,
-                                   first_col(),
-                                   plot_args())
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args()
+        )
 
       output$caption <- renderText({
         extract_labs(static_plot(), "caption")
       }) %>%
-        shiny::bindCache(          id,
-                                   first_col(),
-                                   plot_args())
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args()
+        )
 
       # Render plot ------
 
@@ -350,8 +361,10 @@ djpr_plot_server <- function(id,
           p <- p %>%
             djprtheme::remove_labs()
 
-          theme_mod <- theme(text = element_text(family = "Roboto",
-                                                 size = 14))
+          theme_mod <- theme(text = element_text(
+            family = "Roboto",
+            size = 14
+          ))
 
           if (inherits(p, "patchwork")) {
             p <- p &
