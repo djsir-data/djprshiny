@@ -88,16 +88,14 @@ ggiraph_js <- function(col_widths = c(2, 8, 2)) {
     ),
     tags$script('$(document).on("shiny:connected", function(e) {
                                     var w = document.getElementById("girafe_container").offsetWidth;
-                                    var h = window.innerHeight;
                                     var b = window.innerWidth;
-                                    var obj = {width: w, height: h, browser_width: b};
+                                    var obj = {width: w, browser_width: b};
                                     Shiny.onInputChange("plt_change", obj);
                                 });
                                 $(window).resize(function(e) {
                                     var w = document.getElementById("girafe_container").offsetWidth;
-                                    var h = $(this).height();
                                     var b = window.innerWidth;
-                                    var obj = {width: w, height: h, browser_width: b};
+                                    var obj = {width: w, browser_width: b};
                                     Shiny.onInputChange("plt_change", obj);
                                 });
                             ')
