@@ -90,6 +90,7 @@ djpr_plot_ui <- function(id,
     fluidRow(
       column(
         6,
+        id = NS(id, "date_slider_col"),
         sliderInput(NS(id, "dates"),
                     label = "",
                     min = as.Date("1978-01-01"),
@@ -275,6 +276,7 @@ djpr_plot_server <- function(id,
         )
 
       # Create date slider UI ------
+      if (date_slider) {
       observe({
         default_min <- ifelse(is.null(date_slider_value_min),
                               min(data$date),
@@ -290,6 +292,9 @@ djpr_plot_server <- function(id,
                                  timeFormat = "%b %Y"
                                  )
       })
+      } else {
+        removeUI(selector = paste0("#", NS(id, "date_slider_col")))
+      }
 
       # Create check box UI -----
       output$check_box <- renderUI({
