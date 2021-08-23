@@ -444,9 +444,7 @@ djpr_plot_server <- function(id,
             girafe_width()
           )
 
-          # Uses version of djprshiny::djpr_girafe() that is memoised on
-          # package load using memoise::memoise() - see zzz.R
-          djpr_girafe_mem(
+          djpr_girafe(
             ggobj = static_plot_nolabs(),
             width = girafe_width(),
             height = girafe_height

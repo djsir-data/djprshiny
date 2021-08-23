@@ -41,10 +41,9 @@ djpr_girafe <- function(ggobj,
                         height = 5,
                         width = 6,
                         ...) {
-  p <- ggobj
 
   ggiraph::girafe(
-    ggobj = p,
+    ggobj = ggobj,
     width_svg = width,
     height_svg = height,
     options = list(
