@@ -55,15 +55,17 @@
 #'
 djpr_plot_ui <- function(id,
                          height = "400px",
+                         width = "100%",
                          interactive = TRUE) {
   if (interactive) {
     plot_ui <- ggiraph::girafeOutput(NS(id, "plot"),
-      width = "100%",
+      width = width,
       height = height
     )
   } else {
     plot_ui <- plotOutput(NS(id, "plot"),
-      height = height
+      height = height,
+      width = width
     )
   }
 
@@ -82,6 +84,7 @@ djpr_plot_ui <- function(id,
         textOutput(NS(id, "caption"), container = djpr_plot_caption)
       ),
       column(5,
+             id = NS(id, "download_col"),
         br(),
         download_ui(NS(id, "download_dropdown")),
         align = "right"
@@ -209,10 +212,34 @@ djpr_plot_server <- function(id,
     id,
     function(input, output, session) {
 
+      # Create date slider UI ------
+      if (date_slider) {
+        min_slider_date <- ifelse(is.null(date_slider_value_min),
+                                  min(data$date),
+                                  date_slider_value_min
+        ) %>%
+          as.Date(origin = as.Date("1970-01-01"))
+
+        shiny::updateSliderInput(session,
+                                 "dates",
+                                 value = c(
+                                   min_slider_date,
+                                   max(data$date)
+                                 ),
+                                 min = min(data$date),
+                                 max = max(data$date),
+                                 timeFormat = "%b %Y"
+        )
+
+        date_slider_initialised <- TRUE
+      } else {
+        removeUI(selector = paste0("#", NS(id, "date_slider_col")))
+      }
+
       # Filter data based on user input (slider + checkbox) ----
       plot_data <- reactive({
         if (date_slider == TRUE) {
-          req(input$dates)
+          req(input$dates, date_slider_initialised)
 
           selected_dates <- c(date_floor(input$dates[1]),
                               date_ceiling(input$dates[2])
@@ -255,6 +282,7 @@ djpr_plot_server <- function(id,
       # Need to pass reactive arguments in ...
       # (eg `selected_input = input$focus_sa4`) as reactives
       plot_args <- reactive({
+
         lapply(list(
           ...
         ), function(x) {
@@ -296,28 +324,6 @@ djpr_plot_server <- function(id,
           first_col(),
           plot_args()
         )
-
-      # Create date slider UI ------
-      if (date_slider) {
-          min_slider_date <- ifelse(is.null(date_slider_value_min),
-            min(data$date),
-            date_slider_value_min
-          ) %>%
-            as.Date(origin = as.Date("1970-01-01"))
-
-          shiny::updateSliderInput(session,
-            "dates",
-            value = c(
-              min_slider_date,
-              max(data$date)
-            ),
-            min = min(data$date),
-            max = max(data$date),
-            timeFormat = "%b %Y"
-          )
-      } else {
-        removeUI(selector = paste0("#", NS(id, "date_slider_col")))
-      }
 
       # Create check box UI -----
       output$check_box <- renderUI({
@@ -470,6 +476,8 @@ djpr_plot_server <- function(id,
           plot = static_plot(),
           plot_name = id
         )
+      } else {
+        removeUI(selector = paste0("#", NS(id, "download_col")))
       }
     }
   )
