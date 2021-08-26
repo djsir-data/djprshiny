@@ -108,9 +108,10 @@ djpr_plot_ui <- function(id,
         )
       ),
       column(
-        6,
+        5,
         uiOutput(NS(id, "check_box"))
-      )
+      ),
+      column(1)
     ),
     br()
   )
@@ -419,9 +420,9 @@ djpr_plot_server <- function(id,
           # that case, we want the plot to fill the whole column.
           req(plt_change())
           if (plt_change()$width == plt_change()$browser_width) {
-            min(95, width_percent * 1.9)
+            min(92, width_percent * 1.9)
           } else {
-            width_percent
+            min(92, width_percent)
           }
         }) %>%
           shiny::bindCache(
