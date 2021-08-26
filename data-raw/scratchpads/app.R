@@ -115,7 +115,7 @@ server <- function(input, output, session) {
 
   djpr_plot_server("plot1",
     plot_function = econ_plot,
-    width_percent = 45,
+    width_percent = 48,
     date_slider = T,
     check_box_options = c(
       "pce",

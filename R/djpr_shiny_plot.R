@@ -73,7 +73,7 @@ djpr_plot_ui <- function(id,
     plot_ui %>%
       djpr_with_spinner(
         proxy.height = height,
-        hide.ui = TRUE
+        hide.ui = FALSE
       ),
     fluidRow(
       column(
@@ -402,13 +402,9 @@ djpr_plot_server <- function(id,
       if (interactive) {
 
         # Capture changes in browser size -----
-        window_size <- reactiveValues(
-          width = 1140
-        )
-
-        observeEvent(plt_change()$width, {
-          # Round down to nearest 25 pixels; prevent small resizing
-          window_size$width <- floor(plt_change()$width / 50) * 50
+        window_width <- reactive({
+          # Round down to nearest 50 pixels; prevent small resizing
+          floor(plt_change()$width / 50) * 50
         })
 
         width_perc <- reactive({
@@ -429,16 +425,16 @@ djpr_plot_server <- function(id,
           )
 
         girafe_width <- reactive({
-          req(window_size$width, width_perc())
+          req(window_width(), width_perc())
 
           calc_girafe_width(
             width_percent = width_perc(),
-            window_width = window_size$width,
+            window_width = window_width(),
             dpi = 72
           )
         }) %>%
           shiny::bindCache(
-            window_size$width,
+            window_width(),
             width_perc()
           )
 
