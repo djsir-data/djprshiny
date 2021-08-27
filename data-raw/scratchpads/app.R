@@ -7,12 +7,10 @@ library(dplyr)
 library(djprtheme)
 library(patchwork)
 
-linechart_plot <- function(
-  data = ggplot2::economics_long %>%
-    dplyr::rename(series = variable)
-) {
+linechart_plot <- function(data = ggplot2::economics_long %>%
+                             dplyr::rename(series = variable)) {
   djpr_ts_linechart(data) #+
-    # facet_wrap(~series, scales = "free_y")
+  # facet_wrap(~series, scales = "free_y")
 }
 
 econ_plot <- function(data,
@@ -70,6 +68,7 @@ ui <- djpr_page(
     h1("This is an h1"),
     title = "Overview",
     h2("h2 number 1"),
+    focus_box("Using RStudio Connect, you can have multiple R processes per app. This means that many concurrent users can be distributed between separate processes and are served more efficiently. As there is no limitation on the number of processes, you can make use of all your machine resources. Using RStudio Connect, you can have multiple R processes per app. This means that many concurrent users can be distributed between separate processes and are served more efficiently. As there is no limitation on the number of processes, you can make use of all your machine resources. Using RStudio Connect, you can have multiple R processes per app. This means that many concurrent users can be distributed between separate processes and are served more efficiently. As there is no limitation on the number of processes, you can make use of all your machine resources."),
     focus_box(
       "Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur.",
       br(),
@@ -94,7 +93,8 @@ ui <- djpr_page(
     h2("h2 number 3"),
     djpr_plot_ui("plot3", interactive = F),
     br(),
-    djpr_plot_ui("ts_linechart")
+    djpr_plot_ui("ts_linechart"),
+    br()
   ),
   djpr_tab_panel(
     title = "This is the second tab",
@@ -106,17 +106,18 @@ ui <- djpr_page(
 )
 
 server <- function(input, output, session) {
-
   djpr_plot_server("ts_linechart",
-                   linechart_plot,
-                   plt_change = reactive(input$plt_change),
-                   data = ggplot2::economics_long %>%
-                     dplyr::rename(series = variable))
+    linechart_plot,
+    plt_change = reactive(input$plt_change),
+    data = ggplot2::economics_long %>%
+      dplyr::rename(series = variable)
+  )
 
   djpr_plot_server("plot1",
     plot_function = econ_plot,
     width_percent = 45,
     date_slider = T,
+    download_button = T,
     check_box_options = c(
       "pce",
       "pop",

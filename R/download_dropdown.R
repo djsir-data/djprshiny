@@ -42,7 +42,6 @@ download_server <- function(id, plot, plot_name = "plot") {
     output$download_data <- downloadHandler(
       filename = paste0(plot_name, "_data.csv"),
       content = function(file) {
-
         data <- req(plot) %>%
           djprtheme::get_plot_data()
 

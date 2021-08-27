@@ -4,6 +4,7 @@
 #' Takes as input a function to create a ggplot2 or ggirafe object
 #' @param id a Shiny `outputId` specific to the individual plot.
 #' @param height Height of container
+#' @param width Width of container; default is "100%"
 #' @param interactive Logical; `TRUE` by default.
 #' @return A `shiny.tag` object creating a plot environment, with
 #' labels (title, subtitle, caption) as HTML text, a download button,
@@ -55,15 +56,17 @@
 #'
 djpr_plot_ui <- function(id,
                          height = "400px",
+                         width = "100%",
                          interactive = TRUE) {
   if (interactive) {
     plot_ui <- ggiraph::girafeOutput(NS(id, "plot"),
-      width = "100%",
+      width = width,
       height = height
     )
   } else {
     plot_ui <- plotOutput(NS(id, "plot"),
-      height = height
+      height = height,
+      width = width
     )
   }
 
@@ -73,7 +76,7 @@ djpr_plot_ui <- function(id,
     plot_ui %>%
       djpr_with_spinner(
         proxy.height = height,
-        hide.ui = TRUE
+        hide.ui = FALSE
       ),
     fluidRow(
       column(
@@ -82,6 +85,7 @@ djpr_plot_ui <- function(id,
         textOutput(NS(id, "caption"), container = djpr_plot_caption)
       ),
       column(5,
+        id = NS(id, "download_col"),
         br(),
         download_ui(NS(id, "download_dropdown")),
         align = "right"
@@ -105,9 +109,10 @@ djpr_plot_ui <- function(id,
         )
       ),
       column(
-        6,
+        5,
         uiOutput(NS(id, "check_box"))
-      )
+      ),
+      column(1)
     ),
     br()
   )
@@ -209,13 +214,38 @@ djpr_plot_server <- function(id,
     id,
     function(input, output, session) {
 
+      # Create date slider UI ------
+      if (date_slider) {
+        min_slider_date <- ifelse(is.null(date_slider_value_min),
+          min(data$date),
+          date_slider_value_min
+        ) %>%
+          as.Date(origin = as.Date("1970-01-01"))
+
+        shiny::updateSliderInput(session,
+          "dates",
+          value = c(
+            min_slider_date,
+            max(data$date)
+          ),
+          min = min(data$date),
+          max = max(data$date),
+          timeFormat = "%b %Y"
+        )
+
+        date_slider_initialised <- TRUE
+      } else {
+        removeUI(selector = paste0("#", NS(id, "date_slider_col")))
+      }
+
       # Filter data based on user input (slider + checkbox) ----
       plot_data <- reactive({
         if (date_slider == TRUE) {
-          req(input$dates)
+          req(input$dates, date_slider_initialised)
 
-          selected_dates <- c(date_floor(input$dates[1]),
-                              date_ceiling(input$dates[2])
+          selected_dates <- c(
+            date_floor(input$dates[1]),
+            date_ceiling(input$dates[2])
           )
 
           data <- data[
@@ -296,28 +326,6 @@ djpr_plot_server <- function(id,
           first_col(),
           plot_args()
         )
-
-      # Create date slider UI ------
-      if (date_slider) {
-          min_slider_date <- ifelse(is.null(date_slider_value_min),
-            min(data$date),
-            date_slider_value_min
-          ) %>%
-            as.Date(origin = as.Date("1970-01-01"))
-
-          shiny::updateSliderInput(session,
-            "dates",
-            value = c(
-              min_slider_date,
-              max(data$date)
-            ),
-            min = min(data$date),
-            max = max(data$date),
-            timeFormat = "%b %Y"
-          )
-      } else {
-        removeUI(selector = paste0("#", NS(id, "date_slider_col")))
-      }
 
       # Create check box UI -----
       output$check_box <- renderUI({
@@ -402,24 +410,22 @@ djpr_plot_server <- function(id,
       if (interactive) {
 
         # Capture changes in browser size -----
-        window_size <- reactiveValues(
-          width = 1140
-        )
-
-        observeEvent(plt_change()$width, {
-          # Round down to nearest 25 pixels; prevent small resizing
-          window_size$width <- floor(plt_change()$width / 50) * 50
+        window_width <- reactive({
+          # Round down to nearest 50 pixels; prevent small resizing
+          floor(plt_change()$width / 50) * 50
         })
 
         width_perc <- reactive({
           # When the window is narrow, the column width ( plt_change()$width )
           # will equal the full browser width ( plt_change()$browser_width). In
-          # that case, we want the plot to fill the whole column.
+          # that case, we want the plot to fill the whole column. We max out
+          # at <100 width, to prevent ggiraph objects overflowing their
+          # containers and forcing a re-render
           req(plt_change())
           if (plt_change()$width == plt_change()$browser_width) {
-            min(95, width_percent * 1.9)
+            min(92, width_percent * 1.9)
           } else {
-            width_percent
+            min(92, width_percent)
           }
         }) %>%
           shiny::bindCache(
@@ -429,16 +435,16 @@ djpr_plot_server <- function(id,
           )
 
         girafe_width <- reactive({
-          req(window_size$width, width_perc())
+          req(window_width(), width_perc())
 
           calc_girafe_width(
             width_percent = width_perc(),
-            window_width = window_size$width,
+            window_width = window_width(),
             dpi = 72
           )
         }) %>%
           shiny::bindCache(
-            window_size$width,
+            window_width(),
             width_perc()
           )
 
@@ -474,6 +480,8 @@ djpr_plot_server <- function(id,
           plot = static_plot(),
           plot_name = id
         )
+      } else {
+        removeUI(selector = paste0("#", NS(id, "download_col")))
       }
     }
   )

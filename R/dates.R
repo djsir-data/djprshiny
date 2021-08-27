@@ -20,7 +20,7 @@ NULL
 #' @export
 date_floor <- function(dates) {
   dates %>%
-    strftime(format="%Y-%m") %>%
+    strftime(format = "%Y-%m") %>%
     paste0("-01") %>%
     as.Date()
 }
@@ -28,11 +28,12 @@ date_floor <- function(dates) {
 #' @export
 #' @rdname round_dates
 date_ceiling <- function(dates) {
-
   do_date_ceiling <- function(date) {
-    seq.Date(from = date,
-             by = "months",
-             length.out = 2)[2] %>%
+    seq.Date(
+      from = date,
+      by = "months",
+      length.out = 2
+    )[2] %>%
       date_floor() - 1
   }
 

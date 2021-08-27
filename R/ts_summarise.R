@@ -168,7 +168,7 @@ ts_summarise <- function(df, digits = 1) {
     dplyr::select(.data$series_id, .data$indicator) %>%
     dplyr::right_join(comb_df, by = "series_id")
 
-  up_is_good <- tibble::tribble(
+  up_is_good <- dplyr::tribble(
     ~indicator, ~up_is_good,
     "Employed full-time", TRUE,
     "Employed part-time", TRUE,
