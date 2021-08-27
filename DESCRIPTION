@@ -27,20 +27,16 @@ Imports:
     ggplot2 (>= 3.3.3),
     ggrepel (>= 0.9.1),
     htmltools (>= 0.5.1.1),
-    memoise (>= 2.0.0),
     purrr,
     rlang (>= 0.4.11),
     shiny (>= 1.6.0),
     shinycssloaders,
     shinyWidgets (>= 0.6.0),
-    stringr,
-    tibble,
-    cachem
+    stringr
 Suggests: 
     testthat (>= 3.0.0),
     vdiffr (>= 1.0.0),
-    showtext,
-    patchwork
+    showtext
 Config/testthat/edition: 3
 Remotes: 
     djpr-data/djprtheme,

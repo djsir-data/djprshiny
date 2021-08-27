@@ -84,16 +84,16 @@ ui <- djpr_page(
         )
       )
     ),
-    # h2("Unemployment & underemployment"),
-    # "Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur.",
-    # br(),
-    # br(),
-    # djpr_plot_ui("plot2"),
-    # br(),
-    # h2("h2 number 3"),
-    # djpr_plot_ui("plot3", interactive = F),
-    # br(),
-    # djpr_plot_ui("ts_linechart"),
+    h2("Unemployment & underemployment"),
+    "Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur.",
+    br(),
+    br(),
+    djpr_plot_ui("plot2"),
+    br(),
+    h2("h2 number 3"),
+    djpr_plot_ui("plot3", interactive = F),
+    br(),
+    djpr_plot_ui("ts_linechart"),
     br()
   ),
   djpr_tab_panel(
