@@ -4,6 +4,7 @@
 #' Takes as input a function to create a ggplot2 or ggirafe object
 #' @param id a Shiny `outputId` specific to the individual plot.
 #' @param height Height of container
+#' @param width Width of container; default is "100%"
 #' @param interactive Logical; `TRUE` by default.
 #' @return A `shiny.tag` object creating a plot environment, with
 #' labels (title, subtitle, caption) as HTML text, a download button,
@@ -84,7 +85,7 @@ djpr_plot_ui <- function(id,
         textOutput(NS(id, "caption"), container = djpr_plot_caption)
       ),
       column(5,
-             id = NS(id, "download_col"),
+        id = NS(id, "download_col"),
         br(),
         download_ui(NS(id, "download_dropdown")),
         align = "right"
@@ -216,20 +217,20 @@ djpr_plot_server <- function(id,
       # Create date slider UI ------
       if (date_slider) {
         min_slider_date <- ifelse(is.null(date_slider_value_min),
-                                  min(data$date),
-                                  date_slider_value_min
+          min(data$date),
+          date_slider_value_min
         ) %>%
           as.Date(origin = as.Date("1970-01-01"))
 
         shiny::updateSliderInput(session,
-                                 "dates",
-                                 value = c(
-                                   min_slider_date,
-                                   max(data$date)
-                                 ),
-                                 min = min(data$date),
-                                 max = max(data$date),
-                                 timeFormat = "%b %Y"
+          "dates",
+          value = c(
+            min_slider_date,
+            max(data$date)
+          ),
+          min = min(data$date),
+          max = max(data$date),
+          timeFormat = "%b %Y"
         )
 
         date_slider_initialised <- TRUE
@@ -242,8 +243,9 @@ djpr_plot_server <- function(id,
         if (date_slider == TRUE) {
           req(input$dates, date_slider_initialised)
 
-          selected_dates <- c(date_floor(input$dates[1]),
-                              date_ceiling(input$dates[2])
+          selected_dates <- c(
+            date_floor(input$dates[1]),
+            date_ceiling(input$dates[2])
           )
 
           data <- data[
@@ -283,7 +285,6 @@ djpr_plot_server <- function(id,
       # Need to pass reactive arguments in ...
       # (eg `selected_input = input$focus_sa4`) as reactives
       plot_args <- reactive({
-
         lapply(list(
           ...
         ), function(x) {
@@ -417,7 +418,9 @@ djpr_plot_server <- function(id,
         width_perc <- reactive({
           # When the window is narrow, the column width ( plt_change()$width )
           # will equal the full browser width ( plt_change()$browser_width). In
-          # that case, we want the plot to fill the whole column.
+          # that case, we want the plot to fill the whole column. We max out
+          # at <100 width, to prevent ggiraph objects overflowing their
+          # containers and forcing a re-render
           req(plt_change())
           if (plt_change()$width == plt_change()$browser_width) {
             min(92, width_percent * 1.9)
