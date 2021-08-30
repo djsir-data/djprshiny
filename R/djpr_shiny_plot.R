@@ -109,15 +109,13 @@ djpr_plot_ui <- function(id,
         )
       ),
       column(
-        5,
+        6,
         id = NS(id, "check_box_col"),
-        # uiOutput(NS(id, "check_box")),
         shiny::checkboxGroupInput(NS(id, "checkboxes"),
                                   label = NULL,
                                   choices = NULL,
                                   inline = TRUE)
-      ),
-      column(1)
+      )
     ),
     br()
   )
