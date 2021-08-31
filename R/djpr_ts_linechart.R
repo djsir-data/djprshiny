@@ -150,7 +150,7 @@ djpr_ts_linechart <- function(data,
     p <- p +
       ggrepel::geom_label_repel(
         data = lab_df,
-        aes(label = label),
+        aes(label = .data$label),
         hjust = 0,
         nudge_x = days_in_data * 0.033,
         label.padding = 0.01,
