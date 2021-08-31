@@ -68,7 +68,6 @@ ui <- djpr_page(
     h1("This is an h1"),
     title = "Overview",
     h2("h2 number 1"),
-    focus_box("Using RStudio Connect, you can have multiple R processes per app. This means that many concurrent users can be distributed between separate processes and are served more efficiently. As there is no limitation on the number of processes, you can make use of all your machine resources. Using RStudio Connect, you can have multiple R processes per app. This means that many concurrent users can be distributed between separate processes and are served more efficiently. As there is no limitation on the number of processes, you can make use of all your machine resources. Using RStudio Connect, you can have multiple R processes per app. This means that many concurrent users can be distributed between separate processes and are served more efficiently. As there is no limitation on the number of processes, you can make use of all your machine resources."),
     focus_box(
       "Lorem ipsum dolor sit amet, no ullum melius laoreet quo, quo iuvaret recteque torquatos id. Vix cu habeo reque nonumy, mel ne deleniti percipit efficiantur. An pro definiebas scripserit. Et errem dicam explicari cum, veritus mediocrem reprehendunt mei an. Duo ad dolor soluta referrentur.",
       br(),

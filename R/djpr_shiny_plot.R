@@ -109,10 +109,13 @@ djpr_plot_ui <- function(id,
         )
       ),
       column(
-        5,
-        uiOutput(NS(id, "check_box"))
-      ),
-      column(1)
+        6,
+        id = NS(id, "check_box_col"),
+        shiny::checkboxGroupInput(NS(id, "checkboxes"),
+                                  label = NULL,
+                                  choices = NULL,
+                                  inline = TRUE)
+      )
     ),
     br()
   )
@@ -214,6 +217,8 @@ djpr_plot_server <- function(id,
     id,
     function(input, output, session) {
 
+      # Create UI on UI side and update on server side; this is done as it's
+      # faster than creating UI on the server side and using uiOutput()
       # Create date slider UI ------
       if (date_slider) {
         min_slider_date <- ifelse(is.null(date_slider_value_min),
@@ -236,6 +241,18 @@ djpr_plot_server <- function(id,
         date_slider_initialised <- TRUE
       } else {
         removeUI(selector = paste0("#", NS(id, "date_slider_col")))
+      }
+
+      # Create checkbox UI -----
+      if (!is.null(check_box_options)) {
+        shinyWidgets::updateAwesomeCheckboxGroup(
+          session,
+          "checkboxes",
+          choices = check_box_options,
+          selected = check_box_selected
+        )
+      } else {
+        removeUI(selector = paste0("#", NS(id, "check_box_col")))
       }
 
       # Filter data based on user input (slider + checkbox) ----
@@ -313,7 +330,8 @@ djpr_plot_server <- function(id,
       }) %>%
         shiny::bindCache(
           id,
-          first_col(),
+          # first_col(),
+          plot_data(),
           plot_args()
         )
 
@@ -327,24 +345,7 @@ djpr_plot_server <- function(id,
           plot_args()
         )
 
-      # Create check box UI -----
-      output$check_box <- renderUI({
-        if (!is.null(check_box_options)) {
-          req(data)
-          shinyWidgets::awesomeCheckboxGroup(
-            NS(id, "checkboxes"),
-            label = "",
-            choices = check_box_options,
-            selected = check_box_selected,
-            inline = TRUE
-          )
-        }
-      }) %>%
-        bindCache(
-          id,
-          check_box_options,
-          check_box_selected
-        )
+
 
       # Extract title, subtitle, and caption as HTML ----
       output$title <- renderText({
@@ -474,6 +475,7 @@ djpr_plot_server <- function(id,
           )
       }
 
+      # Add download button ------
       if (download_button) {
         download_server(
           id = "download_dropdown",
