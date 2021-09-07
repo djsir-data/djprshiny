@@ -314,7 +314,8 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args()
+          plot_args(),
+          body(plot_function)
         )
 
       static_plot_nolabs <- reactive({
@@ -324,7 +325,8 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args()
+          plot_args(),
+          body(plot_function)
         )
 
       # Create check box UI -----
@@ -353,7 +355,8 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args()
+          plot_args(),
+          body(plot_function)
         )
 
       output$subtitle <- renderText({
@@ -362,7 +365,8 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args()
+          plot_args(),
+          body(plot_function)
         )
 
       output$caption <- renderText({
@@ -371,7 +375,8 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args()
+          plot_args(),
+          body(plot_function)
         )
 
       # Render plot ------
@@ -402,7 +407,8 @@ djpr_plot_server <- function(id,
           shiny::bindCache(
             first_col(),
             plot_args(),
-            id
+            id,
+            body(plot_function)
           )
       }
 
@@ -470,7 +476,8 @@ djpr_plot_server <- function(id,
             first_col(),
             plot_args(),
             girafe_width(),
-            id
+            id,
+            body(plot_function)
           )
       }
 
