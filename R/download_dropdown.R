@@ -15,7 +15,6 @@ download_ui <- function(id, ...) {
     size = "sm",
     status = "default bg-white",
     inline = TRUE,
-    icon = shiny::icon("arrow-circle-down"),
     shiny::downloadButton(NS(id, "download_data"),
       "Download data",
       style = "font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
@@ -43,12 +42,11 @@ download_server <- function(id, plot, plot_name = "plot") {
     output$download_data <- downloadHandler(
       filename = paste0(plot_name, "_data.csv"),
       content = function(file) {
-        req(plot)
-
-        data <- djprtheme::get_plot_data(plot)
+        data <- req(plot) %>%
+          djprtheme::get_plot_data()
 
         if ("tooltip" %in% names(data)) {
-          data <- dplyr::select(data, -.data$tooltip)
+          data <- data[names(data) != "tooltip"]
         }
 
         utils::write.csv(

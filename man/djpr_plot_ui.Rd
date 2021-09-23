@@ -6,12 +6,16 @@
 title and subtitle, chart, notes, and download buttons
 Takes as input a function to create a ggplot2 or ggirafe object}
 \usage{
-djpr_plot_ui(id, height = "400px")
+djpr_plot_ui(id, height = "400px", width = "100\%", interactive = TRUE)
 }
 \arguments{
 \item{id}{a Shiny \code{outputId} specific to the individual plot.}
 
 \item{height}{Height of container}
+
+\item{width}{Width of container; default is "100\%"}
+
+\item{interactive}{Logical; \code{TRUE} by default.}
 }
 \value{
 A \code{shiny.tag} object creating a plot environment, with

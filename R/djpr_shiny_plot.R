@@ -4,6 +4,8 @@
 #' Takes as input a function to create a ggplot2 or ggirafe object
 #' @param id a Shiny `outputId` specific to the individual plot.
 #' @param height Height of container
+#' @param width Width of container; default is "100%"
+#' @param interactive Logical; `TRUE` by default.
 #' @return A `shiny.tag` object creating a plot environment, with
 #' labels (title, subtitle, caption) as HTML text, a download button,
 #' and optional input controls.
@@ -54,16 +56,18 @@
 #'
 djpr_plot_ui <- function(id,
                          height = "400px",
+                         width = "100%",
                          interactive = TRUE) {
-
   if (interactive) {
     plot_ui <- ggiraph::girafeOutput(NS(id, "plot"),
-                            width = "100%",
-                            height = height
-      )
+      width = width,
+      height = height
+    )
   } else {
     plot_ui <- plotOutput(NS(id, "plot"),
-                 height = height)
+      height = height,
+      width = width
+    )
   }
 
   tagList(
@@ -72,7 +76,7 @@ djpr_plot_ui <- function(id,
     plot_ui %>%
       djpr_with_spinner(
         proxy.height = height,
-        hide.ui = TRUE
+        hide.ui = FALSE
       ),
     fluidRow(
       column(
@@ -81,20 +85,34 @@ djpr_plot_ui <- function(id,
         textOutput(NS(id, "caption"), container = djpr_plot_caption)
       ),
       column(5,
+        id = NS(id, "download_col"),
         br(),
-        uiOutput(NS(id, "dl_button")),
+        download_ui(NS(id, "download_dropdown")),
         align = "right"
       )
     ),
     fluidRow(
       column(
         6,
-        uiOutput(NS(id, "date_slider"))
+        id = NS(id, "date_slider_col"),
+        sliderInput(NS(id, "dates"),
+          label = "",
+          min = as.Date("1978-01-01"),
+          max = Sys.Date(),
+          value = c(
+            as.Date("1978-01-01"),
+            Sys.Date()
+          ),
+          dragRange = FALSE,
+          timeFormat = "%b %Y",
+          ticks = FALSE
+        )
       ),
       column(
-        6,
+        5,
         uiOutput(NS(id, "check_box"))
-      )
+      ),
+      column(1)
     ),
     br()
   )
@@ -117,6 +135,8 @@ djpr_plot_ui <- function(id,
 #' argument overrides the minimum value.
 #' @param check_box_options A character vector containing values to include
 #' in a check box. `NULL` by default, which suppresses the check box.
+#' @param check_box_selected A character vector containing values of the check
+#' box that should be selected by default.
 #' @param check_box_var name of column in `data` that contains the levels
 #' included in `check_box_options`. `series` by default.
 #' @param download_button logical; `TRUE` by default. When `TRUE`, a download
@@ -183,6 +203,7 @@ djpr_plot_server <- function(id,
                              date_slider = TRUE,
                              date_slider_value_min = NULL,
                              check_box_options = NULL,
+                             check_box_selected = check_box_options,
                              check_box_var = series,
                              download_button = TRUE,
                              width_percent = 100,
@@ -193,13 +214,44 @@ djpr_plot_server <- function(id,
     id,
     function(input, output, session) {
 
+      # Create date slider UI ------
+      if (date_slider) {
+        min_slider_date <- ifelse(is.null(date_slider_value_min),
+          min(data$date),
+          date_slider_value_min
+        ) %>%
+          as.Date(origin = as.Date("1970-01-01"))
+
+        shiny::updateSliderInput(session,
+          "dates",
+          value = c(
+            min_slider_date,
+            max(data$date)
+          ),
+          min = min(data$date),
+          max = max(data$date),
+          timeFormat = "%b %Y"
+        )
+
+        date_slider_initialised <- TRUE
+      } else {
+        removeUI(selector = paste0("#", NS(id, "date_slider_col")))
+      }
+
       # Filter data based on user input (slider + checkbox) ----
       plot_data <- reactive({
         if (date_slider == TRUE) {
-          req(input$dates)
-          data <- data %>%
-            dplyr::filter(.data$date >= input$dates[1] &
-              .data$date <= input$dates[2])
+          req(input$dates, date_slider_initialised)
+
+          selected_dates <- c(
+            date_floor(input$dates[1]),
+            date_ceiling(input$dates[2])
+          )
+
+          data <- data[
+            data$date >= selected_dates[1] &
+              data$date <= selected_dates[2],
+          ]
         }
 
         if (!is.null(check_box_options)) {
@@ -222,7 +274,11 @@ djpr_plot_server <- function(id,
 
       # Create a subset of plot data to use for caching ----
       first_col <- reactive({
-        plot_data()[[1]]
+        if ("date" %in% names(data)) {
+          plot_data()[["date"]]
+        } else {
+          plot_data()[[1]]
+        }
       })
 
       # Evaluate arguments to plot function ----
@@ -253,102 +309,106 @@ djpr_plot_server <- function(id,
 
         do.call(plot_function,
           args = args_with_data
-        ) +
-          theme(text = element_text(family = "Roboto"))
+        )
       }) %>%
         shiny::bindCache(
           id,
           first_col(),
           plot_args(),
-          plot_function
+          body(plot_function)
         )
 
-      # Create date slider UI ------
-      output$date_slider <- renderUI({
-        if (date_slider == TRUE) {
-          req(data)
-
-          if (is.null(date_slider_value_min)) {
-            date_values <- c(
-              min(data$date),
-              max(data$date)
-            )
-          } else {
-            date_values <- c(
-              date_slider_value_min,
-              max(data$date)
-            )
-          }
-
-          sliderInput(session$ns("dates"),
-            label = "",
-            min = min(data$date),
-            max = max(data$date),
-            value = date_values,
-            timeFormat = "%b %Y",
-            ticks = FALSE
-          )
-        }
-      })
+      static_plot_nolabs <- reactive({
+        req(static_plot()) %>%
+          djprtheme::remove_labs()
+      }) %>%
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args(),
+          body(plot_function)
+        )
 
       # Create check box UI -----
       output$check_box <- renderUI({
         if (!is.null(check_box_options)) {
           req(data)
           shinyWidgets::awesomeCheckboxGroup(
-            session$ns("checkboxes"),
+            NS(id, "checkboxes"),
             label = "",
             choices = check_box_options,
-            selected = check_box_options,
+            selected = check_box_selected,
             inline = TRUE
           )
         }
-      })
+      }) %>%
+        bindCache(
+          id,
+          check_box_options,
+          check_box_selected
+        )
 
       # Extract title, subtitle, and caption as HTML ----
       output$title <- renderText({
         extract_labs(static_plot(), "title")
       }) %>%
-        shiny::bindCache(static_plot())
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args(),
+          body(plot_function)
+        )
 
       output$subtitle <- renderText({
         extract_labs(static_plot(), "subtitle")
       }) %>%
-        shiny::bindCache(static_plot())
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args(),
+          body(plot_function)
+        )
 
       output$caption <- renderText({
         extract_labs(static_plot(), "caption")
       }) %>%
-        shiny::bindCache(static_plot())
+        shiny::bindCache(
+          id,
+          first_col(),
+          plot_args(),
+          body(plot_function)
+        )
 
       # Render plot ------
 
-      # Render static plot -----
+      # Render non-interactive plot -----
       if (!interactive) {
+        output$plot <- renderPlot({
+          req(static_plot_nolabs())
+          p <- static_plot_nolabs() %>%
+            djprtheme::gg_font_change("Roboto")
 
-          output$plot <- renderPlot({
-            req(static_plot())
-              p <- static_plot()
-              p <- p %>%
-                djprtheme::gg_font_change("Roboto")
 
-              p <- p %>%
-                djprtheme::remove_labs()
+          theme_mod <- theme(text = element_text(
+            family = "Roboto",
+            size = 14
+          ))
 
-              if (inherits(p, "patchwork")) {
-                p <- p &
-                  theme(text = element_text(family = "Roboto"))
-              } else {
-                p <- p +
-                  theme(text = element_text(family = "Roboto"))
-              }
+          if (inherits(p, "patchwork")) {
+            p <- p &
+              theme_mod
+          } else {
+            p <- p +
+              theme_mod
+          }
 
-              p
-            }) %>%
+          p
+        }) %>%
           shiny::bindCache(
             first_col(),
             plot_args(),
-            id
+            id,
+            body(plot_function)
           )
       }
 
@@ -356,34 +416,42 @@ djpr_plot_server <- function(id,
       if (interactive) {
 
         # Capture changes in browser size -----
-        window_size <- reactiveValues(
-          width = 1140
-        )
-
-        observeEvent(plt_change()$width, {
-          # Round down to nearest 25 pixels; prevent small resizing
-          window_size$width <- floor(plt_change()$width / 25) * 25
+        window_width <- reactive({
+          # Round down to nearest 50 pixels; prevent small resizing
+          floor(plt_change()$width / 50) * 50
         })
 
-        girafe_width <- reactive({
-          req(window_size, plt_change())
-
+        width_perc <- reactive({
           # When the window is narrow, the column width ( plt_change()$width )
           # will equal the full browser width ( plt_change()$browser_width). In
-          # that case, we want the plot to fill the whole column.
+          # that case, we want the plot to fill the whole column. We max out
+          # at <100 width, to prevent ggiraph objects overflowing their
+          # containers and forcing a re-render
+          req(plt_change())
           if (plt_change()$width == plt_change()$browser_width) {
-            width_percent <- min(95, width_percent * 1.9)
+            min(92, width_percent * 1.9)
+          } else {
+            min(92, width_percent)
           }
+        }) %>%
+          shiny::bindCache(
+            plt_change()$width,
+            plt_change()$browser_width,
+            width_percent
+          )
+
+        girafe_width <- reactive({
+          req(window_width(), width_perc())
 
           calc_girafe_width(
-            width_percent = width_percent,
-            window_width = window_size$width,
+            width_percent = width_perc(),
+            window_width = window_width(),
             dpi = 72
           )
         }) %>%
           shiny::bindCache(
-            plt_change()$width,
-            width_percent
+            window_width(),
+            width_perc()
           )
 
         girafe_height <- calc_girafe_height(
@@ -392,38 +460,36 @@ djpr_plot_server <- function(id,
           dpi = 72
         )
 
-          output$plot <- ggiraph::renderGirafe({
-            req(
-              static_plot(),
-              girafe_width()
-            )
+        output$plot <- ggiraph::renderGirafe({
+          req(
+            static_plot_nolabs(),
+            girafe_width()
+          )
 
-            # Uses version of djprshiny::djpr_girafe() that is memoised on
-            # package load using memoise::memoise() - see zzz.R
-            djpr_girafe_mem(
-              ggobj = static_plot(),
-              width = girafe_width(),
-              height = girafe_height
-            )
-          }) %>%
-            shiny::bindCache(
-              first_col(),
-              plot_args(),
-              plt_change()$width,
-              id
-            )
+          djpr_girafe(
+            ggobj = static_plot_nolabs(),
+            width = girafe_width(),
+            height = girafe_height
+          )
+        }) %>%
+          shiny::bindCache(
+            first_col(),
+            plot_args(),
+            girafe_width(),
+            id,
+            body(plot_function)
+          )
       }
 
       if (download_button) {
-        output$dl_button <- renderUI({
-          download_ui(session$ns("download_dropdown"))
-        })
-
-        download_server(id = "download_dropdown",
-                        plot = static_plot(),
-                        plot_name = id)
+        download_server(
+          id = "download_dropdown",
+          plot = static_plot(),
+          plot_name = id
+        )
+      } else {
+        removeUI(selector = paste0("#", NS(id, "download_col")))
       }
-
     }
   )
 }
