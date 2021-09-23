@@ -14,7 +14,7 @@
 djpr_shiny_theme <- function(...) {
   bslib::bs_theme(
     bootswatch = "litera",
-    version = "5",
+    version = "4",
     primary = "#2A6FA2",
     secondary = "#d9d9d6",
     success = "#62BB46",
