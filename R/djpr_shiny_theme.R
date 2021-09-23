@@ -55,6 +55,20 @@ djpr_shiny_theme <- function(...) {
         color: #1F1547;
       }
 
+      .irs--shiny .irs-bar {
+        border-top: 0px solid #2A6FA2 !important;
+        border-bottom: 0px solid #2A6FA2 !important;
+        background: #2A6FA2 !important;
+      }
+
+      .irs-to {
+        background-color: #2A6FA2 !important;
+      }
+
+      .irs-from {
+        background-color: #2A6FA2 !important;
+      }
+
       .ReactTable .rt-table {
         color: #1F1547;
       }

@@ -62,7 +62,7 @@ title_ui <- function(id) {
 }
 
 ui <- djpr_page(
-  title = shiny::HTML("DJPR Jobs<br>Dashboard"),
+  title = shiny::HTML("<span style = 'line-height: 0.1; font-family: Roboto Slab'>DJPR Jobs<br>Dashboard</span>"),
   logo = "spp_data_logo.png",
   djpr_tab_panel(
     h1("This is an h1"),

@@ -71,16 +71,18 @@ header.append('<div style=\"float:right\"><img src=", logo, " alt=\"alt\" style=
       collapsible = TRUE,
       windowTitle = gsub("<br>", " ", title),
       ...,
-      # Add logo
-      logo_panel,
-      # Ensure user is returned to top of page on clicking navbar
-      # https://stackoverflow.com/a/44713073/10677884
-      tags$script(" $(document).ready(function () {
-         $('#navbarpage a[data-toggle=\"tab\"]').on('click', function (e) {
-          window.scrollTo(0, 0)
-               });
+      header = list(
+        # Add logo
+        logo_panel,
+        # Ensure user is returned to top of page on clicking navbar
+        # https://stackoverflow.com/a/44713073/10677884
+        tags$script(" $(document).ready(function () {
+           $('#navbarpage a[data-toggle=\"tab\"]').on('click', function (e) {
+            window.scrollTo(0, 0)
+                 });
 
-               });")
+                 });")
+      )
     )
   )
 }
