@@ -9,26 +9,35 @@
 #'
 
 download_ui <- function(id, ...) {
+
+
+
   shinyWidgets::dropdownButton(
     circle = FALSE,
     tooltip = FALSE,
     size = "sm",
     status = "default bg-white",
     inline = TRUE,
-    shiny::downloadButton(NS(id, "download_data"),
-      "Download data",
-      style = "font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
-      class = "bg-white",
-      icon = shiny::icon("arrow-circle-down")
+    djpr_dl_button(
+      NS(id, "download_data"),
+      "Download data"
     ),
-    shiny::downloadButton(NS(id, "download_plot"),
-      "Download plot",
-      style = "font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
-      class = "bg-white",
-      icon = shiny::icon("arrow-circle-down")
+    djpr_dl_button(
+      NS(id, "download_plot"),
+      "Download plot"
     ),
     label = "Download",
     ...
+  )
+}
+
+djpr_dl_button <- function(id, label) {
+  shiny::downloadButton(
+    outputId = id,
+    label = label,
+    style = "font-size: 0.75rem; font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
+    class = "bg-white",
+    icon = shiny::icon("arrow-circle-down")
   )
 }
 
