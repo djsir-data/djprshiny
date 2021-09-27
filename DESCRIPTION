@@ -31,7 +31,7 @@ Imports:
     rlang (>= 0.4.11),
     shiny (>= 1.6.0),
     shinycssloaders,
-    shinyWidgets (>= 0.6.0),
+    shinyWidgets (>= 0.6.2.9000),
     stringr
 Suggests: 
     testthat (>= 3.0.0),
@@ -40,4 +40,5 @@ Suggests:
 Config/testthat/edition: 3
 Remotes: 
     djpr-data/djprtheme,
-    djpr-data/djprdashdata
+    djpr-data/djprdashdata,
+    dreamRs/shinyWidgets
