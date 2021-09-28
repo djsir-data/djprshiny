@@ -24,11 +24,11 @@ Your dataframe is presumed to include, at a minimum:
 \itemize{
 \item{"date"}{"A date column, of class \code{"Date"}}
 \item{"value"}{"A value column, of class \code{numeric}, containing data to be shown on the y-axis}
-\item{col_var}{"A variable to map to colour, which can be specified with the \code{col_var} argument."}
+\item{"col_var"}{"A variable to map to colour, which can be specified with the \code{col_var} argument."}
 }}
 
 \item{y_var}{Variable in \code{data} to map to the y aesthetic;
-defauly is \code{value}.}
+default is \code{value}.}
 
 \item{col_var}{Variable in \code{data} to map to the colour aesthetic;
 default is \code{series}.}

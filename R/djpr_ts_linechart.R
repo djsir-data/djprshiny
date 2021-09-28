@@ -6,10 +6,10 @@
 #' \itemize{
 #'    \item{"date"}{"A date column, of class `"Date"`}
 #'    \item{"value"}{"A value column, of class `numeric`, containing data to be shown on the y-axis}
-#'    \item{col_var}{"A variable to map to colour, which can be specified with the `col_var` argument."}
+#'    \item{"col_var"}{"A variable to map to colour, which can be specified with the `col_var` argument."}
 #' }
 #' @param y_var Variable in `data` to map to the y aesthetic;
-#' defauly is `value`.
+#' default is `value`.
 #' @param col_var Variable in `data` to map to the colour aesthetic;
 #' default is `series`.
 #' @param group_var Variable in `data` to map to the group aesthetic;
