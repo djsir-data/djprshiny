@@ -222,7 +222,8 @@ djpr_plot_server <- function(id,
         ) %>%
           as.Date(origin = as.Date("1970-01-01"))
 
-        shiny::updateSliderInput(session,
+        shiny::updateSliderInput(
+          session = session,
           "dates",
           value = c(
             min_slider_date,
@@ -233,7 +234,6 @@ djpr_plot_server <- function(id,
           timeFormat = "%b %Y"
         )
 
-        date_slider_initialised <- TRUE
       } else {
         removeUI(selector = paste0("#", NS(id, "date_slider_col")))
       }
@@ -241,7 +241,9 @@ djpr_plot_server <- function(id,
       # Filter data based on user input (slider + checkbox) ----
       plot_data <- reactive({
         if (date_slider == TRUE) {
-          req(input$dates, date_slider_initialised)
+          req(input$dates)
+          # Need to make sure that input$dates has updated from the default
+          req(input$dates[2] < Sys.Date())
 
           selected_dates <- c(
             date_floor(input$dates[1]),
@@ -314,8 +316,8 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args(),
-          body(plot_function)
+          plot_args() #,
+          # body(plot_function)
         )
 
       static_plot_nolabs <- reactive({
@@ -325,8 +327,8 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args(),
-          body(plot_function)
+          plot_args() #,
+          # body(plot_function)
         )
 
       # Create check box UI -----
@@ -355,8 +357,8 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args(),
-          body(plot_function)
+          plot_args() #,
+          # body(plot_function)
         )
 
       output$subtitle <- renderText({
@@ -365,8 +367,8 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args(),
-          body(plot_function)
+          plot_args() #,
+          # body(plot_function)
         )
 
       output$caption <- renderText({
@@ -375,8 +377,8 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           first_col(),
-          plot_args(),
-          body(plot_function)
+          plot_args() #,
+          # body(plot_function)
         )
 
       # Render plot ------
@@ -407,8 +409,8 @@ djpr_plot_server <- function(id,
           shiny::bindCache(
             first_col(),
             plot_args(),
-            id,
-            body(plot_function)
+            id #,
+            # body(plot_function)
           )
       }
 
@@ -476,9 +478,10 @@ djpr_plot_server <- function(id,
             first_col(),
             plot_args(),
             girafe_width(),
-            id,
-            body(plot_function)
+            id #,
+            # body(plot_function)
           )
+
       }
 
       if (download_button) {
