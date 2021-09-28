@@ -101,7 +101,7 @@ djpr_plot_ui <- function(id,
           max = Sys.Date(),
           value = c(
             as.Date("1978-01-01"),
-            Sys.Date()
+            as.Date("2017-10-18")
           ),
           dragRange = FALSE,
           timeFormat = "%b %Y",
@@ -214,6 +214,7 @@ djpr_plot_server <- function(id,
     id,
     function(input, output, session) {
 
+
       # Create date slider UI ------
       if (date_slider) {
         min_slider_date <- ifelse(is.null(date_slider_value_min),
@@ -238,12 +239,29 @@ djpr_plot_server <- function(id,
         removeUI(selector = paste0("#", NS(id, "date_slider_col")))
       }
 
+      dates_ready <- reactive({
+        # This reactive is FALSE if the plot has a date slider AND the dates
+        # have not been updated from the default; TRUE otherwise
+        out <- FALSE
+
+        if (date_slider == TRUE &&
+            # Need to make sure that input$dates has updated from the default
+            input$dates[2] != as.Date("2017-10-18")) {
+          out <- TRUE
+        }
+
+        if (date_slider != TRUE) {
+          out <- TRUE
+        }
+
+        out
+      })
+
       # Filter data based on user input (slider + checkbox) ----
       plot_data <- reactive({
         if (date_slider == TRUE) {
           req(input$dates)
-          # Need to make sure that input$dates has updated from the default
-          req(input$dates[2] < Sys.Date())
+          req(dates_ready())
 
           selected_dates <- c(
             date_floor(input$dates[1]),
@@ -383,6 +401,7 @@ djpr_plot_server <- function(id,
 
       # Render plot ------
 
+
       # Render non-interactive plot -----
       if (!interactive) {
         output$plot <- renderPlot({
@@ -419,6 +438,7 @@ djpr_plot_server <- function(id,
 
         # Capture changes in browser size -----
         window_width <- reactive({
+          req(plt_change())
           # Round down to nearest 50 pixels; prevent small resizing
           floor(plt_change()$width / 50) * 50
         })
@@ -435,12 +455,7 @@ djpr_plot_server <- function(id,
           } else {
             min(92, width_percent)
           }
-        }) %>%
-          shiny::bindCache(
-            plt_change()$width,
-            plt_change()$browser_width,
-            width_percent
-          )
+        })
 
         girafe_width <- reactive({
           req(window_width(), width_perc())
@@ -450,11 +465,7 @@ djpr_plot_server <- function(id,
             window_width = window_width(),
             dpi = 72
           )
-        }) %>%
-          shiny::bindCache(
-            window_width(),
-            width_perc()
-          )
+        })
 
         girafe_height <- calc_girafe_height(
           height_percent = height_percent,
@@ -478,8 +489,8 @@ djpr_plot_server <- function(id,
             first_col(),
             plot_args(),
             girafe_width(),
-            id #,
-            # body(plot_function)
+            id,
+            interactive
           )
 
       }

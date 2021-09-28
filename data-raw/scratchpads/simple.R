@@ -24,20 +24,24 @@ ui <- djpr_page(
 server <- function(input, output, session) {
   djpr_plot_server(id = "plot",
                    plot_function = plot_fn,
-                   data = ggplot2::economics_long,
-                   plt_change = reactive(input$plt_change))
+                   data = ggplot2::economics_long ,
+                   plt_change = reactive(input$plt_change),
+                   interactive = T
+                   )
+
 }
 
 
 
-
+# profvis::profvis(
 runApp(shinyApp(ui, server))
-
+# )
 
 #######
 
 no_djpr_ui <- fluidPage(
-  ggiraph::girafeOutput("plot")
+  ggiraph::girafeOutput("plot") %>%
+    djpr_with_spinner()
 )
 
 no_djpr_server <- function(input, output, session) {
@@ -47,4 +51,4 @@ no_djpr_server <- function(input, output, session) {
   })
 }
 
-runApp(shinyApp(no_djpr_ui, no_djpr_server))
+# runApp(shinyApp(no_djpr_ui, no_djpr_server))
