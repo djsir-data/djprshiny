@@ -1,6 +1,7 @@
 # djprshiny 0.0.6.90x
 * Bootstrap 5 now used in Shiny theme
 * Fixed issue where plots with dateslider would be rendered twice
+* Render checkboxes on UI side
 
 # djprshiny 0.0.6
 * Plot in djpr_plot_server() does not resize when browser height changes
