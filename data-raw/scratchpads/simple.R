@@ -26,6 +26,7 @@ server <- function(input, output, session) {
                    plot_function = plot_fn,
                    data = ggplot2::economics_long ,
                    plt_change = reactive(input$plt_change),
+                   date_slider = T,
                    interactive = T
                    )
 
