@@ -16,19 +16,26 @@ ui <- djpr_page(
   title = "Simple scratchpad",
   djpr_tab_panel(
     title = "First tab",
-    djpr_plot_ui("plot")
+    djpr_plot_ui("interactive_plot"),
+    djpr_plot_ui("static_plot",
+                 interactive = FALSE)
   )
 )
 
 
 server <- function(input, output, session) {
-  djpr_plot_server(id = "plot",
+  djpr_plot_server(id = "interactive_plot",
                    plot_function = plot_fn,
                    data = ggplot2::economics_long ,
                    plt_change = reactive(input$plt_change),
                    interactive = T
                    )
 
+  djpr_plot_server(id = "static_plot",
+                   plot_function = plot_fn,
+                   data = ggplot2::economics_long,
+                   plt_change = reactive(input$plt_change),
+                   interactive = F)
 }
 
 
