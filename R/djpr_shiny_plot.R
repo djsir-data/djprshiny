@@ -103,14 +103,21 @@ djpr_plot_ui <- function(id,
             as.Date("1978-01-01"),
             as.Date("2017-10-18")
           ),
-          dragRange = FALSE,
+          dragRange = TRUE,
           timeFormat = "%b %Y",
           ticks = FALSE
         )
       ),
       column(
         5,
-        uiOutput(NS(id, "check_box"))
+        id = NS(id, "check_box_col"),
+        shinyWidgets::awesomeCheckboxGroup(
+          NS(id, "checkboxes"),
+          label = "",
+          choices = NULL,
+          selected = NULL,
+          inline = TRUE
+        )
       ),
       column(1)
     ),
@@ -215,7 +222,11 @@ djpr_plot_server <- function(id,
     function(input, output, session) {
 
 
-      # Create date slider UI ------
+      # Date slider and checkbox UI are both created on the UI side and then
+      # updated on the server side; this is quicker than creating server-side
+      # and displaying with `uiOutput()`
+
+      # Update date slider UI ------
       if (date_slider) {
         min_slider_date <- ifelse(is.null(date_slider_value_min),
           min(data$date),
@@ -239,9 +250,23 @@ djpr_plot_server <- function(id,
         removeUI(selector = paste0("#", NS(id, "date_slider_col")))
       }
 
-      dates_ready <- reactive({
-        # This reactive is FALSE if the plot has a date slider AND the dates
-        # have not been updated from the default; TRUE otherwise
+      # Update check box UI ------
+      if (!is.null(check_box_options)) {
+        shinyWidgets::updateAwesomeCheckboxGroup(
+          session = session,
+          "checkboxes",
+          label = "",
+          choices = check_box_options,
+          selected = check_box_selected,
+          inline = TRUE
+        )
+      } else {
+        removeUI(selector = paste0("#", NS(id, "check_box_col")))
+      }
+
+      data_ready <- reactive({
+        # This reactive indicates whether the inputs (date slider + checkboxes)
+        # have been updated from their default values
         out <- FALSE
 
         if (date_slider == TRUE &&
@@ -254,14 +279,20 @@ djpr_plot_server <- function(id,
           out <- TRUE
         }
 
+        if (!is.null(check_box_options) &&
+            !is.null(input$checkboxes)) {
+          out <- TRUE
+        }
+
         out
       })
 
       # Filter data based on user input (slider + checkbox) ----
       plot_data <- reactive({
+        req(data_ready())
+
         if (date_slider == TRUE) {
           req(input$dates)
-          req(dates_ready())
 
           selected_dates <- c(
             date_floor(input$dates[1]),
@@ -347,25 +378,6 @@ djpr_plot_server <- function(id,
           first_col(),
           plot_args() #,
           # body(plot_function)
-        )
-
-      # Create check box UI -----
-      output$check_box <- renderUI({
-        if (!is.null(check_box_options)) {
-          req(data)
-          shinyWidgets::awesomeCheckboxGroup(
-            NS(id, "checkboxes"),
-            label = "",
-            choices = check_box_options,
-            selected = check_box_selected,
-            inline = TRUE
-          )
-        }
-      }) %>%
-        bindCache(
-          id,
-          check_box_options,
-          check_box_selected
         )
 
       # Extract title, subtitle, and caption as HTML ----
