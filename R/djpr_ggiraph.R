@@ -21,12 +21,14 @@
 #' passed to `options` argument of `ggiraph::girafe`.
 #' @return A `ggiraph::girafe()` object.
 #' @examples
+#' \dontrun{
 #' library(ggplot2)
 #' p <- ggplot(mtcars, aes(x = wt, y = mpg)) +
 #'   geom_point() +
 #'   labs(title = "Title will be removed in girafe plot")
 #'
 #' djpr_girafe(p, 5, 6)
+#' }
 #' @details
 #' Note that the title, subtitle, and caption are removed from `ggobj` using
 #' `djprtheme::remove_labs()`.
