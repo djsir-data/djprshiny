@@ -325,11 +325,17 @@ djpr_plot_server <- function(id,
 
       # Create a subset of plot data to use for caching ----
       first_col <- reactive({
+        out <- list()
+
         if ("date" %in% names(data)) {
-          plot_data()[["date"]]
+          out$first_col <- plot_data()[["date"]]
         } else {
-          plot_data()[[1]]
+          out$first_col <- plot_data()[[1]]
         }
+
+        out$checkboxes <- input$checkboxes
+
+        out
       })
 
       # Evaluate arguments to plot function ----
