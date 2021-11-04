@@ -15,7 +15,8 @@ djpr_ts_linechart(
   y_labels = ggplot2::waiver(),
   hline = NULL,
   n_x_breaks = 5,
-  x_expand_mult = c(0, 0.18)
+  x_expand_mult = c(0, 0.18),
+  label_single_line = FALSE
 )
 }
 \arguments{
@@ -57,6 +58,9 @@ Passed to \code{scales::breaks_pretty()}.}
 
 \item{x_expand_mult}{Length one or two numeric vector of padding to be added
 to the horizontal axis; passed to the \code{expand} argument of \code{scale_x_date}}
+
+\item{label_single_line}{Logical. \code{FALSE} by default. When true, a full label
+will be added to lines - even when only one line is present.}
 }
 \value{
 A ggplot2 object

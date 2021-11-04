@@ -29,6 +29,8 @@
 #' Passed to `scales::breaks_pretty()`.
 #' @param x_expand_mult Length one or two numeric vector of padding to be added
 #' to the horizontal axis; passed to the `expand` argument of `scale_x_date`
+#' @param label_single_line Logical. `FALSE` by default. When true, a full label
+#' will be added to lines - even when only one line is present.
 #' @return A ggplot2 object
 #' @details If a column called 'tooltip' is present, it will be used as the
 #' ggiraph tooltip; if not, one will be created.
@@ -59,7 +61,8 @@ djpr_ts_linechart <- function(data,
                               y_labels = ggplot2::waiver(),
                               hline = NULL,
                               n_x_breaks = 5,
-                              x_expand_mult = c(0, 0.18)) {
+                              x_expand_mult = c(0, 0.18),
+                              label_single_line = FALSE) {
   date_limits <- c(
     min(data$date),
     max(data$date)
@@ -135,7 +138,7 @@ djpr_ts_linechart <- function(data,
     # If there's only one series (ie. the max_date DF has one row), then
     # we don't want to show the series name (col_var) in the label
 
-    if (nrow(max_date) > 1) {
+    if (nrow(max_date) > 1 || isTRUE(label_single_line)) {
       lab_df <- max_date %>%
         dplyr::mutate(label = paste0(
           stringr::str_wrap({{ col_var }}, 10),

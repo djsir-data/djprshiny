@@ -27,3 +27,17 @@ test_that("djprtheme::get_plot_data() gets data from djpr_ts_linechart() plot", 
 
   expect_s3_class(p_data, "data.frame")
 })
+
+test_that("djpr_ts_linechart() respects label_single_line arg", {
+  pce <- df %>%
+    dplyr::filter(series == "pce")
+  p1 <- djpr_ts_linechart(pce)
+  p2 <- djpr_ts_linechart(pce,
+                          label_single_line = TRUE)
+
+  vdiffr::expect_doppelganger("regular time series plot",
+                              p1)
+
+  vdiffr::expect_doppelganger("time series plot with single series labelled",
+                              p2)
+})

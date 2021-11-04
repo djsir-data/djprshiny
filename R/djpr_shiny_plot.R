@@ -324,16 +324,12 @@ djpr_plot_server <- function(id,
       })
 
       # Create a subset of plot data to use for caching ----
-      first_col <- reactive({
-        out <- list()
+      unique_data <- reactive({
+        out <- subset(plot_data(),
+                      select = sapply(plot_data(),
+                                      function(x) !inherits(x, "numeric")))
 
-        if ("date" %in% names(data)) {
-          out$first_col <- plot_data()[["date"]]
-        } else {
-          out$first_col <- plot_data()[[1]]
-        }
-
-        out$checkboxes <- input$checkboxes
+        out <- lapply(out, unique)
 
         out
       })
@@ -370,7 +366,7 @@ djpr_plot_server <- function(id,
       }) %>%
         shiny::bindCache(
           id,
-          first_col(),
+          unique_data(),
           plot_args() #,
           # body(plot_function)
         )
@@ -381,7 +377,7 @@ djpr_plot_server <- function(id,
       }) %>%
         shiny::bindCache(
           id,
-          first_col(),
+          unique_data(),
           plot_args() #,
           # body(plot_function)
         )
@@ -392,7 +388,7 @@ djpr_plot_server <- function(id,
       }) %>%
         shiny::bindCache(
           id,
-          first_col(),
+          unique_data(),
           plot_args() #,
           # body(plot_function)
         )
@@ -402,7 +398,7 @@ djpr_plot_server <- function(id,
       }) %>%
         shiny::bindCache(
           id,
-          first_col(),
+          unique_data(),
           plot_args() #,
           # body(plot_function)
         )
@@ -412,7 +408,7 @@ djpr_plot_server <- function(id,
       }) %>%
         shiny::bindCache(
           id,
-          first_col(),
+          unique_data(),
           plot_args() #,
           # body(plot_function)
         )
@@ -444,7 +440,7 @@ djpr_plot_server <- function(id,
           p
         }) %>%
           shiny::bindCache(
-            first_col(),
+            unique_data(),
             plot_args(),
             id #,
             # body(plot_function)
@@ -504,7 +500,7 @@ djpr_plot_server <- function(id,
           )
         }) %>%
           shiny::bindCache(
-            first_col(),
+            unique_data(),
             plot_args(),
             girafe_width(),
             id,

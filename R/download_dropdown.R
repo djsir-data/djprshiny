@@ -10,8 +10,6 @@
 
 download_ui <- function(id, ...) {
 
-
-
   shinyWidgets::dropdownButton(
     circle = FALSE,
     tooltip = FALSE,
@@ -31,6 +29,7 @@ download_ui <- function(id, ...) {
   )
 }
 
+
 djpr_dl_button <- function(id, label) {
   shiny::downloadButton(
     outputId = id,
@@ -46,6 +45,7 @@ djpr_dl_button <- function(id, label) {
 #' @param plot A ggplot2 object
 #' @param plot_name Character vector, to be used in the filename of the
 #' saved data/plot
+#' @export
 download_server <- function(id, plot, plot_name = "plot") {
   moduleServer(id, function(input, output, session) {
     output$download_data <- downloadHandler(
