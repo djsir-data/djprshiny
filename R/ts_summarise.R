@@ -234,7 +234,8 @@ ts_summarise <- function(df, digits = 1) {
     "Civilian population aged 15-29 years", NA,
     "Retrenched (in previous quarter)", FALSE,
     "Employed total (previous quarter)", NA,
-    "Retrenchment rate", FALSE
+    "Retrenchment rate", FALSE,
+    "Jobactive caseload", FALSE
   )
 
   comb_df <- comb_df %>%
