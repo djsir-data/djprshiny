@@ -16,7 +16,8 @@ djpr_ts_linechart(
   hline = NULL,
   n_x_breaks = 5,
   x_expand_mult = c(0, 0.18),
-  label_single_line = FALSE
+  label_single_line = FALSE,
+  label_wrap_length = 10
 )
 }
 \arguments{
@@ -61,6 +62,9 @@ to the horizontal axis; passed to the \code{expand} argument of \code{scale_x_da
 
 \item{label_single_line}{Logical. \code{FALSE} by default. When true, a full label
 will be added to lines - even when only one line is present.}
+
+\item{label_wrap_length}{Numeric. The number of characters on each line of the label.
+Default is 10 characters.}
 }
 \value{
 A ggplot2 object
