@@ -31,6 +31,8 @@
 #' to the horizontal axis; passed to the `expand` argument of `scale_x_date`
 #' @param label_single_line Logical. `FALSE` by default. When true, a full label
 #' will be added to lines - even when only one line is present.
+#' @param  label_wrap_length Numeric. The number of characters on each line of the label.
+#' Default is 10 characters.
 #' @return A ggplot2 object
 #' @details If a column called 'tooltip' is present, it will be used as the
 #' ggiraph tooltip; if not, one will be created.
@@ -62,7 +64,8 @@ djpr_ts_linechart <- function(data,
                               hline = NULL,
                               n_x_breaks = 5,
                               x_expand_mult = c(0, 0.18),
-                              label_single_line = FALSE) {
+                              label_single_line = FALSE,
+                              label_wrap_length = 10) {
   date_limits <- c(
     min(data$date),
     max(data$date)
@@ -141,13 +144,13 @@ djpr_ts_linechart <- function(data,
     if (nrow(max_date) > 1 || isTRUE(label_single_line)) {
       lab_df <- max_date %>%
         dplyr::mutate(label = paste0(
-          stringr::str_wrap({{ col_var }}, 10),
+          stringr::str_wrap({{ col_var }}, label_wrap_length),
           "\n",
-          stringr::str_wrap({{ label_num }}, 10)
+          stringr::str_wrap({{ label_num }}, label_wrap_length)
         ))
     } else {
       lab_df <- max_date %>%
-        dplyr::mutate(label = stringr::str_wrap({{ label_num }}, 10))
+        dplyr::mutate(label = stringr::str_wrap({{ label_num }}, label_wrap_length))
     }
 
     p <- p +
