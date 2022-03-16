@@ -12,6 +12,7 @@
 #' @details To be used in conjunction with `djpr_plot_server()` Shiny module,
 #' which provides the server-side outputs that `djpr_plot_ui()` expects. See
 #' example.
+#' @importFrom purrr map imap discard
 #' @export
 #' @examples
 #' \dontrun{
@@ -343,7 +344,7 @@ djpr_plot_server <- function(id,
         if ('tbl_lazy' %in% class(data) & convert_lazy) {
           print('        collect data 4 chart')
           data %>% collect() %>%
-            mutate(date = as.Date(date))
+            mutate(date = lubridate::ymd(date))
         } else {
           print('        data not lazy')
           data
@@ -354,15 +355,33 @@ djpr_plot_server <- function(id,
 
       print('    plot_data() defined')
       # Create a subset of plot data to use for caching ----
-      # unique_data <- reactive({
-      #   out <- subset(plot_data(),
-      #                 select = sapply(plot_data(),
-      #                                 function(x) !inherits(x, "numeric")))
-      #
-      #   out <- lapply(out, unique)
-      #
-      #   out
-      # })
+      unique_data <- reactive({
+        if ('tbl_lazy' %in% class(plot_data())) {
+          out <- merch |>
+            head() |>
+            as.data.frame() |>
+            purrr::map(type_sum) |>
+            purrr::discard(~ .x %in% c('dbl','int')) |>
+            purrr::imap( ~ merch %>%
+                      dplyr::summarize(sitc = distinct(!!sql(.y))) %>%
+                      dplyr::collect() %>%
+                      dplyr::pull()
+            )
+
+        } else {
+          out <- subset(plot_data(),
+                        select = sapply(plot_data(),
+                                        function(x) !inherits(x, c("integer","numeric"))))
+
+          out <- lapply(out, unique)
+        }
+
+        if ('date' %in% names(out)) {
+          out$date <- lubridate::ymd(out$date)
+        }
+
+        out
+      })
 
       print('    unique_data() defined')
 
@@ -396,55 +415,55 @@ djpr_plot_server <- function(id,
         do.call(plot_function,
           args = args_with_data
         )
-      }) #%>%
-        # shiny::bindCache(
-        #   id,
-        #   unique_data(),
-        #   plot_args() #,
-        #   # body(plot_function)
-        # )
+      }) %>%
+        shiny::bindCache(
+          id,
+          unique_data(),
+          plot_args() #,
+          # body(plot_function)
+        )
 
       static_plot_nolabs <- reactive({
         req(static_plot()) %>%
           djprtheme::remove_labs()
-      }) #%>%
-        # shiny::bindCache(
-        #   id,
-        #   unique_data(),
-        #   plot_args() #,
-        #   # body(plot_function)
-        # )
+      }) %>%
+        shiny::bindCache(
+          id,
+          unique_data(),
+          plot_args() #,
+          # body(plot_function)
+        )
 
       # Extract title, subtitle, and caption as HTML ----
       output$title <- renderText({
         extract_labs(static_plot(), "title")
-      }) #%>%
-        # shiny::bindCache(
-        #   id,
-        #   unique_data(),
-        #   plot_args() #,
-        #   # body(plot_function)
-        # )
+      }) %>%
+        shiny::bindCache(
+          id,
+          unique_data(),
+          plot_args() #,
+          # body(plot_function)
+        )
 
       output$subtitle <- renderText({
         extract_labs(static_plot(), "subtitle")
-      }) #%>%
-        # shiny::bindCache(
-        #   id,
-        #   unique_data(),
-        #   plot_args() #,
-        #   # body(plot_function)
-        # )
+      }) %>%
+        shiny::bindCache(
+          id,
+          unique_data(),
+          plot_args() #,
+          # body(plot_function)
+        )
 
       output$caption <- renderText({
         extract_labs(static_plot(), "caption")
-      }) #%>%
-        # shiny::bindCache(
-        #   id,
-        #   unique_data(),
-        #   plot_args() #,
-        #   # body(plot_function)
-        # )
+      }) %>%
+        shiny::bindCache(
+          id,
+          unique_data(),
+          plot_args() #,
+          # body(plot_function)
+        )
 
       # Render plot ------
 
@@ -471,13 +490,13 @@ djpr_plot_server <- function(id,
           }
 
           p
-        }) #%>%
-          # shiny::bindCache(
-          #   unique_data(),
-          #   plot_args(),
-          #   id #,
-          #   # body(plot_function)
-          # )
+        }) %>%
+          shiny::bindCache(
+            unique_data(),
+            plot_args(),
+            id #,
+            # body(plot_function)
+          )
       }
 
       # Render girafe object -------
@@ -531,14 +550,14 @@ djpr_plot_server <- function(id,
             width = girafe_width(),
             height = girafe_height
           )
-        }) #%>%
-          # shiny::bindCache(
-          #   unique_data(),
-          #   plot_args(),
-          #   girafe_width(),
-          #   id,
-          #   interactive
-          # )
+        }) %>%
+          shiny::bindCache(
+            unique_data(),
+            plot_args(),
+            girafe_width(),
+            id,
+            interactive
+          )
 
       }
 
