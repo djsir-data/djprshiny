@@ -12,6 +12,7 @@
 #' @details To be used in conjunction with `djpr_plot_server()` Shiny module,
 #' which provides the server-side outputs that `djpr_plot_ui()` expects. See
 #' example.
+#' @importFrom purrr map imap discard
 #' @export
 #' @examples
 #' \dontrun{
@@ -158,6 +159,8 @@ djpr_plot_ui <- function(id,
 #' @param interactive logical; `TRUE` by default. When `TRUE`, plot will be
 #' rendered as an interactive `ggiraph` object; when `FALSE` a static ggplot
 #' will be rendered.
+#' @param convert_lazy logical; `TRUE` by default. When `TRUE`, lazy data will be
+#' converted so that a data.frame is passed to plot functions.
 #' @param ... arguments passed to `plot_function`
 #' @import shiny
 #' @importFrom rlang .data .env
@@ -216,6 +219,7 @@ djpr_plot_server <- function(id,
                              width_percent = 100,
                              height_percent = 100,
                              interactive = TRUE,
+                             convert_lazy = TRUE,
                              ...) {
   moduleServer(
     id,
@@ -227,9 +231,21 @@ djpr_plot_server <- function(id,
       # and displaying with `uiOutput()`
 
       # Update date slider UI ------
+      dates <- data %>%
+        dplyr::summarise(min = min(as.Date(date), na.rm = TRUE),
+                         max = max(as.Date(date), na.rm = TRUE))
+
+      if ('tbl_lazy' %in% class(data)) {
+        dates <- dates %>% collect()
+      }
+
+      print('djpr_shiny_plot')
+      print('   dates parsed')
+      print(dates)
+
       if (date_slider) {
         min_slider_date <- ifelse(is.null(date_slider_value_min),
-          min(data$date),
+          dates$min,
           date_slider_value_min
         ) %>%
           as.Date(origin = as.Date("1970-01-01"))
@@ -239,10 +255,10 @@ djpr_plot_server <- function(id,
           "dates",
           value = c(
             min_slider_date,
-            max(data$date)
+            dates$max
           ),
-          min = min(data$date),
-          max = max(data$date),
+          min = dates$min,
+          max = dates$max,
           timeFormat = "%b %Y"
         )
 
@@ -299,10 +315,12 @@ djpr_plot_server <- function(id,
             date_ceiling(input$dates[2])
           )
 
-          data <- data[
-            data$date >= selected_dates[1] &
-              data$date <= selected_dates[2],
-          ]
+          # data <- data[
+          #   data$date >= selected_dates[1] &
+          #     data$date <= selected_dates[2],
+          # ]
+          data <- data %>%
+            filter(date >= !!selected_dates[1] & date <= !!selected_dates[2])
         }
 
         if (!is.null(check_box_options)) {
@@ -320,19 +338,52 @@ djpr_plot_server <- function(id,
               )
             )
         }
-        data
+
+        print(class(data))
+
+        if ('tbl_lazy' %in% class(data) & convert_lazy) {
+          print('        collect data 4 chart')
+          data %>% collect() %>%
+            mutate(date = lubridate::ymd(date))
+        } else {
+          print('        data not lazy')
+          data
+        }
+
+
       })
 
+      print('    plot_data() defined')
       # Create a subset of plot data to use for caching ----
       unique_data <- reactive({
-        out <- subset(plot_data(),
-                      select = sapply(plot_data(),
-                                      function(x) !inherits(x, "numeric")))
+        if ('tbl_lazy' %in% class(plot_data())) {
+          out <- merch |>
+            head() |>
+            as.data.frame() |>
+            purrr::map(type_sum) |>
+            purrr::discard(~ .x %in% c('dbl','int')) |>
+            purrr::imap( ~ merch %>%
+                      dplyr::summarize(sitc = distinct(!!sql(.y))) %>%
+                      dplyr::collect() %>%
+                      dplyr::pull()
+            )
 
-        out <- lapply(out, unique)
+        } else {
+          out <- subset(plot_data(),
+                        select = sapply(plot_data(),
+                                        function(x) !inherits(x, c("integer","numeric"))))
+
+          out <- lapply(out, unique)
+        }
+
+        if ('date' %in% names(out)) {
+          out$date <- lubridate::ymd(out$date)
+        }
 
         out
       })
+
+      print('    unique_data() defined')
 
       # Evaluate arguments to plot function ----
       # Need to pass reactive arguments in ...
@@ -352,6 +403,7 @@ djpr_plot_server <- function(id,
       # Construct static plot -----
       # Static plot is a ggplot2 object created by the plot_function()
       # It is not re-rendered on resizing the browser
+      print('    preparing plots')
       static_plot <- reactive({
         req(plot_args(), plot_data())
 

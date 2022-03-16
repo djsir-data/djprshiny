@@ -18,6 +18,7 @@ djpr_plot_server(
   width_percent = 100,
   height_percent = 100,
   interactive = TRUE,
+  convert_lazy = TRUE,
   ...
 )
 }
@@ -63,6 +64,9 @@ button is displayed.}
 \item{interactive}{logical; \code{TRUE} by default. When \code{TRUE}, plot will be
 rendered as an interactive \code{ggiraph} object; when \code{FALSE} a static ggplot
 will be rendered.}
+
+\item{convert_lazy}{logical; \code{TRUE} by default. When \code{TRUE}, lazy data will be
+converted so that a data.frame is passed to plot functions.}
 
 \item{...}{arguments passed to \code{plot_function}}
 }
