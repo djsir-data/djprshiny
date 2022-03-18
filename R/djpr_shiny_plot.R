@@ -236,7 +236,7 @@ djpr_plot_server <- function(id,
                          max = max(as.Date(date), na.rm = TRUE))
 
       if ('tbl_lazy' %in% class(data)) {
-        dates <- dates %>% collect()
+        dates <- dates %>% dplyr::collect()
       }
 
       print('djpr_shiny_plot')
@@ -343,7 +343,7 @@ djpr_plot_server <- function(id,
 
         if ('tbl_lazy' %in% class(data) & convert_lazy) {
           print('        collect data 4 chart')
-          data %>% collect() %>%
+          data %>% dplyr::collect() %>%
             mutate(date = lubridate::ymd(date))
         } else {
           print('        data not lazy')
