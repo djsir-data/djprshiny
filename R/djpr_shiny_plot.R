@@ -363,7 +363,7 @@ djpr_plot_server <- function(id,
             purrr::map(dplyr::type_sum) |>
             purrr::discard(~ .x %in% c('dbl','int')) |>
             purrr::imap( ~ merch %>%
-                      dplyr::summarize(sitc = distinct(!!sql(.y))) %>%
+                      dplyr::summarize(sitc = distinct(!!dplyr::sql(.y))) %>%
                       dplyr::collect() %>%
                       dplyr::pull()
             )
