@@ -320,7 +320,7 @@ djpr_plot_server <- function(id,
           #     data$date <= selected_dates[2],
           # ]
           data <- data %>%
-            filter(date >= !!selected_dates[1] & date <= !!selected_dates[2])
+            dplyr::filter(date >= !!selected_dates[1] & date <= !!selected_dates[2])
         }
 
         if (!is.null(check_box_options)) {
@@ -344,7 +344,7 @@ djpr_plot_server <- function(id,
         if ('tbl_lazy' %in% class(data) & convert_lazy) {
           print('        collect data 4 chart')
           data %>% dplyr::collect() %>%
-            mutate(date = lubridate::ymd(date))
+            dplyr::mutate(date = lubridate::ymd(date))
         } else {
           print('        data not lazy')
           data
@@ -357,13 +357,13 @@ djpr_plot_server <- function(id,
       # Create a subset of plot data to use for caching ----
       unique_data <- reactive({
         if ('tbl_lazy' %in% class(plot_data())) {
-          out <- merch |>
-            head() |>
+          out <- data |>
+            utils::head() |>
             as.data.frame() |>
-            purrr::map(type_sum) |>
+            purrr::map(dplyr::type_sum) |>
             purrr::discard(~ .x %in% c('dbl','int')) |>
-            purrr::imap( ~ merch %>%
-                      dplyr::summarize(sitc = distinct(!!sql(.y))) %>%
+            purrr::imap( ~ data %>%
+                      dplyr::summarize(values = distinct(!!dplyr::sql(.y))) %>%
                       dplyr::collect() %>%
                       dplyr::pull()
             )
