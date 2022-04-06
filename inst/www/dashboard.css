@@ -1,0 +1,36 @@
+.main-header{
+    max-height: 160px;
+}
+
+.skin-blue .main-header .logo {
+  background-color: #F1F1EF;
+  height: 90px;
+}
+
+.skin-blue .main-header .navbar{
+  background-color: #F1F1EF;
+  background: #F1F1EF url(djprshiny/djpr-shards-logo.svg) top right no-repeat;
+  height: 90px;
+}
+
+.left-side, .main-sidebar{
+padding-top: 90px;
+background-color: #201547;
+}
+
+.content-wrapper, .right-side{
+background-color: #FFFFFF;
+
+}
+
+body {
+  background: #FFFFFF;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.skin-blue .main-header .logo:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
