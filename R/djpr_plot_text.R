@@ -25,7 +25,8 @@ djpr_plot_title <- function(...,
       "font-size: ",
       rel_font_size,
       "%; font-weight: bold; line-height: 1.2; margin-top: 14px; margin-bottom: 1px;"
-    )
+    ),
+    `data-toc-skip` = ""
   )
 }
 
@@ -38,7 +39,8 @@ djpr_plot_subtitle <- function(...,
       "font-size: ",
       rel_font_size,
       "%; font-weight: normal; line-height: 1.5; margin-top: 0px; margin-bottom: 1px;"
-    )
+    ),
+    `data-toc-skip` = ""
   )
 }
 
