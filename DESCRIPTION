@@ -32,6 +32,7 @@ Imports:
     rlang (>= 0.4.11),
     shiny (>= 1.6.0),
     shinycssloaders,
+    shinydashboard,
     shinyWidgets (>= 0.6.2.9000),
     stringr,
     utils

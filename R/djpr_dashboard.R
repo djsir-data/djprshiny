@@ -11,9 +11,17 @@ djpr_dashboard <- function(header, sidebar, body, title = NULL){
   shinydashboard::dashboardPage(
     header = header,
     sidebar = sidebar,
-    body = shiny::tagAppendChild(
+    body = shiny::tagAppendChildren(
       body,
-      shiny::includeCSS("inst/www/dashboard.css")
+      shiny::tags$link(
+        rel = "stylesheet",
+        type = "text/css",
+        href = "djprshiny/dashboard.css"
+      ),
+      shiny::tags$script(
+        '$(".logo").prependTo(".main-header .navbar");
+        $(".sidebar-toggle").prependTo(".main-header .navbar");'
+        )
       ),
     title = title
     )
