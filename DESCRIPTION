@@ -32,7 +32,6 @@ Imports:
     rlang (>= 0.4.11),
     shiny (>= 1.6.0),
     shinycssloaders,
-    shinydashboard,
     shinyWidgets (>= 0.6.2.9000),
     stringr,
     utils
@@ -41,7 +40,8 @@ Suggests:
     vdiffr (>= 1.0.0),
     showtext,
     memoise,
-    cachem
+    cachem,
+    shinydashboard
 Config/testthat/edition: 3
 Remotes: 
     djpr-data/djprtheme,
