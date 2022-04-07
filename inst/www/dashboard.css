@@ -104,12 +104,20 @@ body {
 .sidebar li{
   color: #FFFFFF;
   height:60px;
-  font-size: 30px;
+  font-size: 20px;
   font-family: "VIC-Regular";
   vertical-align: middle;
-  padding: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   list-style: none;
   border-left: 10px solid #FFFFFF00;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.sidebar li a{
+  width: 100%;
 }
 
 .sidebar ul{
@@ -122,4 +130,20 @@ body {
 
 .skin-blue .sidebar a{
   color: #FFFFFF;
+}
+
+.tab-content{
+  padding: 30px;
+}
+
+h1 {
+  font-family: "VIC-Bold";
+}
+
+h2{
+  font-family: "VIC-SemiBold";
+}
+
+h3, h4, h5, h6, p{
+  font-family: "VIC-Regular";
 }
