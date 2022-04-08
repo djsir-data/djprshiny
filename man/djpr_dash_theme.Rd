@@ -13,6 +13,7 @@ djpr_dash_theme(...)
 DJPR dashboard theme
 }
 \details{
-add anywhere in a shinydashboard body to add DJPR theme
+add anywhere in a shinydashboard body to add DJPR theme and
+ggiraph_js()
 javascript
 }
