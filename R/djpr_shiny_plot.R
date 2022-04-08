@@ -239,10 +239,6 @@ djpr_plot_server <- function(id,
         dates <- dates %>% dplyr::collect()
       }
 
-      print('djpr_shiny_plot')
-      print('   dates parsed')
-      print(dates)
-
       if (date_slider) {
         min_slider_date <- ifelse(is.null(date_slider_value_min),
           dates$min,
@@ -342,18 +338,15 @@ djpr_plot_server <- function(id,
         print(class(data))
 
         if ('tbl_lazy' %in% class(data) & convert_lazy) {
-          print('        collect data 4 chart')
           data %>% dplyr::collect() %>%
             dplyr::mutate(date = lubridate::ymd(date))
         } else {
-          print('        data not lazy')
           data
         }
 
 
       })
 
-      print('    plot_data() defined')
       # Create a subset of plot data to use for caching ----
       unique_data <- reactive({
         if ('tbl_lazy' %in% class(plot_data())) {
@@ -383,7 +376,6 @@ djpr_plot_server <- function(id,
         out
       })
 
-      print('    unique_data() defined')
 
       # Evaluate arguments to plot function ----
       # Need to pass reactive arguments in ...
@@ -403,7 +395,6 @@ djpr_plot_server <- function(id,
       # Construct static plot -----
       # Static plot is a ggplot2 object created by the plot_function()
       # It is not re-rendered on resizing the browser
-      print('    preparing plots')
       static_plot <- reactive({
         req(plot_args(), plot_data())
 
