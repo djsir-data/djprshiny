@@ -9,7 +9,7 @@
 #' @export
 djpr_plot_box <- function(
   id,
-  interactive = FALSE,
+  interactive = TRUE,
   plot_height = "400px",
   ...
 ){
