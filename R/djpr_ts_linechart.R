@@ -121,7 +121,10 @@ djpr_ts_linechart <- function(data,
     geom_line() +
     scale_colour_discrete(palette = djprtheme::djpr_pal) +
     djprtheme::theme_djpr() +
-    theme(axis.title.x = element_blank()) +
+    theme(
+      axis.title.x = element_blank(),
+      rect = element_rect(fill = "transparent")
+          ) +
     coord_cartesian(clip = "off")
 
   if (isTRUE(dot)) {

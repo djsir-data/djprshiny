@@ -24,33 +24,57 @@ djpr_plot_box <- function(
 
   shinydashboard::box(
     title = tagList(
-      textOutput(NS(id, "title"), container = djpr_plot_title),
-      textOutput(NS(id, "subtitle"), container = djpr_plot_subtitle)
+      textOutput(NS(id, "title"), container = h3),
+      textOutput(NS(id, "subtitle"), container = h4)
       ),
     djpr_with_spinner(plot_ui, proxy.height = plot_height, hide.ui = FALSE),
     ...,
-    footer = fluidRow(
-      column(
-        8,
-        id = NS(id, "date_slider_col"),
-        sliderInput(NS(id, "dates"),
-                    label = "",
-                    min = as.Date("1978-01-01"),
-                    max = Sys.Date(),
-                    value = c(
-                      as.Date("1978-01-01"),
-                      as.Date("2017-10-18")
-                    ),
-                    dragRange = TRUE,
-                    timeFormat = "%b %Y",
-                    ticks = FALSE
+    footer =
+      fluidRow(
+        column(
+          width = 5,
+          id = NS(id, "date_slider_col"),
+          sliderInput(NS(id, "dates"),
+                      label = "",
+                      min = as.Date("1978-01-01"),
+                      max = Sys.Date(),
+                      value = c(
+                        as.Date("1978-01-01"),
+                        as.Date("2017-10-18")
+                      ),
+                      dragRange = TRUE,
+                      timeFormat = "%b %Y",
+                      ticks = FALSE
+          )
+          ),
+        column(
+          5,
+          div(
+            id = NS(id, "check_box_col"),
+            shinyWidgets::awesomeCheckboxGroup(
+              NS(id, "checkboxes"),
+              label = "",
+              choices = NULL,
+              selected = NULL,
+              inline = TRUE
+            )
+          )
+        ),
+        column(
+          1,
+          icon("info"),
+          id = info_id#,
+          # style = "float: right;padding-top: 50%;"
+        ),
+        column(
+          1,
+          id = NS(id, "download_col"),
+          br(),
+          download_icon(NS(id, "download_dropdown")),
+          shinyBS::bsTooltip(info_id, NS(id, "caption"))#,
+          # style = "float: left; padding-top: 35%;"
         )
-      ),
-      column(8, ),
-      column(2, tags$div(icon("info"), id = info_id), align = "right"),
-      column(2,download_icon(NS(id, "download_dropdown")), align = "right")
-    ),
-    shinyBS::bsTooltip(info_id, NS(id, "caption"))
+      )
   )
 
 }

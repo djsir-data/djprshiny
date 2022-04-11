@@ -97,28 +97,6 @@ body {
     colour: #53565a;
 }
 
-/*.sidebar{
-  padding-top: 10px;
-}
-
-.sidebar li{
-  color: #FFFFFF;
-  height:60px;
-  font-size: 20px;
-  font-family: "VIC-Regular";
-  vertical-align: middle;
-  padding-left: 10px;
-  padding-right: 10px;
-  list-style: none;
-  border-left: 10px solid #FFFFFF00;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.sidebar li a:hover{
-  border-left: 10px solid #FFFFFF;
-}*/
 
 .skin-blue .sidebar-menu>li>a{
   width: 100%;
@@ -165,6 +143,75 @@ body {
 
 .tab-content{
   padding: 30px;
+}
+
+.box {
+  background-color: #F1F1EF;
+  border-top: 0px;
+}
+
+.box-footer{
+  background-color: #F1F1EF;
+  border: 0px;
+}
+
+.box-header .box-title{
+  display: none;
+}
+
+.box-header h3{
+  font-weight: bold;
+  margin-top: 5px;
+  margin-bottom: 1px;
+  line-height: 1.2;
+}
+
+.box-header h4{
+  line-height: 1.5;
+  margin-top: 0px;
+  margin-bottom: 1px;
+}
+
+.irs--shiny .irs-from, .irs--shiny .irs-to, .irs--shiny .irs-single{
+  background-color: #201547;
+}
+
+.irs--shiny .irs-bar{
+  border-top: 1px solid #201547;
+    border-bottom: 1px solid #201547;
+    background: #201547;
+}
+
+.irs--shiny .irs-line{
+  border-radius: 0px;
+  background: #FFFFFF;
+  border: 1px solid #cccccc;
+}
+
+.btn .btn-default .action-button .dropdown-toggle .shiny-bound-input {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+.small-box .inner h2{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.girafe_container_std{
+  padding-left: 10px;
+}
+
+.form-group{
+  margin-bottom: 5px;
+}
+
+g rect[fill="#FFFFFF"]{
+  display: none;
+}
+
+g polygon[fill="#FFFFFF"]{
+  display: none;
 }
 
 h1 {
