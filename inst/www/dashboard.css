@@ -190,7 +190,12 @@ body {
 
 .btn .btn-default .action-button .dropdown-toggle .shiny-bound-input {
   background-color: transparent;
-  border-color: transparent;
+  border: none;
+}
+
+.btn-default{
+  background-color: transparent;
+  border: none;
 }
 
 .small-box .inner h2{
@@ -204,6 +209,7 @@ body {
 
 .form-group{
   margin-bottom: 5px;
+  padding-left: 10px;
 }
 
 g rect[fill="#FFFFFF"]{

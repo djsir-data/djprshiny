@@ -12,7 +12,7 @@ djpr_plot_box <- function(
   interactive = FALSE,
   plot_height = "400px",
   ...
-  ){
+){
 
   if (interactive) {
     plot_ui <- ggiraph::girafeOutput(NS(id, "plot"), height = plot_height)
@@ -26,55 +26,63 @@ djpr_plot_box <- function(
     title = tagList(
       textOutput(NS(id, "title"), container = h3),
       textOutput(NS(id, "subtitle"), container = h4)
-      ),
+    ),
     djpr_with_spinner(plot_ui, proxy.height = plot_height, hide.ui = FALSE),
     ...,
     footer =
       fluidRow(
-        column(
-          width = 5,
-          id = NS(id, "date_slider_col"),
-          sliderInput(NS(id, "dates"),
-                      label = "",
-                      min = as.Date("1978-01-01"),
-                      max = Sys.Date(),
-                      value = c(
-                        as.Date("1978-01-01"),
-                        as.Date("2017-10-18")
-                      ),
-                      dragRange = TRUE,
-                      timeFormat = "%b %Y",
-                      ticks = FALSE
-          )
+        shinyBS::bsTooltip(info_id, NS(id, "caption"))),
+    column(
+      6,
+      div(
+        id = NS(id, "date_slider_col"),
+        sliderInput(
+          NS(id, "dates"),
+          label = "",
+          min = as.Date("1978-01-01"),
+          max = Sys.Date(),
+          value = c(
+            as.Date("1978-01-01"),
+            as.Date("2017-10-18")
           ),
-        column(
-          5,
-          div(
-            id = NS(id, "check_box_col"),
-            shinyWidgets::awesomeCheckboxGroup(
-              NS(id, "checkboxes"),
-              label = "",
-              choices = NULL,
-              selected = NULL,
-              inline = TRUE
-            )
-          )
-        ),
-        column(
-          1,
-          icon("info"),
-          id = info_id#,
-          # style = "float: right;padding-top: 50%;"
-        ),
-        column(
-          1,
-          id = NS(id, "download_col"),
-          br(),
-          download_icon(NS(id, "download_dropdown")),
-          shinyBS::bsTooltip(info_id, NS(id, "caption"))#,
-          # style = "float: left; padding-top: 35%;"
+          dragRange = TRUE,
+          timeFormat = "%b %Y",
+          ticks = FALSE
         )
       )
+    ),
+    column(
+      5,
+      div(
+        id = NS(id, "check_box_col"),
+        shinyWidgets::awesomeCheckboxGroup(
+          NS(id, "checkboxes"),
+          label = "",
+          choices = NULL,
+          selected = NULL,
+          inline = TRUE
+        )
+      )
+    ),
+    column(
+      1,
+      div(
+        style="width: 100%; display: table; padding-top: 50%;",
+        div(
+          style="display: table-row",
+          div(
+            style = "width: 10px; display: table-cell;",
+            icon("info"),
+            id = info_id
+          ),
+          div(
+            id = NS(id, "download_col"),
+            style="display: table-cell;",
+            download_icon(NS(id, "download_dropdown")),
+          )
+        )
+      )
+    )
   )
 
 }
