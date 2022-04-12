@@ -13,6 +13,11 @@ djpr_dash_theme <- function(...){
       type = "text/css",
       href = "djprshiny/dashboard.css"
     ),
+    shiny::tags$link(
+      rel = "stylesheet",
+      type = "text/css",
+      href = "djprshiny/bs5-card2.css"
+    ),
     shiny::tags$script(
       '$(".logo").prependTo(".main-header .navbar");
         $(".sidebar-toggle").prependTo(".main-header .navbar");'
