@@ -3,6 +3,12 @@ footer .megafooter {
     padding: 3em 1em 2em;
 }
 
+footer a{
+  font: 400 112.5%/1.5 "VIC-Regular", Verdana, sans-serif;
+  color: #fff;
+  text-decoration: underline;
+}
+
 footer .megafooter ul {
     list-style-type: none;
     padding: 0;
@@ -149,3 +155,38 @@ footer .megafooter a {
     font-size: 0.778em;
 }
 
+footer .social-media .linkedin:before {
+    content: "\f0e1";
+    font-family: "FontAwesome";
+}
+
+footer .social-media a:before {
+    font-size: 2em;
+}
+
+footer .social-media .twitter:before {
+    content: "\f099";
+    font-family: "FontAwesome";
+}
+
+footer .social-media a:before {
+    font-size: 2em;
+}
+
+footer .social-media .youtube:before {
+    content: "\f167";
+    font-family: "FontAwesome";
+}
+footer .social-media a:before {
+    font-size: 2em;
+}
+
+
+footer .utility-links span:before {
+    content: "|";
+    margin: 0 1em 0 0;
+}
+
+footer .copyright > p:first-child {
+    font-family: "VIC-SemiBold";
+}
