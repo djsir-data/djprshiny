@@ -4,7 +4,7 @@
 \alias{djpr_plot_box}
 \title{Output plots as shinydashboard boxes}
 \usage{
-djpr_plot_box(id, interactive = FALSE, plot_height = "400px", ...)
+djpr_plot_box(id, interactive = TRUE, plot_height = "400px", ...)
 }
 \arguments{
 \item{id}{a Shiny \code{outputId} specific to the individual plot.}

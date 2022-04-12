@@ -15,13 +15,13 @@ djpr_h2_box(
 \arguments{
 \item{heading}{text for h2 heading}
 
-\item{...}{additional argumnents passed to \code{shinydashboard::valueBox}}
+\item{...}{additional contents for the box}
 
 \item{width}{width of box on 1 to 12 scale (bootstrap grid)}
 
-\item{colour}{Colour for the box as css spesification}
+\item{colour}{Colour for the box as css specification}
 
-\item{text_colour}{colour for text as css spesification}
+\item{text_colour}{colour for text as css specification}
 }
 \value{
 HTML element

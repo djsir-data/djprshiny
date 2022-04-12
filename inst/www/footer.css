@@ -1,0 +1,151 @@
+footer .megafooter {
+    background: #53565a;
+    padding: 3em 1em 2em;
+}
+
+footer .megafooter ul {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+footer .megafooter > ul > li:first-child {
+    padding-right: 0;
+}
+
+footer .megafooter > ul > li:first-child {
+    padding-left: 0;
+}
+
+footer .restrict-width {
+    padding: 0 1em;
+}
+
+.restrict-width {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+footer .nrs {
+    background: #201547;
+    padding: 1em;
+}
+
+footer {
+    background: #000;
+    color: #fff;
+    padding-bottom: 10em;
+}
+
+.desktop-grid-fixed {
+    table-layout: fixed;
+}
+
+@media screen and (min-width: 1024px)
+footer .utility-links {
+    padding: 0;
+}
+
+@media screen and (min-width: 1024px)
+footer .utility-links {
+    float: left;
+    padding-left: 0;
+    padding-right: 0;
+}
+footer .utility-links {
+    display: inline-block;
+}
+footer .utility-links {
+    margin: 2em 0 0;
+    padding: 0 1em;
+}
+footer .utility-links {
+    margin: 2em 0 0;
+    padding: 0 1em;
+}
+
+footer .utility-links span {
+    display: inline-block;
+}
+
+footer .utility-links span a {
+    margin-right: 0.8em;
+}
+
+@media screen and (min-width: 1024px)
+footer .social-media {
+    float: right;
+    padding-left: 0;
+    padding-right: 0;
+    margin-top: 1.5em;
+}
+
+footer .social-media {
+    padding: 0 1em;
+}
+
+@media screen and (min-width: 1024px)
+footer .social-media a {
+    margin: 0 0 0 1em;
+}
+footer .social-media a {
+    text-decoration: none;
+    margin: 0 1em 0 0;
+}
+
+@media screen and (min-width: 1024px)
+footer .copyright {
+    clear: both;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+footer .copyright {
+    padding: 0 1em;
+}
+
+footer .copyright > p:first-child {
+    font-family: "VIC-SemiBold";
+}
+@media screen and (min-width: 1024px)
+footer .copyright p {
+    display: inline-block;
+    margin-right: 1em;
+    margin-top: 0;
+}
+
+@media screen and (min-width: 1024px)
+.desktop-grid, .desktop-grid-fixed {
+    display: table;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media screen and (min-width: 1024px)
+.desktop-grid-fixed > .grid-col {
+    width: 8.33333%;
+}
+
+@media screen and (min-width: 1024px)
+.desktop-grid > [class*="grid-col"], .desktop-grid-fixed > [class*="grid-col"] {
+    display: table-cell;
+    vertical-align: top;
+    overflow: hidden;
+}
+
+footer .megafooter > ul > li {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+footer .megafooter > ul ul li {
+    padding-left: 0.8em;
+    line-height: 1;
+}
+
+footer .megafooter a {
+    font-size: 0.778em;
+}
+
