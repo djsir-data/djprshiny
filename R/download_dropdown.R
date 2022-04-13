@@ -75,10 +75,12 @@ download_server <- function(id, plot, plot_name = "plot") {
         plot <- djprtheme::gg_font_change(plot, font = "Arial")
         plot <- plot + theme(text = element_text(family = "Arial"))
 
-        djprtheme::djpr_save_pptx(
-          destination = file,
-          plot = plot
-        )
+        djprtheme::without_showtext({
+          djprtheme::djpr_save_pptx(
+            destination = file,
+            plot = plot
+          )
+        })
       }
     )
   })
