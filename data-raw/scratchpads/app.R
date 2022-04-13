@@ -7,6 +7,8 @@ library(dplyr)
 library(djprtheme)
 library(patchwork)
 
+devtools::load_all()
+
 linechart_plot <- function(data = ggplot2::economics_long %>%
                              dplyr::rename(series = variable)) {
   djpr_ts_linechart(data) #+
@@ -62,7 +64,7 @@ title_ui <- function(id) {
 }
 
 ui <- djpr_page(
-  title = shiny::HTML("<span style = 'line-height: 0.1; font-family: Roboto Slab'>DJPR Jobs<br>Dashboard</span>"),
+  title = shiny::HTML("<h1>DJPR Jobs<br>Dashboard</h1>"),
   logo = "spp_data_logo.png",
   djpr_tab_panel(
     h1("This is an h1"),

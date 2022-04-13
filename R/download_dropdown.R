@@ -34,7 +34,7 @@ djpr_dl_button <- function(id, label) {
   shiny::downloadButton(
     outputId = id,
     label = label,
-    style = "font-size: 0.75rem; font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
+    style = "font-size: 0.75rem; font-weight: normal; font-family: 'VIC-font', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
     class = "bg-white",
     icon = shiny::icon("arrow-circle-down")
   )
