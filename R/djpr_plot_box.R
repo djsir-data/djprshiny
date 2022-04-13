@@ -31,7 +31,6 @@ djpr_plot_box <- function(
     ...,
     footer =
       fluidRow(
-        shinyBS::bsTooltip(info_id, NS(id, "caption"))),
     column(
       6,
       div(
@@ -78,8 +77,9 @@ djpr_plot_box <- function(
           div(
             id = NS(id, "download_col"),
             style="display: table-cell;",
-            download_icon(NS(id, "download_dropdown")),
-          )
+            download_icon(NS(id, "download_dropdown"))
+          ),
+          shinyBS::bsTooltip(info_id, NS(id, "caption")))
         )
       )
     )
