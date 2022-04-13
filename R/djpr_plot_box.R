@@ -23,11 +23,11 @@ djpr_plot_box <- function(
   info_id <- paste(id, "caption", "icon", sep = "-")
 
   shinydashboard::box(
-    title = tagList(
+    tagList(
       textOutput(NS(id, "title"), container = h3),
-      textOutput(NS(id, "subtitle"), container = h4)
+      textOutput(NS(id, "subtitle"), container = h4),
+      djpr_with_spinner(plot_ui, proxy.height = plot_height, hide.ui = FALSE)
     ),
-    djpr_with_spinner(plot_ui, proxy.height = plot_height, hide.ui = FALSE),
     ...,
     footer =
       fluidRow(
