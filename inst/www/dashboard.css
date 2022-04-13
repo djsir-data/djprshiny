@@ -1,0 +1,233 @@
+@font-face {
+  font-family: "VIC-Regular";
+  font-style: normal;
+  src: url("./fonts/VIC-Regular.eot");
+  src: url("./fonts/VIC-Regular-iefix.eot?#iefix") format("embedded-opentype"),
+       url("./fonts/VIC-Regular.woff2") format("woff2"),
+       url("./fonts/VIC-Regular.woff") format("woff"),
+       url("./fonts/VIC-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "VIC-SemiBold";
+  font-style: normal;
+  src: url("djprshin./fonts//VIC-SemiBold.eot");
+  src: url("./fonts/VIC-SemiBold-iefix.eot?#iefix") format("embedded-opentype"),
+       url("./fonts/VIC-SemiBold.woff2") format("woff2"),
+       url("./fonts/VIC-SemiBold.woff") format("woff"),
+       url("./fonts/VIC-Regular.ttf") format("truetype");
+}
+
+
+@font-face {
+  font-family: "VIC-Bold";
+  font-style: normal;
+  src: url("./fonts/VIC-Bold.eot");
+  src: url("./fonts/VIC-Bold-iefix.eot?#iefix") format("embedded-opentype"),
+       url("./fonts/VIC-Bold.woff2") format("woff2"),
+       url("./fonts/VIC-Bold.woff") format("woff"),
+       url("./fonts/VIC-Bold.ttf") format("truetype");
+}
+
+.main-header{
+    max-height: 160px;
+}
+
+.main-header .navbar{
+  margin-left: 0%
+}
+
+.skin-blue .main-header .logo {
+  background-color: #F1F1EF;
+  height: 90px;
+  line-height: 30px;
+  text-align: left;
+  color: #201547;
+  padding-top: 15px;
+  font-family: "VIC-SemiBold";
+  font-size: 30px;
+}
+
+.skin-blue .main-header .navbar{
+  background-color: #F1F1EF;
+  background: #F1F1EF url(./djpr-shards-logo.svg) top right no-repeat;
+  height: 90px;
+}
+
+@media (max-width: 768px){
+  .main-header .logo {
+    display: none;
+}
+}
+
+
+.left-side, .main-sidebar{
+padding-top: 90px;
+background-color: #201547;
+}
+
+.content-wrapper, .right-side{
+background-color: #FFFFFF;
+
+}
+
+body {
+  background: #FFFFFF;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle{
+  height: 90px;
+  background-color: #53565a;
+  color: #FFFFFF;
+  z-index: 1000;
+}
+
+#sidebarCollapsed{
+  background-color: #53565a;
+}
+
+
+.skin-blue .main-header .navbar .sidebar-toggle:hover {
+    background-color: #d9d9d6;
+    colour: #53565a;
+}
+
+.skin-blue .main-header .logo:hover {
+    background-color: #F1F1EF;
+    colour: #53565a;
+}
+
+
+.skin-blue .sidebar-menu>li>a{
+  width: 100%;
+  height: 100%;
+  color: #FFFFFF;
+  height:60px;
+  font-size: 20px;
+  font-family: "VIC-Regular";
+  vertical-align: middle;
+  padding-left: 10px;
+  padding-right: 10px;
+  list-style: none;
+  border-left: 10px solid #FFFFFF00;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.skin-blue .sidebar-menu>li.active>a{
+  border-left: 10px solid #FFFFFF00;
+}
+
+.skin-blue .sidebar-menu>li.active:hover>a{
+  border-left: 10px solid #FFFFFF;
+  background: #1e282c;
+}
+
+.skin-blue .sidebar-menu>li:hover>a{
+  border-left: 10px solid #FFFFFF;
+  background: none;
+}
+
+.sidebar ul{
+  vertical-align: middle;
+}
+
+.skin-blue .sidebar a{
+  color: #FFFFFF;
+}
+
+.sidebar-menu .active{
+  padding: 0px;
+}
+
+.tab-content{
+  padding: 30px;
+}
+
+.box {
+  background-color: #F1F1EF;
+  border-top: 0px;
+}
+
+.box-footer{
+  background-color: #F1F1EF;
+  border: 0px;
+}
+
+.box-header .box-title{
+  display: none;
+}
+
+.box-header h3{
+  font-weight: bold;
+  margin-top: 5px;
+  margin-bottom: 1px;
+  line-height: 1.2;
+}
+
+.box-header h4{
+  line-height: 1.5;
+  margin-top: 0px;
+  margin-bottom: 1px;
+}
+
+.irs--shiny .irs-from, .irs--shiny .irs-to, .irs--shiny .irs-single{
+  background-color: #201547;
+}
+
+.irs--shiny .irs-bar{
+  border-top: 1px solid #201547;
+    border-bottom: 1px solid #201547;
+    background: #201547;
+}
+
+.irs--shiny .irs-line{
+  border-radius: 0px;
+  background: #FFFFFF;
+  border: 1px solid #cccccc;
+}
+
+.btn .btn-default .action-button .dropdown-toggle .shiny-bound-input {
+  background-color: transparent;
+  border: none;
+}
+
+.btn-default{
+  background-color: transparent;
+  border: none;
+}
+
+.small-box .inner h2{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.girafe_container_std{
+  padding-left: 10px;
+}
+
+.form-group{
+  margin-bottom: 5px;
+  padding-left: 10px;
+}
+
+g rect[fill="#FFFFFF"]{
+  display: none;
+}
+
+g polygon[fill="#FFFFFF"]{
+  display: none;
+}
+
+h1 {
+  font-family: "VIC-Bold";
+}
+
+h2{
+  font-family: "VIC-SemiBold";
+}
+
+h3, h4, h5, h6, p, body{
+  font-family: "VIC-Regular";
+}

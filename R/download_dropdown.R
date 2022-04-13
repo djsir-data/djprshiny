@@ -83,3 +83,34 @@ download_server <- function(id, plot, plot_name = "plot") {
     )
   })
 }
+
+
+
+#' Create an icon that drops down into two sub-options
+#'
+#' Used to download chart or chart data. Intended as the UI side of a
+#' a Shiny module.
+#'
+#' @export
+#' @param id Shiny module id
+#' @param ... arguments passed to `shinyWidgets::dropdownButton()`
+#'
+
+download_icon <- function(id, ...){
+  shinyWidgets::dropdownButton(
+    djpr_dl_button(
+      NS(id, "download_data"),
+      "Download data"
+    ),
+    djpr_dl_button(
+      NS(id, "download_plot"),
+      "Download plot"
+    ),
+    ...,
+    circle = FALSE,
+    right = TRUE,
+    up = TRUE,
+    inline = TRUE,
+    icon = icon("download")
+  )
+}
