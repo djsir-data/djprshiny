@@ -335,7 +335,7 @@ djpr_plot_server <- function(id,
             )
         }
 
-        print(class(data))
+        debug_log(class(data))
 
         if ('tbl_lazy' %in% class(data) & convert_lazy) {
           data %>% dplyr::collect() %>%
