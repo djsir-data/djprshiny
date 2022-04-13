@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Font comparison</title>
+<link rel="stylesheet" href="../../inst/www/djpr_fonts.css">
+<link rel="stylesheet" href="../../inst/www/fonts/vic-font.css">
+<style>
+
+table * {
+	padding: 0.1em 0.5em;
+}
+tbody th {
+	font-weight: normal;
+	font-style: normal;
+}
+tbody tr:nth-child(1) {
+	font-family: "VIC";
+}
+tbody tr:nth-child(2) {
+	font-family: "VIC-Regular";
+}
+tbody td:after {
+	content: "The quick fox jumped over the lazy dog";
+}
+tbody tr:nth-child(1) {
+	font-family: "VIC";
+}
+tbody tr:nth-child(2) {
+	font-family: "VIC-font";
+}
+tbody tr:nth-child(3) {
+	font-family: "VIC-Regular";
+}
+tbody td:nth-child(3) {
+	font-style: italic;
+}
+tbody td:nth-child(4) {
+	font-weight: bold;
+}
+tbody td:nth-child(5) {
+	font-style: italic;
+	font-weight: bold;
+}
+table {
+	border: 1px solid black;
+}
+</style>
+
+
+<h1>Web options comparison</h1>
+<table>
+	<thead>
+		<tr><th>Font<th>Normal<th>Italic<th>Bold<th>Bold Italic
+	<tbody>
+		<tr><th>VIC (system)<td><td><td><td>
+		<tr><th>VIC-font <mark>(recommended)</mark><td><td><td><td>
+		<tr><th>VIC-Regular<td><td><td><td>
+		<tr><th>VIC-Regular/VIC-Bold
+			<td style="font-family: VIC-Regular">
+			<td style="font-family: VIC-Regular; font-style: italic">
+			<td style="font-family: VIC-Bold; font-weight: normal;">
+			<td style="font-family: VIC-Bold; font-style: italic; font-weight: normal;">
+</table>
+
+<h2>Explanation</h2>
+<p>This page compares options for embedding the VIC font in CSS for websites:
+<dl>
+	<dt>VIC (system)<dd>Uses the system-installed font named "VIC". This will fall back to something else if the font is not installed &mdash; as it won't be for the vast majority of Victorians.
+	<dt>VIC-font<dd>Multiple <code>@font-face</code> declarations pointing to separate files for variants. The files come from the <a href="https://web.archive.org/web/20220321034634/https://www.vic.gov.au/brand-victoria-fonts">official download</a>.
+	<dt>VIC-Regular<dd>Uses only VIC-Regular font file and relies on embedded/browser-generated variants.
+	<dt>VIC-Regular/VIC-Bold<dd>Uses VIC-Regular for normal weight, VIC-Bold for bold weights with bolding turned off in styles. Relies on embeded/browser-generated variants for italics. This is what the <a href="https://djpr.vic.gov.au">DJPR public website</a> does (at time of writing), so may be considered a source of truth.
+</dl>
+
+<p>Obsevations:
+<ul>
+	<li>The system-installed fonts appear lighter than the official web fonts, as used by the DJPR public website.
+	<li>VIC-Regular's bold variant (created by the browser) is light compared to the official Vic-Bold font.
+	<li>Using VIC-Regular/VIC-Bold would require switching font families to get different weights, which does not match common practice. Headings will be too heavy unless care is taken to reset bolding no all headings in CSS.
+</ul>
+
