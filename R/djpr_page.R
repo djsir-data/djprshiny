@@ -54,6 +54,10 @@ header.append('<div style=\"float:right\"><img src=", logo, " alt=\"alt\" style=
         .leaflet-container {
                  background: #ffffff;
         }
+        /* Reset font override on shiny sliders */
+        .irs {
+          font-family: inherit;
+        }
         "
       )
     ),
