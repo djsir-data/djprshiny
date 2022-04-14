@@ -232,6 +232,7 @@ djpr_plot_server <- function(id,
 
       # Update date slider UI ------
       dates <- data %>%
+        dplyr::ungroup() %>% # In case we're accidentally passed a grouped tbl
         dplyr::summarise(min = min(as.Date(date), na.rm = TRUE),
                          max = max(as.Date(date), na.rm = TRUE))
 
