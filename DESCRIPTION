@@ -1,6 +1,6 @@
 Package: djprshiny
 Title: Common Functions For DJPR Shiny Apps
-Version: 0.0.6.906
+Version: 0.0.6.907
 Authors@R: 
     c(
     person(given = "Matt",
