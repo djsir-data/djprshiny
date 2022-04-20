@@ -34,7 +34,7 @@ djpr_dl_button <- function(id, label) {
   shiny::downloadButton(
     outputId = id,
     label = label,
-    style = "font-size: 0.75rem; font-weight: normal; font-family: 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
+    style = "font-size: 0.75rem; font-weight: normal; font-family: 'VIC-font', 'Helvetica Neue', 'Arial', 'sans-serif', 'sans'",
     class = "bg-white",
     icon = shiny::icon("arrow-circle-down")
   )
@@ -75,10 +75,12 @@ download_server <- function(id, plot, plot_name = "plot") {
         plot <- djprtheme::gg_font_change(plot, font = "Arial")
         plot <- plot + theme(text = element_text(family = "Arial"))
 
-        djprtheme::djpr_save_pptx(
-          destination = file,
-          plot = plot
-        )
+        djprtheme::without_showtext({
+          djprtheme::djpr_save_pptx(
+            destination = file,
+            plot = plot
+          )
+        })
       }
     )
   })

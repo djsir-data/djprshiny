@@ -54,11 +54,11 @@ djpr_girafe <- function(ggobj,
       ggiraph::opts_tooltip(
         delay_mouseover = 100,
         opacity = 0.9,
-        css = "background-color: white; color: black; font-family: Roboto, Arial, Helvetica, sans-serif; line-height: 100%;"
+        css = "background-color: white; color: black; font-family: VIC-font, Arial, Helvetica, sans-serif; line-height: 100%;"
       ),
       ...
     ),
-    fonts = list(sans = c("Roboto"))
+    fonts = list(sans = c("VIC-font"))
   )
 }
 

@@ -465,11 +465,11 @@ djpr_plot_server <- function(id,
         output$plot <- renderPlot({
           req(static_plot_nolabs())
           p <- static_plot_nolabs() %>%
-            djprtheme::gg_font_change("Roboto")
+            djprtheme::gg_font_change("VIC-font")
 
 
           theme_mod <- theme(text = element_text(
-            family = "Roboto",
+            family = "VIC-font",
             size = 14
           ))
 
