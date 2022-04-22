@@ -56,7 +56,7 @@ djpr_plot_box <- function(
         id = NS(id, "check_box_col"),
         shinyWidgets::awesomeCheckboxGroup(
           NS(id, "checkboxes"),
-          label = "",
+          label = "Select Groups",
           choices = NULL,
           selected = NULL,
           inline = TRUE
