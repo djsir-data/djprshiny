@@ -97,7 +97,7 @@ djpr_plot_ui <- function(id,
         6,
         id = NS(id, "date_slider_col"),
         sliderInput(NS(id, "dates"),
-          label = "Select Dates",
+          label = "",
           min = as.Date("1978-01-01"),
           max = Sys.Date(),
           value = c(
