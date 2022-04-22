@@ -22,7 +22,8 @@ djpr_page <- function(title,
                       ...,
                       col_widths = c(2, 8, 2),
                       logo = file.path("djprshiny", "spp_data_logo.png"),
-                      logo_style = "float:right;width:83px;height:20px;padding-top:0px;") {
+                      logo_style = "float:right;width:83px;height:20px;padding-top:0px;",
+                      lang = "en") {
 
   # Add logo to navbar: https://stackoverflow.com/a/50991648/10677884
   logo_panel <- if (!is.null(logo)) {
@@ -38,6 +39,7 @@ header.append('<div style=\"float:right\"><img src=", logo, " alt=\"alt\" style=
 
   shiny::fluidPage(
     theme = djpr_shiny_theme(),
+    lang = lang,
     ggiraph_js(col_widths = col_widths),
     htmltools::tags$head(
       htmltools::tags$link(
