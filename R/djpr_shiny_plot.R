@@ -256,7 +256,8 @@ djpr_plot_server <- function(id,
           ),
           min = dates$min,
           max = dates$max,
-          timeFormat = "%b %Y"
+          timeFormat = "%b %Y",
+          label = "Select Dates"
         )
 
       } else {
@@ -268,7 +269,7 @@ djpr_plot_server <- function(id,
         shinyWidgets::updateAwesomeCheckboxGroup(
           session = session,
           "checkboxes",
-          label = "",
+          label = "Select Groups",
           choices = check_box_options,
           selected = check_box_selected,
           inline = TRUE
