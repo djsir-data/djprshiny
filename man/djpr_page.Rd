@@ -9,7 +9,8 @@ djpr_page(
   ...,
   col_widths = c(2, 8, 2),
   logo = file.path("djprshiny", "spp_data_logo.png"),
-  logo_style = "float:right;width:83px;height:20px;padding-top:0px;"
+  logo_style = "float:right;width:83px;height:20px;padding-top:0px;",
+  lang = "en"
 )
 }
 \arguments{
