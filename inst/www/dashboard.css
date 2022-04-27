@@ -212,6 +212,39 @@ body {
   padding-left: 10px;
 }
 
+.sidebar-menu .treeview-menu{
+  padding-left: 0px;
+}
+
+.skin-blue .sidebar-menu>li>.treeview-menu{
+  margin: 0px;
+  background: #d9d9d6;
+}
+
+.skin-blue .treeview-menu>li>a{
+  font-size: 15px;
+  font-family: "VIC-Regular" bold;
+  color: #000000;
+  border-left: 10px solid #FFFFFF00;
+}
+
+.skin-blue .treeview-menu>li>a:hover{
+  color: #000000;
+}
+
+.skin-blue .treeview-menu>li.active>a{
+  background: #1e282c;
+  border-left: 10px solid #d9d9d6;
+}
+
+.skin-blue .treeview-menu>li.active>a:hover{
+  color: #FFFFFF;
+}
+
+.sidebar-menu .treeview-menu>li>a>.fa, .sidebar-menu .treeview-menu>li>a>.glyphicon, .sidebar-menu .treeview-menu>li>a>.ion{
+  display: none;
+}
+
 g rect[fill="#FFFFFF"]{
   display: none;
 }
