@@ -40,12 +40,12 @@ djpr_async_server <- function(
 
 
       # Establish container width helper div and js
-      width_plot_name  <- shiny::NS(id, "plot")
-      width_ppi_name   <- shiny::NS(id, "ppi-test")
-      width_input_name <- shiny::NS(id, "sizing")
+      ruler_width  <- shiny::NS(id, "plot")
+      ruler_ppi   <- shiny::NS(id, "ppi-test")
+      ruler_input <- shiny::NS(id, "sizing")
 
       width_helper <- shiny::tagList(
-        shiny::div(id = width_ppi_name, style = "width:0.75in;visible:hidden;padding:0px"),
+        shiny::div(id = ruler_ppi, style = "width:0.75in;visible:hidden;padding:0px"),
         shiny::tags$script(
           sprintf(
               '
@@ -64,14 +64,14 @@ djpr_async_server <- function(
                 Shiny.onInputChange("%s", obj);
               });
               ',
-              width_plot_name,
-              width_plot_name,
-              width_ppi_name,
-              width_input_name,
-              width_plot_name,
-              width_plot_name,
-              width_ppi_name,
-              width_input_name
+              ruler_width,
+              ruler_width,
+              ruler_ppi,
+              ruler_input,
+              ruler_width,
+              ruler_width,
+              ruler_ppi,
+              ruler_input
           )
         )
       )
@@ -79,7 +79,7 @@ djpr_async_server <- function(
       shiny::observeEvent(
         input,
         {message("UI insertion")
-          shiny::insertUI(width_plot_name, "beforeBegin", width_helper) }#,
+          shiny::insertUI(ruler_width, "beforeBegin", width_helper) }#,
         # once = TRUE
       )
 
@@ -104,10 +104,10 @@ djpr_async_server <- function(
           djprtheme::extract_labs("caption")
       )
       output$plot <- ggiraph::renderggiraph({
-        update_width <- if(is.null(input[[width_input_name]])) {
+        update_width <- if(is.null(input[[ruler_input]])) {
           list(width = 500, height = 500, ppi = 72)
         } else {
-          input[[width_input_name]]
+          input[[ruler_input]]
         }
 
         promises::future_promise({
@@ -139,10 +139,50 @@ djpr_async_server <- function(
 
 djpr_async_ui <- function(id, ..., plot_height = "400px", width = 6){
 
+  ruler_width <- shiny::NS(id, "plot")
+  ruler_ppi   <- shiny::NS(id, "ppi-test")
+  ruler_input <- shiny::NS(id, "sizing")
+
+  width_helper <- shiny::tagList(
+    shiny::div(id = ruler_width, style = "width:100%;visible:hidden;padding:0px"),
+    shiny::div(id = ruler_ppi, style = "width:0.75in;visible:hidden;padding:0px"),
+    shiny::tags$script(
+      sprintf(
+        '
+              $(document).on("shiny:connected", function(e) {
+                var w = document.getElementById("%s").width();
+                var h = document.getElementById("%s").height();
+                var d =  document.getElementById("%s").offsetWidth;
+                var obj = {width: w, height: h, dpi: d};
+                Shiny.onInputChange("%s", obj);
+              });
+              $(window).resize(function(e) {
+                var w = document.getElementById("%s").width();
+                var h = document.getElementById("%s").height();
+                var d =  document.getElementById("%s").offsetWidth;
+                var obj = {width: w, height: h, dpi: d};
+                Shiny.onInputChange("%s", obj);
+              });
+              ',
+        ruler_width,
+        ruler_width,
+        ruler_ppi,
+        ruler_input,
+        ruler_width,
+        ruler_width,
+        ruler_ppi,
+        ruler_input
+      )
+    )
+  )
+
+
   column(
     width = width,
     div(
       class = "box",
+
+
 
       div(
         class = "box-header",
@@ -155,10 +195,14 @@ djpr_async_ui <- function(id, ..., plot_height = "400px", width = 6){
       ),
       div(
         class = "box-body",
-        djpr_with_spinner(
+        shinycssloaders::withSpinner(
           NS(id, "plot"),
+          type = 8,
+          colour = "#2A6FA2",
+          size = 0.8,
           proxy.height = plot_height,
-          hide.ui = FALSE
+          hide.ui = FALSE,
+
           ),
         textOutput(
           NS(id, "subtitle"),
