@@ -4,7 +4,7 @@
 \alias{djpr_plot_box}
 \title{Output plots as shinydashboard boxes}
 \usage{
-djpr_plot_box(id, interactive = TRUE, plot_height = "400px", ...)
+djpr_plot_box(id, interactive = TRUE, plot_height = "400px", width = 6, ...)
 }
 \arguments{
 \item{id}{a Shiny \code{outputId} specific to the individual plot.}
@@ -13,7 +13,7 @@ djpr_plot_box(id, interactive = TRUE, plot_height = "400px", ...)
 
 \item{plot_height}{height in css spesification}
 
-\item{...}{additional items passed to \code{shinydashboard::box}}
+\item{...}{additional html placed after the plot}
 }
 \value{
 HTML UI component

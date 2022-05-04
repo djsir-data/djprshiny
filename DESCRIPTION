@@ -28,6 +28,7 @@ Imports:
     ggrepel (>= 0.9.1),
     htmltools (>= 0.5.1.1),
     lubridate,
+    promises,
     purrr,
     rlang (>= 0.4.11),
     shiny (>= 1.6.0),

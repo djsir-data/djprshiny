@@ -22,13 +22,16 @@ djpr_dash_theme <- function(...){
       '$(".logo").prependTo(".main-header .navbar");
         $(".sidebar-toggle").prependTo(".main-header .navbar");'
     ),
-    tags$body(
-      shiny::div(id = "ppitest", style = "width:0.75in;visible:hidden;padding:0px"),
-      shiny::fluidRow(
-        style = "visible: hidden",
-        column(12, id = "girafe_container"),
+    column(
+      12,
+      tags$body(
+        shiny::div(id = "ppitest", style = "width:0.75in;visible:hidden;padding:0px"),
+        shiny::fluidRow(
+          style = "visible: hidden",
+          column(12, id = "girafe_container"),
+        )
       )
-    ),
+      ),
     tags$script(
     '$(document).on("shiny:connected", function(e) {
                                     var w = document.getElementById("girafe_container").offsetWidth;
