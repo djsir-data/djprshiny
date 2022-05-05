@@ -5,7 +5,6 @@
 #' @param plot_fun a function which generates a ggplot
 #' @param ... arguments passed to plot_fun
 #'
-#' @return
 #' @export
 djpr_async_server <- function(
   id,
@@ -23,6 +22,9 @@ djpr_async_server <- function(
     id = id,
     function(input, output, session){
 
+      # Expected resizing input
+      ruler_input <- shiny::NS(id, "sizing")
+
       # Ensure reactive inputs are handled correctly
       arg_list <- shiny::reactive(
         lapply(
@@ -38,61 +40,12 @@ djpr_async_server <- function(
       }) %>%
         shiny::bindCache(plot_fun, arg_list())
 
-
-      # Establish container width helper div and js
-      ruler_width  <- shiny::NS(id, "plot")
-      ruler_ppi   <- shiny::NS(id, "ppi-test")
-      ruler_input <- shiny::NS(id, "sizing")
-
-      width_helper <- shiny::tagList(
-        shiny::div(id = ruler_ppi, style = "width:0.75in;visible:hidden;padding:0px"),
-        shiny::tags$script(
-          sprintf(
-              '
-              $(document).on("shiny:connected", function(e) {
-                var w = document.getElementById("%s").width();
-                var h = document.getElementById("%s").height();
-                var d =  document.getElementById("%s").offsetWidth;
-                var obj = {width: w, height: h, dpi: d};
-                Shiny.onInputChange("%s", obj);
-              });
-              $(window).resize(function(e) {
-                var w = document.getElementById("%s").width();
-                var h = document.getElementById("%s").height();
-                var d =  document.getElementById("%s").offsetWidth;
-                var obj = {width: w, height: h, dpi: d};
-                Shiny.onInputChange("%s", obj);
-              });
-              ',
-              ruler_width,
-              ruler_width,
-              ruler_ppi,
-              ruler_input,
-              ruler_width,
-              ruler_width,
-              ruler_ppi,
-              ruler_input
-          )
-        )
-      )
-
-      shiny::observeEvent(
-        input,
-        {message("UI insertion")
-          shiny::insertUI(ruler_width, "beforeBegin", width_helper) }#,
-        # once = TRUE
-      )
-
-
       # Generate all output
       output$title <- shiny::reactive(
-        {
-          message("PLot class: ", class(plot()))
-          plot() %...>%
-            shiny::req() %...>%
-            djprtheme::extract_labs("title")
-        }
-        )
+        plot() %...>%
+          shiny::req() %...>%
+          djprtheme::extract_labs("title")
+      )
       output$subtitle <- shiny::reactive(
         plot() %...>%
           shiny::req() %...>%
@@ -104,22 +57,22 @@ djpr_async_server <- function(
           djprtheme::extract_labs("caption")
       )
       output$plot <- ggiraph::renderggiraph({
-        update_width <- if(is.null(input[[ruler_input]])) {
-          list(width = 500, height = 500, ppi = 72)
-        } else {
-          input[[ruler_input]]
-        }
+        # ruler <- if(is.null(input[[ruler_input]])) {
+        #   list(width = 500, height = 500, ppi = 72)
+        # } else {
+        #   input[[ruler_input]]
+        # }
+        ruler <- input[[ruler_input]]
+        message(ruler)
 
-        promises::future_promise({
-          plot() %...>%
-            req() %...>%
-            djprtheme::remove_labs() %...>%
-            ggiraph::ggiraph(
-              ggobj = .,
-              width_svg = update_width$width / update_width$ppi,
-              height_svg = update_width$height / update_width$ppi
-            )
-        })
+        plot() %...>%
+          req() %...>%
+          djprtheme::remove_labs() %...>%
+          ggiraph::ggiraph(
+            ggobj = .,
+            width_svg = ruler$width[1] / ruler$ppi[1],
+            height_svg = ruler$height[1] / ruler$ppi[1]
+          )
       })
 
       download_server(
@@ -137,85 +90,93 @@ djpr_async_server <- function(
 
 
 
-djpr_async_ui <- function(id, ..., plot_height = "400px", width = 6){
 
-  ruler_width <- shiny::NS(id, "plot")
-  ruler_ppi   <- shiny::NS(id, "ppi-test")
+
+
+#' Asynchronous DJPR plot server
+#'
+#' @param id a Shiny `outputId` specific to the individual plot.
+#' @param ... additional HTML elements to be placed inside the box, such as
+#' inputs
+#' @param width Numeric value between 1 and 12. Follows `shiny::column` and
+#' bootstrap with sizing conventions.
+#' @param height CSS height
+#'
+#' @return HTML element
+#' @export
+djpr_async_ui <- function(id, ..., width  = 6L, height = "500px"){
+
+  # divs IDs and input names used for ggiraph resizing
+  ruler_container <- shiny::NS(id, "container")
+  ruler_ppi   <- shiny::NS(id, "ruler-ppi")
   ruler_input <- shiny::NS(id, "sizing")
 
-  width_helper <- shiny::tagList(
-    shiny::div(id = ruler_width, style = "width:100%;visible:hidden;padding:0px"),
-    shiny::div(id = ruler_ppi, style = "width:0.75in;visible:hidden;padding:0px"),
-    shiny::tags$script(
-      sprintf(
-        '
+  # JS code to create plot-specific resizing
+  width_helper <- shiny::tags$script(
+    sprintf(
+      'console.log("%s")
               $(document).on("shiny:connected", function(e) {
-                var w = document.getElementById("%s").width();
-                var h = document.getElementById("%s").height();
+                var w = document.getElementById("%s").offsetWidth;
+                var h = document.getElementById("%s").offsetHeight;
                 var d =  document.getElementById("%s").offsetWidth;
                 var obj = {width: w, height: h, dpi: d};
                 Shiny.onInputChange("%s", obj);
               });
               $(window).resize(function(e) {
-                var w = document.getElementById("%s").width();
-                var h = document.getElementById("%s").height();
+                var w = document.getElementById("%s").offsetWidth;
+                var h = document.getElementById("%s").offsetHeight;
                 var d =  document.getElementById("%s").offsetWidth;
                 var obj = {width: w, height: h, dpi: d};
                 Shiny.onInputChange("%s", obj);
               });
               ',
-        ruler_width,
-        ruler_width,
-        ruler_ppi,
-        ruler_input,
-        ruler_width,
-        ruler_width,
-        ruler_ppi,
-        ruler_input
-      )
+      id,
+      ruler_container,
+      ruler_container,
+      ruler_ppi,
+      ruler_input,
+      ruler_container,
+      ruler_container,
+      ruler_ppi,
+      ruler_input
     )
   )
 
-
-  column(
+  shiny::column(
     width = width,
-    div(
+    shiny::div(
       class = "box",
-
-
-
-      div(
+      shiny::div(
         class = "box-header",
-        textOutput(
-          NS(id, "title"),
-          container = function(x) h3(x, style = "display: inline-block;")
-          ),
-        download_icon(NS(id, "download_dropdown")),
-        textOutput(NS(id, "subtitle"), container = h4),
+        shiny::textOutput(
+          outputId = shiny::NS(id, "title"),
+          container = shiny::h3
+        ),
+        shiny::textOutput(
+          outputId = shiny::NS(id, "subtitle"),
+          container = shiny::h4
+        )
       ),
-      div(
+      shiny::div(
+        id = ruler_container,
         class = "box-body",
-        shinycssloaders::withSpinner(
-          NS(id, "plot"),
-          type = 8,
-          colour = "#2A6FA2",
-          size = 0.8,
-          proxy.height = plot_height,
-          hide.ui = FALSE,
-
-          ),
-        textOutput(
-          NS(id, "subtitle"),
-          container = function(x) div(x, class = "djpr_caption")
-          )
+        shiny::div(
+          id = ruler_ppi,
+          style = "width:0.75in;visible:hidden;padding:0px"
+        ),
+        djpr_with_spinner(
+          ggiraph::ggiraphOutput(shiny::NS(id, "plot"), height = height),
+          proxy.height = height
+        )
       ),
-      div(
+      shiny::div(
         class = "box-footer",
-        ...,
-      )
+        shiny::textOutput(outputId = shiny::NS(id, "caption")) %>%
+          shiny::tagAppendAttributes(class = "djpr-caption"),
+        ...
+      ),
+      width_helper
     )
   )
-
-
 }
 
