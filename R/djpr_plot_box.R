@@ -76,16 +76,11 @@ djpr_plot_box <- function(
               div(
                 style="display: table-row",
                 div(
-                  style = "width: 10px; display: table-cell;",
-                  icon("info"),
-                  id = info_id
-                ),
-                div(
                   id = NS(id, "download_col"),
                   style="display: table-cell;",
                   download_icon(NS(id, "download_dropdown"))
-                ),
-                shinyBS::bsTooltip(info_id, NS(id, "caption")))
+                )
+                )
             )
           )
         )
