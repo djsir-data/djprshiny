@@ -22,9 +22,6 @@ djpr_async_server <- function(
     id = id,
     function(input, output, session){
 
-      # Expected resizing input
-      ruler_input <- shiny::NS(id, "sizing")
-
       # Ensure reactive inputs are handled correctly
       arg_list <- shiny::reactive(
         lapply(
@@ -57,22 +54,27 @@ djpr_async_server <- function(
           djprtheme::extract_labs("caption")
       )
       output$plot <- ggiraph::renderggiraph({
-        # ruler <- if(is.null(input[[ruler_input]])) {
-        #   list(width = 500, height = 500, ppi = 72)
-        # } else {
-        #   input[[ruler_input]]
-        # }
-        ruler <- input[[ruler_input]]
-        message(ruler)
-
+        shiny::req(plot(), input$sizing)
+        ruler <- input$sizing
         plot() %...>%
-          req() %...>%
           djprtheme::remove_labs() %...>%
           ggiraph::ggiraph(
             ggobj = .,
-            width_svg = ruler$width[1] / ruler$ppi[1],
-            height_svg = ruler$height[1] / ruler$ppi[1]
+            width_svg = ruler$width / ruler$dpi,
+            height_svg = ruler$height / ruler$dpi,
+            options = list(
+              ggiraph::opts_toolbar(saveaspng = FALSE),
+              ggiraph::opts_sizing(rescale = FALSE),
+              ggiraph::opts_zoom(min = 1, max = 1),
+              ggiraph::opts_tooltip(
+                delay_mouseover = 100,
+                opacity = 0.9,
+                css = "background-color: white; color: black; font-family: VIC-Regular, Arial, Helvetica, sans-serif; line-height: 100%;"
+              )
+            )
           )
+
+
       })
 
       download_server(
@@ -114,23 +116,24 @@ djpr_async_ui <- function(id, ..., width  = 6L, height = "500px"){
   # JS code to create plot-specific resizing
   width_helper <- shiny::tags$script(
     sprintf(
-      'console.log("%s")
+      '
               $(document).on("shiny:connected", function(e) {
+              console.log("initial");
                 var w = document.getElementById("%s").offsetWidth;
                 var h = document.getElementById("%s").offsetHeight;
                 var d =  document.getElementById("%s").offsetWidth;
                 var obj = {width: w, height: h, dpi: d};
-                Shiny.onInputChange("%s", obj);
+                Shiny.setInputValue("%s", obj, {priority: "event"});
               });
               $(window).resize(function(e) {
+              console.log("resized");
                 var w = document.getElementById("%s").offsetWidth;
                 var h = document.getElementById("%s").offsetHeight;
                 var d =  document.getElementById("%s").offsetWidth;
                 var obj = {width: w, height: h, dpi: d};
-                Shiny.onInputChange("%s", obj);
+                Shiny.setInputValue("%s", obj, {priority: "event"});
               });
               ',
-      id,
       ruler_container,
       ruler_container,
       ruler_ppi,
