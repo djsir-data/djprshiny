@@ -17,17 +17,23 @@ djpr_async_server <- function(
   if(is.na(as.character(id))) stop("id must be character")
   if(length(as.character(id)) != 1) stop("id must be length 1")
 
+  arg_list_call <- as.list(match.call(expand.dots = F))[["..."]]
+  arg_list_names <- names(arg_list_call)
+
+
   # Generate outputs in namespace
   shiny::moduleServer(
     id = id,
     function(input, output, session){
 
-      # Ensure reactive inputs are handled correctly
+      # evaluate plotfun arguments in module
       arg_list <- shiny::reactive(
-        lapply(
-          list(...),
-          function(x) if (shiny::is.reactive(x)) {x()} else {x}
-        )
+        {
+          req(input)
+          args <- lapply(arg_list_call, eval.parent)
+          names(args) <- arg_list_names
+          args
+        }
       )
 
       # Evaluate plot function
@@ -56,7 +62,7 @@ djpr_async_server <- function(
       output$plot <- ggiraph::renderggiraph({
         shiny::req(plot(), input$sizing)
         ruler <- input$sizing
-        plot() %...>%
+        promises::future_promise(plot()) %...>%
           djprtheme::remove_labs() %...>%
           ggiraph::ggiraph(
             ggobj = .,
