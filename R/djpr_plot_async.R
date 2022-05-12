@@ -37,40 +37,44 @@ djpr_async_server <- function(
       )
 
       # Decrease how often resizing triggers the plot render
-      sizing <- shiny::reactive({input$sizing}) %>%
+      sizing <- shiny::reactive({
+        input$sizing
+        }) %>%
         shiny::debounce(1000)
 
       # Evaluate plot function
       plot <- shiny::reactive({
-        req(arg_list())
-        promises::future_promise(do.call(plot_fun, arg_list()))
+        args <- req(arg_list())
+        promises::future_promise(do.call(plot_fun, args))
       }) %>%
         shiny::bindCache(plot_fun, arg_list())
 
       # Generate all output
-      output$title <- shiny::reactive(
+      output$title <- shiny::reactive({
         plot() %...>%
           shiny::req() %...>%
           djprtheme::extract_labs("title")
-      )
-      output$subtitle <- shiny::reactive(
+      })
+      output$subtitle <- shiny::reactive({
+
         plot() %...>%
           shiny::req() %...>%
           djprtheme::extract_labs("subtitle")
-      )
-      output$caption <- shiny::reactive(
+      })
+      output$caption <- shiny::reactive({
         plot() %...>%
           shiny::req() %...>%
           djprtheme::extract_labs("caption")
-      )
+      })
       output$plot <- ggiraph::renderggiraph({
         height <- sizing()$height
         width  <- sizing()$width
         dpi    <- sizing()$dpi
+        chart  <- plot()
 
-        shiny::req(plot(), height, width, dpi)
+        shiny::req(chart, height, width, dpi)
 
-        promises::future_promise(plot()) %...>%
+        chart %...>%
           djprtheme::remove_labs() %...>%
           ggiraph::ggiraph(
             ggobj = .,
