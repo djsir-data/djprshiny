@@ -27,6 +27,8 @@ File should be included in the \code{www} folder of the Shiny app. If \code{NULL
 no logo is displayed. Default is included with this package.}
 
 \item{logo_style}{CSS to style the logo.}
+
+\item{lang}{language code}
 }
 \description{
 Use in place of \code{shiny::fluidPage()}.

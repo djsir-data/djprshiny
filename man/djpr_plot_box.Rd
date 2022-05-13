@@ -11,7 +11,10 @@ djpr_plot_box(id, interactive = TRUE, plot_height = "400px", width = 6, ...)
 
 \item{interactive}{Boolean; does this plot use ggiraph}
 
-\item{plot_height}{height in css spesification}
+\item{plot_height}{height in css specification}
+
+\item{width}{integer 1 to 12. Specifies width of the box in bootstrap grid
+column widths.}
 
 \item{...}{additional html placed after the plot}
 }

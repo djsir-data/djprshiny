@@ -2,7 +2,9 @@
 #'
 #' @param id a Shiny `outputId` specific to the individual plot.
 #' @param interactive Boolean; does this plot use ggiraph
-#' @param plot_height height in css spesification
+#' @param plot_height height in css specification
+#' @param width integer 1 to 12. Specifies width of the box in bootstrap grid
+#' column widths.
 #' @param ... additional html placed after the plot
 #'
 #' @return HTML UI component
