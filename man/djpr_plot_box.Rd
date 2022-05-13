@@ -4,16 +4,19 @@
 \alias{djpr_plot_box}
 \title{Output plots as shinydashboard boxes}
 \usage{
-djpr_plot_box(id, interactive = TRUE, plot_height = "400px", ...)
+djpr_plot_box(id, interactive = TRUE, plot_height = "400px", width = 6, ...)
 }
 \arguments{
 \item{id}{a Shiny \code{outputId} specific to the individual plot.}
 
 \item{interactive}{Boolean; does this plot use ggiraph}
 
-\item{plot_height}{height in css spesification}
+\item{plot_height}{height in css specification}
 
-\item{...}{additional items passed to \code{shinydashboard::box}}
+\item{width}{integer 1 to 12. Specifies width of the box in bootstrap grid
+column widths.}
+
+\item{...}{additional html placed after the plot}
 }
 \value{
 HTML UI component

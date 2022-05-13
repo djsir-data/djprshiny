@@ -15,7 +15,7 @@
 #' File should be included in the `www` folder of the Shiny app. If `NULL`,
 #' no logo is displayed. Default is included with this package.
 #' @param logo_style CSS to style the logo.
-#'
+#' @param lang language code
 #' @export
 
 djpr_page <- function(title,
