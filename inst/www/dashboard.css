@@ -245,6 +245,10 @@ body {
   display: none;
 }
 
+.flextable-shadow-host{
+  padding: 10px;
+}
+
 g rect[fill="#FFFFFF"]{
   display: none;
 }
