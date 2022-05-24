@@ -16,10 +16,6 @@
 #' no logo is displayed. Default is included with this package.
 #' @param logo_style CSS to style the logo.
 #' @param lang language code
-<<<<<<< HEAD
-#'
-=======
->>>>>>> 86aeb9cb4f4ae34f5b9ce5d2a0f9647d7cecea7b
 #' @export
 
 djpr_page <- function(title,
