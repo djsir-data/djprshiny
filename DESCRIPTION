@@ -1,6 +1,6 @@
 Package: djprshiny
 Title: Common Functions For DJPR Shiny Apps
-Version: 0.0.6.907
+Version: 0.1.0
 Authors@R: 
     c(
     person(given = "Matt",
@@ -28,10 +28,10 @@ Imports:
     ggrepel (>= 0.9.1),
     htmltools (>= 0.5.1.1),
     lubridate,
+    promises,
     purrr,
     rlang (>= 0.4.11),
     shiny (>= 1.6.0),
-    shinyBS,
     shinycssloaders,
     shinyWidgets (>= 0.6.2.9000),
     stringr,
