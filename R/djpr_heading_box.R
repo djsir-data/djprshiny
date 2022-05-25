@@ -38,6 +38,7 @@ djpr_h1_box <- function(
 
 
 #' @rdname headings
+#' @export
 djpr_h2_box <- function(
   heading,
   ...,
@@ -61,6 +62,7 @@ djpr_h2_box <- function(
 }
 
 #' @rdname headings
+#' @export
 djpr_h3_box <- function(
   heading,
   ...,
@@ -84,6 +86,7 @@ djpr_h3_box <- function(
 }
 
 #' @rdname headings
+#' @export
 djpr_h4_box <- function(
   heading,
   ...,
