@@ -28,7 +28,7 @@ djpr_h1_box <- function(
       div(
         class = "inner",
         style = paste0("background-color: ", colour, ";"),
-        h2(heading, style = paste0("color: ", text_colour, ";")),
+        h1(heading, style = paste0("color: ", text_colour, ";")),
         ...
       )
 
@@ -77,7 +77,7 @@ djpr_h3_box <- function(
       div(
         class = "inner",
         style = paste0("background-color: ", colour, ";"),
-        h2(heading, style = paste0("color: ", text_colour, ";")),
+        h3(heading, style = paste0("color: ", text_colour, ";")),
         ...
       )
 
@@ -101,7 +101,7 @@ djpr_h4_box <- function(
       div(
         class = "inner",
         style = paste0("background-color: ", colour, ";"),
-        h2(heading, style = paste0("color: ", text_colour, ";")),
+        h4(heading, style = paste0("color: ", text_colour, ";")),
         ...
       )
 
