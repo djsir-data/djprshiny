@@ -1,3 +1,7 @@
+# djprshiny 0.1.1
+
+* formatted header boxes 
+
 # djprshiny 0.1.0
 
 # djprshiny 0.0.6.90x

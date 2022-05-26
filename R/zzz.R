@@ -1,5 +1,5 @@
 .onLoad <- function(libname, pkgname) {
-  addResourcePath("djprshiny", system.file("www", package = "djprshiny"))
+  shiny::addResourcePath("djprshiny", system.file("www", package = "djprshiny"))
 
   if (requireNamespace("memoise")) {
     cache_dir <- ifelse(dir.exists("app-cache"),
