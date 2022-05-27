@@ -4,7 +4,7 @@
 \alias{djpr_async_server}
 \title{Asynchronous DJPR plot server}
 \usage{
-djpr_async_server(id, plot_fun, ...)
+djpr_async_server(id, plot_fun, ..., input_from_server = NULL)
 }
 \arguments{
 \item{id}{output namespace id to be used in conjunction with \code{djpr_plot_ui}
@@ -13,7 +13,25 @@ or \code{djpr_plot_box}}
 \item{plot_fun}{a function which generates a ggplot}
 
 \item{...}{arguments passed to plot_fun}
+
+\item{input_from_server}{(experimental) named list of function inputs to be
+evalued outside a module. currently all input calls are evaluated in a
+module - that is to say that inputs defined outside the plot namespace are
+not available. input_from_server evaluates before the module. All inputs
+used here should be in a reactive wrapper.
+meaning}
 }
 \description{
 Asynchronous DJPR plot server
+}
+\examples{
+\dontrun{
+# Experimental input_from_server use
+djpr_async_server(
+  id = "myplot",
+  plot_fun = viz_make_my_plot,
+  dates = input$dates,
+  input_from_server = list(region = reactive(input$region))
+)
+}
 }

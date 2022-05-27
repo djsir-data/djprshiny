@@ -4,12 +4,28 @@
 #' or `djpr_plot_box`
 #' @param plot_fun a function which generates a ggplot
 #' @param ... arguments passed to plot_fun
-#'
+#' @param input_from_server (experimental) named list of function inputs to be
+#' evalued outside a module. currently all input calls are evaluated in a
+#' module - that is to say that inputs defined outside the plot namespace are
+#' not available. input_from_server evaluates before the module. All inputs
+#' used here should be in a reactive wrapper.
+#' meaning
+#' @examples
+#' \dontrun{
+#' # Experimental input_from_server use
+#' djpr_async_server(
+#'   id = "myplot",
+#'   plot_fun = viz_make_my_plot,
+#'   dates = input$dates,
+#'   input_from_server = list(region = reactive(input$region))
+#' )
+#' }
 #' @export
 djpr_async_server <- function(
   id,
   plot_fun,
-  ...
+  ...,
+  input_from_server = NULL
 ){
 
   # Check inputs
@@ -20,11 +36,14 @@ djpr_async_server <- function(
   arg_list_call <- as.list(match.call(expand.dots = F))[["..."]]
   arg_list_names <- names(arg_list_call)
 
+  input_from_server <- input_from_server
+
 
   # Generate outputs in namespace
-  shiny::moduleServer(
+  shiny::callModule(
     id = id,
-    function(input, output, session){
+    input_from_server = input_from_server,
+    module = function(input, output, session, input_from_server){
 
       # evaluate plotfun arguments in module
       arg_list <- shiny::reactive(
@@ -32,7 +51,8 @@ djpr_async_server <- function(
           req(input)
           args <- lapply(arg_list_call, eval.parent)
           names(args) <- arg_list_names
-          args
+          args <- c(args, input_from_server)
+          lapply(args, function(x) if(shiny::is.reactive(x)) x() else x)
         }
       )
 
