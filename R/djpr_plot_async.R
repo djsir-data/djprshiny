@@ -36,8 +36,6 @@ djpr_async_server <- function(
   arg_list_call <- as.list(match.call(expand.dots = F))[["..."]]
   arg_list_names <- names(arg_list_call)
 
-  input_from_server <- input_from_server
-
 
   # Generate outputs in namespace
   shiny::callModule(
@@ -58,6 +56,7 @@ djpr_async_server <- function(
 
       # Decrease how often resizing triggers the plot render
       sizing <- shiny::reactive({
+        lapply(input$sizing, function(x) shiny::req(as.logical(x)))
         input$sizing
         }) %>%
         shiny::debounce(1000)
