@@ -12,7 +12,7 @@ djpr_h1_box(
   heading,
   ...,
   width = 12,
-  colour = "#201547",
+  colour = "#1F1547",           # djpr_blue
   text_colour = "#FFFFFF"
 )
 
@@ -20,7 +20,7 @@ djpr_h2_box(
   heading,
   ...,
   width = 12,
-  colour = "#201547",
+  colour = "#62BB46",           # djpr_green
   text_colour = "#FFFFFF"
 )
 
@@ -28,7 +28,7 @@ djpr_h3_box(
   heading,
   ...,
   width = 12,
-  colour = "#201547",
+  colour = "#C0E4B5",           # djpr_faint_green
   text_colour = "#FFFFFF"
 )
 
@@ -36,8 +36,8 @@ djpr_h4_box(
   heading,
   ...,
   width = 12,
-  colour = "#201547",
-  text_colour = "#FFFFFF"
+  colour = "#BCD3EF",
+  text_colour = "#FFFFFF"       # djpr_faint_blue
 )
 }
 \arguments{
