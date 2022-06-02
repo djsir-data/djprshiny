@@ -3,8 +3,10 @@ library(shinyWidgets)
 library(bslib)
 
 ui <- fluidPage(
-  theme = bs_theme(version = "5",
-                   bootswatch = "minty"),
+  theme = bs_theme(
+    version = "5",
+    bootswatch = "minty"
+  ),
   dropdownButton(
     inputId = "mydropdown",
     label = "Controls",
@@ -30,7 +32,6 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-
   output$out <- renderPrint({
     cat(
       " # n\n", input$n, "\n",
@@ -41,7 +42,6 @@ server <- function(input, output, session) {
   output$state <- renderPrint({
     cat("Open:", input$mydropdown_state)
   })
-
 }
 
 shinyApp(ui, server)

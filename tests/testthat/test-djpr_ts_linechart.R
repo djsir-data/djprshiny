@@ -33,11 +33,16 @@ test_that("djpr_ts_linechart() respects label_single_line arg", {
     dplyr::filter(series == "pce")
   p1 <- djpr_ts_linechart(pce)
   p2 <- djpr_ts_linechart(pce,
-                          label_single_line = TRUE)
+    label_single_line = TRUE
+  )
 
-  vdiffr::expect_doppelganger("regular time series plot",
-                              p1)
+  vdiffr::expect_doppelganger(
+    "regular time series plot",
+    p1
+  )
 
-  vdiffr::expect_doppelganger("time series plot with single series labelled",
-                              p2)
+  vdiffr::expect_doppelganger(
+    "time series plot with single series labelled",
+    p2
+  )
 })
