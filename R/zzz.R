@@ -3,11 +3,12 @@
 
   if (requireNamespace("memoise")) {
     cache_dir <- ifelse(dir.exists("app-cache"),
-                        "app-cache",
-                        tempdir())
+      "app-cache",
+      tempdir()
+    )
 
     djpr_girafe <<- memoise::memoise(djpr_girafe,
-                                     cache = cachem::cache_disk(dir = cache_dir))
+      cache = cachem::cache_disk(dir = cache_dir)
+    )
   }
-
 }

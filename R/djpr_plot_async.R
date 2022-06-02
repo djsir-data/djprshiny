@@ -21,17 +21,15 @@
 #' )
 #' }
 #' @export
-djpr_async_server <- function(
-  id,
-  plot_fun,
-  ...,
-  input_from_server = NULL
-){
+djpr_async_server <- function(id,
+                              plot_fun,
+                              ...,
+                              input_from_server = NULL) {
 
   # Check inputs
-  if(!is.function(plot_fun)) stop("plot_fun must be a function")
-  if(is.na(as.character(id))) stop("id must be character")
-  if(length(as.character(id)) != 1) stop("id must be length 1")
+  if (!is.function(plot_fun)) stop("plot_fun must be a function")
+  if (is.na(as.character(id))) stop("id must be character")
+  if (length(as.character(id)) != 1) stop("id must be length 1")
 
   arg_list_call <- as.list(match.call(expand.dots = F))[["..."]]
   arg_list_names <- names(arg_list_call)
@@ -41,24 +39,22 @@ djpr_async_server <- function(
   shiny::callModule(
     id = id,
     input_from_server = input_from_server,
-    module = function(input, output, session, input_from_server){
+    module = function(input, output, session, input_from_server) {
 
       # evaluate plotfun arguments in module
-      arg_list <- shiny::reactive(
-        {
-          req(input)
-          args <- lapply(arg_list_call, eval.parent)
-          names(args) <- arg_list_names
-          args <- c(args, input_from_server)
-          lapply(args, function(x) if(shiny::is.reactive(x)) x() else x)
-        }
-      )
+      arg_list <- shiny::reactive({
+        req(input)
+        args <- lapply(arg_list_call, eval.parent)
+        names(args) <- arg_list_names
+        args <- c(args, input_from_server)
+        lapply(args, function(x) if (shiny::is.reactive(x)) x() else x)
+      })
 
       # Decrease how often resizing triggers the plot render
       sizing <- shiny::reactive({
         lapply(input$sizing, function(x) shiny::req(as.logical(x)))
         input$sizing
-        }) %>%
+      }) %>%
         shiny::debounce(1000)
 
       # Evaluate plot function
@@ -75,7 +71,6 @@ djpr_async_server <- function(
           djprtheme::extract_labs("title")
       })
       output$subtitle <- shiny::reactive({
-
         plot() %...>%
           shiny::req() %...>%
           djprtheme::extract_labs("subtitle")
@@ -87,9 +82,9 @@ djpr_async_server <- function(
       })
       output$plot <- ggiraph::renderggiraph({
         height <- sizing()$height
-        width  <- sizing()$width
-        dpi    <- sizing()$dpi
-        chart  <- plot()
+        width <- sizing()$width
+        dpi <- sizing()$dpi
+        chart <- plot()
 
         shiny::req(chart, height, width, dpi)
 
@@ -110,8 +105,6 @@ djpr_async_server <- function(
               )
             )
           )
-
-
       })
 
       download_server(
@@ -119,10 +112,8 @@ djpr_async_server <- function(
         plot = plot(),
         plot_name = id
       )
-
     }
   )
-
 }
 
 
@@ -143,17 +134,17 @@ djpr_async_server <- function(
 #'
 #' @return HTML element
 #' @export
-djpr_async_ui <- function(id, ..., width  = 6L, height = "500px"){
+djpr_async_ui <- function(id, ..., width = 6L, height = "500px") {
 
   # divs IDs and input names used for ggiraph resizing
   ruler_container <- shiny::NS(id, "container")
-  ruler_ppi   <- shiny::NS(id, "ruler-ppi")
+  ruler_ppi <- shiny::NS(id, "ruler-ppi")
   ruler_input <- shiny::NS(id, "sizing")
 
   # JS code to create plot-specific resizing
   width_helper <- shiny::tags$script(
     sprintf(
-'$(document).on("shiny:connected", function(e) {
+      '$(document).on("shiny:connected", function(e) {
   var w = document.getElementById("%s").offsetWidth;
   var h = document.getElementById("%s").offsetHeight;
   var d =  document.getElementById("%s").offsetWidth;
@@ -228,4 +219,3 @@ $(document).on("shiny:inputchanged", function(e) {
     )
   )
 }
-

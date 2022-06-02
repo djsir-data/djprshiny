@@ -14,13 +14,11 @@
 #'
 #' @return HTML element
 #' @export
-djpr_h1_box <- function(
-  heading,
-  ...,
-  width = 12,
-  colour = "#201547",
-  text_colour = "#FFFFFF"
-  ){
+djpr_h1_box <- function(heading,
+                        ...,
+                        width = 12,
+                        colour = djprtheme::djpr_blue,
+                        text_colour = "#FFFFFF") {
   column(
     width = width,
     div(
@@ -31,7 +29,6 @@ djpr_h1_box <- function(
         h1(heading, style = paste0("color: ", text_colour, ";")),
         ...
       )
-
     )
   )
 }
@@ -39,13 +36,11 @@ djpr_h1_box <- function(
 
 #' @rdname headings
 #' @export
-djpr_h2_box <- function(
-  heading,
-  ...,
-  width = 12,
-  colour = "#201547",
-  text_colour = "#FFFFFF"
-){
+djpr_h2_box <- function(heading,
+                        ...,
+                        width = 12,
+                        colour = djprtheme::djpr_blue,
+                        text_colour = "#FFFFFF") {
   column(
     width = width,
     div(
@@ -56,20 +51,17 @@ djpr_h2_box <- function(
         h2(heading, style = paste0("color: ", text_colour, ";")),
         ...
       )
-
     )
   )
 }
 
 #' @rdname headings
 #' @export
-djpr_h3_box <- function(
-  heading,
-  ...,
-  width = 12,
-  colour = "#201547",
-  text_colour = "#FFFFFF"
-){
+djpr_h3_box <- function(heading,
+                        ...,
+                        width = 12,
+                        colour = djprtheme::djpr_blue,
+                        text_colour = "#FFFFFF") {
   column(
     width = width,
     div(
@@ -80,20 +72,17 @@ djpr_h3_box <- function(
         h3(heading, style = paste0("color: ", text_colour, ";")),
         ...
       )
-
     )
   )
 }
 
 #' @rdname headings
 #' @export
-djpr_h4_box <- function(
-  heading,
-  ...,
-  width = 12,
-  colour = "#201547",
-  text_colour = "#FFFFFF"
-){
+djpr_h4_box <- function(heading,
+                        ...,
+                        width = 12,
+                        colour = djprtheme::djpr_blue,
+                        text_colour = "#FFFFFF") {
   column(
     width = width,
     div(
@@ -104,8 +93,6 @@ djpr_h4_box <- function(
         h4(heading, style = paste0("color: ", text_colour, ";")),
         ...
       )
-
     )
   )
 }
-

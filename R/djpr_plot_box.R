@@ -9,14 +9,11 @@
 #'
 #' @return HTML UI component
 #' @export
-djpr_plot_box <- function(
-  id,
-  interactive = TRUE,
-  plot_height = "400px",
-  width = 6,
-  ...
-){
-
+djpr_plot_box <- function(id,
+                          interactive = TRUE,
+                          plot_height = "400px",
+                          width = 6,
+                          ...) {
   if (interactive) {
     plot_ui <- ggiraph::girafeOutput(NS(id, "plot"), height = plot_height)
   } else {
@@ -74,15 +71,15 @@ djpr_plot_box <- function(
           column(
             1,
             div(
-              style="width: 100%; display: table; padding-top: 50%;",
+              style = "width: 100%; display: table; padding-top: 50%;",
               div(
-                style="display: table-row",
+                style = "display: table-row",
                 div(
                   id = NS(id, "download_col"),
-                  style="display: table-cell;",
+                  style = "display: table-cell;",
                   download_icon(NS(id, "download_dropdown"))
                 )
-                )
+              )
             )
           )
         )

@@ -233,10 +233,12 @@ djpr_plot_server <- function(id,
       # Update date slider UI ------
       dates <- data %>%
         dplyr::ungroup() %>% # In case we're accidentally passed a grouped tbl
-        dplyr::summarise(min = min(as.Date(date), na.rm = TRUE),
-                         max = max(as.Date(date), na.rm = TRUE))
+        dplyr::summarise(
+          min = min(as.Date(date), na.rm = TRUE),
+          max = max(as.Date(date), na.rm = TRUE)
+        )
 
-      if ('tbl_lazy' %in% class(data)) {
+      if ("tbl_lazy" %in% class(data)) {
         dates <- dates %>% dplyr::collect()
       }
 
@@ -259,7 +261,6 @@ djpr_plot_server <- function(id,
           timeFormat = "%b %Y",
           label = "Select Dates"
         )
-
       } else {
         removeUI(selector = paste0("#", NS(id, "date_slider_col")))
       }
@@ -284,8 +285,8 @@ djpr_plot_server <- function(id,
         out <- FALSE
 
         if (date_slider == TRUE &&
-            # Need to make sure that input$dates has updated from the default
-            input$dates[2] != as.Date("2017-10-18")) {
+          # Need to make sure that input$dates has updated from the default
+          input$dates[2] != as.Date("2017-10-18")) {
           out <- TRUE
         }
 
@@ -294,7 +295,7 @@ djpr_plot_server <- function(id,
         }
 
         if (!is.null(check_box_options) &&
-            !is.null(input$checkboxes)) {
+          !is.null(input$checkboxes)) {
           out <- TRUE
         }
 
@@ -339,39 +340,39 @@ djpr_plot_server <- function(id,
 
         debug_log(class(data))
 
-        if ('tbl_lazy' %in% class(data) & convert_lazy) {
-          data %>% dplyr::collect() %>%
+        if ("tbl_lazy" %in% class(data) & convert_lazy) {
+          data %>%
+            dplyr::collect() %>%
             dplyr::mutate(date = lubridate::ymd(date))
         } else {
           data
         }
-
-
       })
 
       # Create a subset of plot data to use for caching ----
       unique_data <- reactive({
-        if ('tbl_lazy' %in% class(plot_data())) {
+        if ("tbl_lazy" %in% class(plot_data())) {
           out <- data |>
             utils::head() |>
             as.data.frame() |>
             purrr::map(dplyr::type_sum) |>
-            purrr::discard(~ .x %in% c('dbl','int')) |>
-            purrr::imap( ~ data %>%
-                      dplyr::summarize(values = distinct(!!dplyr::sql(.y))) %>%
-                      dplyr::collect() %>%
-                      dplyr::pull()
-            )
-
+            purrr::discard(~ .x %in% c("dbl", "int")) |>
+            purrr::imap(~ data %>%
+              dplyr::summarize(values = distinct(!!dplyr::sql(.y))) %>%
+              dplyr::collect() %>%
+              dplyr::pull())
         } else {
           out <- subset(plot_data(),
-                        select = sapply(plot_data(),
-                                        function(x) !inherits(x, c("integer","numeric"))))
+            select = sapply(
+              plot_data(),
+              function(x) !inherits(x, c("integer", "numeric"))
+            )
+          )
 
           out <- lapply(out, unique)
         }
 
-        if ('date' %in% names(out)) {
+        if ("date" %in% names(out)) {
           out$date <- lubridate::ymd(out$date)
         }
 
@@ -412,7 +413,7 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           unique_data(),
-          plot_args() #,
+          plot_args() # ,
           # body(plot_function)
         )
 
@@ -423,7 +424,7 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           unique_data(),
-          plot_args() #,
+          plot_args() # ,
           # body(plot_function)
         )
 
@@ -434,7 +435,7 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           unique_data(),
-          plot_args() #,
+          plot_args() # ,
           # body(plot_function)
         )
 
@@ -444,7 +445,7 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           unique_data(),
-          plot_args() #,
+          plot_args() # ,
           # body(plot_function)
         )
 
@@ -454,7 +455,7 @@ djpr_plot_server <- function(id,
         shiny::bindCache(
           id,
           unique_data(),
-          plot_args() #,
+          plot_args() # ,
           # body(plot_function)
         )
 
@@ -487,7 +488,7 @@ djpr_plot_server <- function(id,
           shiny::bindCache(
             unique_data(),
             plot_args(),
-            id #,
+            id # ,
             # body(plot_function)
           )
       }
@@ -551,7 +552,6 @@ djpr_plot_server <- function(id,
             id,
             interactive
           )
-
       }
 
       if (download_button) {

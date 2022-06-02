@@ -4,9 +4,9 @@
 #'
 #' @return HTML element
 #' @export
-djpr_footer <- function(...){
+djpr_footer <- function(...) {
   HTML(
-"<footer>
+    "<footer>
 <link rel=\"stylesheet\" type=\"text/css\" href=\"djprshiny/footer.css\"/>
 <div class=\"nrs\">
 <div class=\"restrict-width\">

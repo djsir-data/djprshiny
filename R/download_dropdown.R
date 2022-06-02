@@ -9,7 +9,6 @@
 #'
 
 download_ui <- function(id, ...) {
-
   shinyWidgets::dropdownButton(
     circle = FALSE,
     tooltip = FALSE,
@@ -98,7 +97,7 @@ download_server <- function(id, plot, plot_name = "plot") {
 #' @param ... arguments passed to `shinyWidgets::dropdownButton()`
 #'
 
-download_icon <- function(id, ...){
+download_icon <- function(id, ...) {
   shinyWidgets::dropdownButton(
     djpr_dl_button(
       NS(id, "download_data"),

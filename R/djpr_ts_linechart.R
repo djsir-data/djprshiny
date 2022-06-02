@@ -124,7 +124,7 @@ djpr_ts_linechart <- function(data,
     theme(
       axis.title.x = element_blank(),
       rect = element_rect(fill = "transparent")
-          ) +
+    ) +
     coord_cartesian(clip = "off")
 
   if (isTRUE(dot)) {

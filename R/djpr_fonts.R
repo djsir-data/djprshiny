@@ -7,7 +7,7 @@
 #' @return HTML link to djpr font css
 #' @export
 
-djpr_fonts <- function(...){
+djpr_fonts <- function(...) {
   shiny::tags$link(
     rel = "stylesheet",
     type = "text/css",

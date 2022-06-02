@@ -5,7 +5,7 @@
 #' javascript
 #' @export
 
-djpr_dash_theme <- function(...){
+djpr_dash_theme <- function(...) {
   htmltools::tagList(
     shiny::tags$link(
       rel = "stylesheet",
@@ -21,6 +21,5 @@ djpr_dash_theme <- function(...){
       '$(".logo").prependTo(".main-header .navbar");
         $(".sidebar-toggle").prependTo(".main-header .navbar");'
     )
-    )
-
+  )
 }
