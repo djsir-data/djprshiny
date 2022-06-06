@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: |
           install.packages(c("remotes", "rcmdcheck"))
-          remotes::install_deps(dependencies = TRUE, type = "binary")
+          remotes::install_deps(dependencies = TRUE, type = "source")
         shell: Rscript {0}
       - name: Check
         run: |
