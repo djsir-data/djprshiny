@@ -101,16 +101,34 @@ djpr_async_server <- function(id,
               ggiraph::opts_tooltip(
                 delay_mouseover = 100,
                 opacity = 0.9,
-                css = "background-color: white; color: black; font-family: VIC-Regular, Arial, Helvetica, sans-serif; line-height: 100%;"
+                css = "color: black; font-family: VIC-Regular, Arial, Helvetica, sans-serif; line-height: 100%;"
               )
             )
           )
       })
 
-      download_server(
-        id = "download_dropdown",
-        plot = plot(),
-        plot_name = id
+      # Downloads
+      output$download_pptx <- shiny::downloadHandler(
+        filename = paste0(id, ".pptx"),
+        content = function(file){
+          plot() %...>%
+            djprtheme::gg_font_change(font = "Arial") %...>%
+            {. + theme(text = element_text(family = "Arial"))} %...>%
+            djprtheme::djpr_save_pptx(file, plot = .) %...>%
+            djprtheme::without_showtext()
+        },
+        contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+      )
+
+      output$download_csv <- shiny::downloadHandler(
+        filename = paste0(id, ".csv"),
+        content = function(file) {
+          plot() %...>%
+            djprtheme::get_plot_data() %...>%
+            dplyr::select(-dplyr::contains("tooltip")) %...>%
+            utils::write.csv(file = file, row.names = FALSE)
+        },
+        contentType = "text/csv"
       )
     }
   )
@@ -211,8 +229,18 @@ $(document).on("shiny:inputchanged", function(e) {
       ),
       shiny::div(
         class = "box-footer",
-        shiny::textOutput(outputId = shiny::NS(id, "caption")) %>%
-          shiny::tagAppendAttributes(class = "djpr-caption"),
+        shiny::fluidRow(
+          shiny::column(
+            9,
+            shiny::textOutput(outputId = shiny::NS(id, "caption")) %>%
+              shiny::tagAppendAttributes(class = "djpr-caption")
+          ),
+          shiny::column(
+            3,
+            shiny::downloadButton(shiny::NS(id, "download_csv"), "Download data"),
+            shiny::downloadButton(shiny::NS(id, "download_pptx"), "Download chart")
+          )
+        ),
         ...
       ),
       width_helper
