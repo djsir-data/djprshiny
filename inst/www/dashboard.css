@@ -203,6 +203,11 @@ body {
   margin-bottom: 10px;
 }
 
+.small-box .inner h3{
+  margin: 0;
+  font-size: 25px;
+}
+
 .girafe_container_std{
   padding-left: 10px;
 }
