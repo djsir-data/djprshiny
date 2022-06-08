@@ -29,6 +29,22 @@
        url("./fonts/VIC-Bold.ttf") format("truetype");
 }
 
+@media (max-width: 768px){
+  .main-header .logo, .tabwid td:nth-child(2), .tabwid td:nth-child(6){
+    display: none;
+  }
+  .tab-content{
+  padding: 0px !important;
+  }
+  .content{
+   margin: 0;
+   padding-top: 15px;
+   padding-left: 0;
+   padding-right: 0;
+   padding-bottom: 15px;
+  }
+}
+
 .main-header{
     max-height: 160px;
 }
@@ -52,12 +68,6 @@
   background-color: #F1F1EF;
   background: #F1F1EF url(./djpr-shards-logo.svg) top right no-repeat;
   height: 90px;
-}
-
-@media (max-width: 768px){
-  .main-header .logo {
-    display: none;
-}
 }
 
 
@@ -148,6 +158,7 @@ body {
 .box {
   background-color: #F1F1EF;
   border-top: 0px;
+  overflow: hidden;
 }
 
 .box-footer{
@@ -252,6 +263,10 @@ body {
 
 .flextable-shadow-host{
   padding: 10px;
+}
+
+.box .tabwid{
+  padding: 15px;
 }
 
 g rect[fill="#FFFFFF"]{
