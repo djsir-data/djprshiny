@@ -161,6 +161,10 @@ body {
   overflow: hidden;
 }
 
+.box a{
+  color: #2A6FA2;
+}
+
 .box-footer{
   background-color: #F1F1EF;
   border: 0px;
@@ -287,4 +291,8 @@ h2{
 
 h3, h4, h5, h6, p, body{
   font-family: "VIC-Regular";
+}
+
+a{
+  color: #2A6FA2;
 }
