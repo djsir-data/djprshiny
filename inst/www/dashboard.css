@@ -273,6 +273,12 @@ body {
   padding: 15px;
 }
 
+a:focus-visible {
+  outline: -webkit-focus-ring-color auto 1px;
+  outline-offset: 1px;
+  color:#087d81;
+}
+
 g rect[fill="#FFFFFF"]{
   display: none;
 }
