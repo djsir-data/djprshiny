@@ -158,7 +158,7 @@ body {
 .box {
   background-color: #F1F1EF;
   border-top: 0px;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .box a{
