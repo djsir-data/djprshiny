@@ -30,7 +30,7 @@
 }
 
 @media (max-width: 768px){
-  .main-header .logo, .tabwid td:nth-child(2), .tabwid td:nth-child(6){
+  .main-header .logo {
     display: none;
   }
   .tab-content{
