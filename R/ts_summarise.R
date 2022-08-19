@@ -237,6 +237,23 @@ ts_summarise <- function(df, digits = 1) {
     "Retrenchment rate", FALSE,
     "Jobactive caseload", FALSE
   )
+  
+  # Error fix NA values in indicator
+  indicator_match <- paste(
+    collapse = "|",
+    up_is_good$indicator %>% 
+      stringr::str_replace("\\(", "\\\\(") %>%
+      stringr::str_replace("\\)", "\\\\)")
+  )
+  
+  comb_df <- comb_df %>% 
+    dplyr::mutate(
+      indicator = ifelse(
+        is.na(.data$indicator),
+        stringr::str_extract(.data$series, indicator_match),
+        .data$indicator
+      )
+    )
 
   comb_df <- comb_df %>%
     dplyr::left_join(up_is_good, by = "indicator")
