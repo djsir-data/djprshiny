@@ -158,7 +158,7 @@ ts_summarise <- function(df, digits = 1) {
         dplyr::contains("value"),
         dplyr::starts_with("d_")
       ),
-      ~ round(.x, 2)
+      ~ round(.x, 3)
     ))
 
   # For certain series, we manually define whether an increase in the value
@@ -237,16 +237,16 @@ ts_summarise <- function(df, digits = 1) {
     "Retrenchment rate", FALSE,
     "Jobactive caseload", FALSE
   )
-  
+
   # Error fix NA values in indicator
   indicator_match <- paste(
     collapse = "|",
-    up_is_good$indicator %>% 
+    up_is_good$indicator %>%
       stringr::str_replace("\\(", "\\\\(") %>%
       stringr::str_replace("\\)", "\\\\)")
   )
-  
-  comb_df <- comb_df %>% 
+
+  comb_df <- comb_df %>%
     dplyr::mutate(
       indicator = ifelse(
         is.na(.data$indicator),
