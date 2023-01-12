@@ -45,6 +45,6 @@ Suggests:
     shinydashboard
 Config/testthat/edition: 3
 Remotes: 
-    djpr-data/djprtheme,
-    djpr-data/djprdashdata,
+    djsir-data/djprtheme,
+    djsir-data/djprdashdata,
     dreamRs/shinyWidgets
