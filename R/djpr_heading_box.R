@@ -17,7 +17,7 @@
 djpr_h1_box <- function(heading,
                         ...,
                         width = 12,
-                        colour = djprtheme::djpr_cobalt,
+                        colour = djprtheme::djpr_royal_blue,
                         text_colour = "#FFFFFF") {
   column(
     width = width,
@@ -39,7 +39,7 @@ djpr_h1_box <- function(heading,
 djpr_h2_box <- function(heading,
                         ...,
                         width = 12,
-                        colour = djprtheme::djpr_cobalt,
+                        colour = djprtheme::djpr_royal_blue,
                         text_colour = "#FFFFFF") {
   column(
     width = width,
@@ -60,7 +60,7 @@ djpr_h2_box <- function(heading,
 djpr_h3_box <- function(heading,
                         ...,
                         width = 12,
-                        colour = djprtheme::djpr_cobalt,
+                        colour = djprtheme::djpr_royal_blue,
                         text_colour = "#FFFFFF") {
   column(
     width = width,
@@ -81,7 +81,7 @@ djpr_h3_box <- function(heading,
 djpr_h4_box <- function(heading,
                         ...,
                         width = 12,
-                        colour = djprtheme::djpr_cobalt,
+                        colour = djprtheme::djpr_royal_blue,
                         text_colour = "#FFFFFF") {
   column(
     width = width,
