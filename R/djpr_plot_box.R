@@ -80,7 +80,7 @@ djpr_box_server <- function(id,
           shiny::req() %>%
           djprtheme::extract_labs("caption")
       })
-      output$plot <- ggiraph::renderggiraph({
+      output$plot <- ggiraph::renderGirafe({
         height <- sizing()$height
         width <- sizing()$width
         dpi <- sizing()$dpi
