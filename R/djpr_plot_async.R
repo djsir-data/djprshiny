@@ -90,7 +90,7 @@ djpr_async_server <- function(id,
 
         chart %...>%
           djprtheme::remove_labs() %...>%
-          ggiraph::ggiraph(
+          ggiraph::giraph(
             ggobj = .,
             width_svg = width / dpi,
             height_svg = height / dpi,
