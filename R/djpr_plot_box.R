@@ -223,7 +223,7 @@ $(document).on("shiny:inputchanged", function(e) {
           style = "width:0.75in;visible:hidden;padding:0px"
         ),
         djpr_with_spinner(
-          ggiraph::ggiraphOutput(shiny::NS(id, "plot"), height = height),
+          ggiraph::girafeOutput(shiny::NS(id, "plot"), height = height),
           proxy.height = height
         )
       ),
