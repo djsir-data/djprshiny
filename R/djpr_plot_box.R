@@ -90,7 +90,7 @@ djpr_box_server <- function(id,
 
         chart %>%
           djprtheme::remove_labs() %>%
-          ggiraph::giraph(
+          ggiraph::girafe(
             ggobj = .,
             width_svg = width / dpi,
             height_svg = height / dpi,
